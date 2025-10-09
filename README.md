@@ -5,6 +5,7 @@ A Model Context Protocol (MCP) server that provides access to Microsoft Outlook 
 ## Features
 
 - **Folder Management**: List available mail folders in your Outlook client
+- **Current Time Lookup**: Retrieve the current local time (with optional UTC reference)
 - **Email Listing**: Retrieve emails from specified time periods
 - **Email Search**: Search emails by contact name, keywords, or phrases with OR operators
 - **Email Details**: View complete email content, including attachments
@@ -65,18 +66,19 @@ Or allow an MCP client like Claude Desktop to start it via the configuration.
 
 The server provides the following tools:
 
-1. `list_folders`: Lists all available mail folders in Outlook
-2. `list_recent_emails`: Lists email titles from the specified number of days
-3. `list_sent_emails`: Shows recently sent items to recover past replies
-4. `search_emails`: Searches emails by contact name or keyword
-5. `list_pending_replies`: Highlights recent emails without an outgoing reply
-6. `get_email_by_number`: Retrieves detailed content of a specific email
-7. `get_email_context`: Expands an email with participants and thread snippets
-8. `list_upcoming_events`: Lists the next calendar events
-9. `search_calendar_events`: Searches calendar events by keyword
-10. `get_event_by_number`: Retrieves full details for a listed calendar event
-11. `reply_to_email_by_number`: Replies to a specific email
-12. `compose_email`: Creates and sends a new email
+1. `get_current_datetime`: Returns the current local date/time with optional UTC data
+2. `list_folders`: Lists all available mail folders in Outlook
+3. `list_recent_emails`: Lists email titles from the specified number of days
+4. `list_sent_emails`: Shows recently sent items to recover past replies
+5. `search_emails`: Searches emails by contact name or keyword
+6. `list_pending_replies`: Highlights recent emails without an outgoing reply
+7. `get_email_by_number`: Retrieves detailed content of a specific email
+8. `get_email_context`: Expands an email with participants and thread snippets
+9. `list_upcoming_events`: Lists the next calendar events
+10. `search_calendar_events`: Searches calendar events by keyword
+11. `get_event_by_number`: Retrieves full details for a listed calendar event
+12. `reply_to_email_by_number`: Replies to a specific email
+13. `compose_email`: Creates and sends a new email
 
 ### Example Workflow
 

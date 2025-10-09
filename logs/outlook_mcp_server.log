@@ -1,0 +1,31 @@
+2025-10-09 10:50:20,304 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=7 calendario=None max_risultati=10 descrizione=False tutti_i_calendari=True
+2025-10-09 10:50:22,010 | INFO | outlook_mcp_server | Recuperati 2 eventi dalla cartella calendario 'Calendario'.
+2025-10-09 10:50:22,393 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-09 10:50:22,401 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-09 10:50:22,402 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 3 cartelle calendario.
+2025-10-09 10:50:22,403 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 2 eventi su 2 (calendario=Tutti i calendari).
+2025-10-09 10:50:29,056 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=7 calendario=None max_risultati=10 descrizione=True tutti_i_calendari=True
+2025-10-09 10:50:30,580 | INFO | outlook_mcp_server | Recuperati 2 eventi dalla cartella calendario 'Calendario'.
+2025-10-09 10:50:30,945 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-09 10:50:30,953 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-09 10:50:30,955 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 3 cartelle calendario.
+2025-10-09 10:50:30,956 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 2 eventi su 2 (calendario=Tutti i calendari).
+2025-10-09 10:50:30,958 | INFO | outlook_mcp_server | Recupero dettagli completi per l'evento #2.
+2025-10-09 10:55:05,629 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=False
+2025-10-09 10:55:05,630 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
+2025-10-09 10:55:05,634 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=7 cartella=None max_risultati=5 anteprima=False tutte_le_cartelle=False solo_non_letti=True lookback_conv=14
+2025-10-09 10:55:05,634 | INFO | outlook_mcp_server | list_pending_replies ha trovato 1 messaggi da gestire su 2 analizzati.
+2025-10-09 10:55:05,635 | INFO | outlook_mcp_server | list_pending_replies: restituiti 1 messaggi su 1 (termine=None cartella=Posta in arrivo (senza risposta)).
+2025-10-09 10:55:05,635 | WARNING | outlook_mcp_server | Valore 'days' non valido passato a list_pending_replies: 31
+2025-10-09 10:55:05,636 | INFO | outlook_mcp_server | Recupero dettagli completi per l'evento #1.
+2025-10-09 10:55:05,637 | WARNING | outlook_mcp_server | get_event_by_number chiamato ma la cache eventi e vuota.
+2025-10-09 10:55:05,639 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=3 calendario=None max_risultati=5 descrizione=False tutti_i_calendari=False
+2025-10-09 10:55:05,639 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 1 eventi su 1 (calendario=Calendario).
+2025-10-09 10:55:05,640 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=7 calendario=None max_risultati=3 descrizione=True tutti_i_calendari=True
+2025-10-09 10:55:05,641 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 1 eventi su 1 (calendario=Tutti i calendari).
+2025-10-09 10:55:05,641 | WARNING | outlook_mcp_server | Valore 'days' non valido passato a list_upcoming_events: 91
+2025-10-09 10:55:05,643 | INFO | outlook_mcp_server | search_calendar_events chiamato con termine='Demo' giorni=10 calendario=None max_risultati=25 descrizione=False tutti_i_calendari=True
+2025-10-09 10:55:05,643 | INFO | outlook_mcp_server | search_calendar_events: restituiti 1 eventi su 1 (calendario=Tutti i calendari).
+2025-10-09 10:55:05,644 | WARNING | outlook_mcp_server | search_calendar_events chiamato senza termine di ricerca.
+2025-10-09 10:55:05,645 | INFO | outlook_mcp_server | search_calendar_events chiamato con termine='Workshop' giorni=5 calendario=Progetti max_risultati=25 descrizione=False tutti_i_calendari=False
+2025-10-09 10:55:05,645 | INFO | outlook_mcp_server | search_calendar_events: restituiti 1 eventi su 1 (calendario=Progetti).

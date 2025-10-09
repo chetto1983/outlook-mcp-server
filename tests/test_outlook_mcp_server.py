@@ -62,6 +62,42 @@ class HelperFunctionsTest(unittest.TestCase):
         self.assertTrue(server._mail_item_marked_replied(DummyMail(), baseline))
 
 
+class GetCurrentDatetimeTest(unittest.TestCase):
+    def test_get_current_datetime_includes_local_and_utc(self):
+        class FixedDateTime(datetime.datetime):
+            @classmethod
+            def now(cls):
+                return cls(2025, 10, 9, 10, 30, 45)
+
+            @classmethod
+            def utcnow(cls):
+                return cls(2025, 10, 9, 8, 30, 45)
+
+        with patch("outlook_mcp_server.datetime.datetime", FixedDateTime):
+            result = server.get_current_datetime(include_utc=True)
+
+        self.assertIn("2025-10-09 10:30:45", result)
+        self.assertIn("2025-10-09T10:30:45", result)
+        self.assertIn("2025-10-09 08:30:45", result)
+        self.assertIn("UTC ISO", result)
+
+    def test_get_current_datetime_can_skip_utc(self):
+        class FixedDateTime(datetime.datetime):
+            @classmethod
+            def now(cls):
+                return cls(2025, 10, 9, 10, 30, 45)
+
+            @classmethod
+            def utcnow(cls):
+                return cls(2025, 10, 9, 8, 30, 45)
+
+        with patch("outlook_mcp_server.datetime.datetime", FixedDateTime):
+            result = server.get_current_datetime(include_utc=False)
+
+        self.assertIn("2025-10-09 10:30:45", result)
+        self.assertNotIn("UTC:", result)
+
+
 class EmailReplyInferenceTest(unittest.TestCase):
     def setUp(self):
         server.email_cache.clear()

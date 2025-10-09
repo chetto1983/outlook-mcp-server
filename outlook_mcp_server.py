@@ -1032,6 +1032,33 @@ def _email_has_user_reply(
 
 # MCP Tools
 @mcp.tool()
+def get_current_datetime(include_utc: bool = True) -> str:
+    """
+    Restituisce la data e ora correnti formattate.
+
+    Args:
+        include_utc: Includere o meno il riferimento UTC nella risposta
+    """
+    include_utc_bool = _coerce_bool(include_utc)
+    logger.info("get_current_datetime chiamato con include_utc=%s", include_utc_bool)
+    try:
+        local_dt = datetime.datetime.now()
+        lines = [
+            "Data e ora correnti:",
+            f"- Locale: {local_dt.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"- Locale ISO: {local_dt.isoformat()}",
+        ]
+        if include_utc_bool:
+            utc_dt = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
+            lines.append(f"- UTC: {utc_dt.strftime('%Y-%m-%d %H:%M:%S')}")
+            lines.append(f"- UTC ISO: {utc_dt.isoformat()}")
+        return "\n".join(lines)
+    except Exception as exc:
+        logger.exception("Errore durante get_current_datetime.")
+        return f"Errore durante il calcolo della data/ora corrente: {exc}"
+
+
+@mcp.tool()
 def list_folders() -> str:
     """
     List all available mail folders in Outlook
