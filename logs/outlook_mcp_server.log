@@ -12,3 +12,6 @@
 2025-10-09 15:44:03,054 | INFO | outlook_mcp_server | Avvio di Outlook MCP Server.
 2025-10-09 15:44:03,074 | INFO | outlook_mcp_server | Connessione a Outlook riuscita. La Posta in arrivo contiene 2109 elementi.
 2025-10-09 15:44:03,076 | INFO | outlook_mcp_server | Server MCP avviato. In attesa di richieste.
+2025-10-09 16:19:20,292 | INFO | outlook_mcp_server | Avvio di Outlook MCP Server.
+2025-10-09 16:19:20,315 | INFO | outlook_mcp_server | Connessione a Outlook riuscita. La Posta in arrivo contiene 2107 elementi.
+2025-10-09 16:19:20,316 | INFO | outlook_mcp_server | Server MCP avviato. In attesa di richieste.
