@@ -8,6 +8,7 @@ A Model Context Protocol (MCP) server that provides access to Microsoft Outlook 
 - **Email Listing**: Retrieve emails from specified time periods
 - **Email Search**: Search emails by contact name, keywords, or phrases with OR operators
 - **Email Details**: View complete email content, including attachments
+- **Conversation Insights**: Surface unanswered emails and related context via conversation lookbacks
 - **Email Composition**: Create and send new emails
 - **Email Replies**: Reply to existing emails
 
@@ -66,10 +67,16 @@ The server provides the following tools:
 
 1. `list_folders`: Lists all available mail folders in Outlook
 2. `list_recent_emails`: Lists email titles from the specified number of days
-3. `search_emails`: Searches emails by contact name or keyword
-4. `get_email_by_number`: Retrieves detailed content of a specific email
-5. `reply_to_email_by_number`: Replies to a specific email
-6. `compose_email`: Creates and sends a new email
+3. `list_sent_emails`: Shows recently sent items to recover past replies
+4. `search_emails`: Searches emails by contact name or keyword
+5. `list_pending_replies`: Highlights recent emails without an outgoing reply
+6. `get_email_by_number`: Retrieves detailed content of a specific email
+7. `get_email_context`: Expands an email with participants and thread snippets
+8. `list_upcoming_events`: Lists the next calendar events
+9. `search_calendar_events`: Searches calendar events by keyword
+10. `get_event_by_number`: Retrieves full details for a listed calendar event
+11. `reply_to_email_by_number`: Replies to a specific email
+12. `compose_email`: Creates and sends a new email
 
 ### Example Workflow
 
