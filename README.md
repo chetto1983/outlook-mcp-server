@@ -1,135 +1,136 @@
 # Outlook MCP Server
 
-A Model Context Protocol (MCP) server that provides access to Microsoft Outlook email functionality, allowing LLMs and other MCP clients to read, search, and manage emails through a standardized interface.
+Outlook MCP Server exposes Microsoft Outlook email and calendar data through Anthropic's Model Context Protocol (MCP). It enables MCP-aware assistants to browse folders, search and summarize conversations, monitor pending replies, inspect attachments, surface calendar events, and respond without leaving Outlook.
 
 ## Features
 
-- **Folder Management**: List available mail folders in your Outlook client
-- **Current Time Lookup**: Retrieve the current local time (with optional UTC reference)
-- **Email Listing**: Retrieve emails from specified time periods
-- **Email Search**: Search emails by contact name, keywords, or phrases with OR operators
-- **Email Details**: View complete email content, including attachments
-- **Conversation Insights**: Surface unanswered emails and related context via conversation lookbacks
-- **Email Composition**: Create and send new emails
-- **Email Replies**: Reply to existing emails
+- Unified coverage for Outlook mailboxes and calendars, including Inbox, Sent Items, shared mail folders, and additional calendars that are already available in your Outlook profile.
+- Rich email listings with sender metadata, read state, categories, conversation identifiers, attachment previews (up to five filenames), and optional cross-folder aggregation.
+- Sent-mail and conversation awareness, including pending-reply detection that inspects your sent items, Last Verb metadata, and historical conversation windows.
+- Deep thread expansion via cached list results and `get_email_context`, which can pull related messages from Sent Items and custom folders.
+- Calendar exploration across one or many calendars with recurrence-aware listings, keyword search, and detailed event retrieval.
+- Action helpers that let you reply inline (`reply_to_email_by_number`) or draft new outbound mail (`compose_email`) directly from MCP clients.
+- Built-in rotating logging (`logs/outlook_mcp_server.log`) and caches that keep long MCP sessions observable and responsive.
 
-## Prerequisites
+## Requirements
 
-- Windows operating system
-- Python 3.10 or later
-- Microsoft Outlook installed and configured with an active account
-- Claude Desktop or another MCP-compatible client
+- Windows with Microsoft Outlook installed, configured, and signed in
+- Python 3.10 or newer
+- Python packages from `requirements.txt` (`mcp>=1.2.0`, `pywin32>=305`)
+- An MCP-compatible client (Claude Desktop or another MCP host)
 
 ## Installation
 
-1. Clone or download this repository
-2. Install required dependencies:
-
-```bash
-pip install mcp>=1.2.0 pywin32>=305
-```
-
-3. Configure Claude Desktop (or your preferred MCP client) to use this server
+1. Clone or download this repository.
+2. (Optional) Create and activate a virtual environment.
+3. Install dependencies: `pip install -r requirements.txt`.
+4. Ensure Outlook is open (or can be launched) under the Windows profile running the server.
 
 ## Configuration
 
-### Claude Desktop Configuration
+### Claude Desktop configuration
 
-Add the following to your `MCP_client_config.json` file:
+Add (or merge) the following block into your `MCP_client_config.json`:
 
 ```json
 {
   "mcpServers": {
     "outlook": {
       "command": "python",
-      "args": ["Your path\\outlook_mcp_server.py"],
+      "args": ["C:\\\\path\\\\to\\\\outlook_mcp_server.py"],
       "env": {}
     }
   }
 }
 ```
 
+If you rely on a virtual environment, point `command` and `args` to the corresponding `python.exe`.
+
+### Prompt helper (optional)
+
+`prompt.txt` ships with an Italian primer that lists every tool and recommended workflow. Paste it into your MCP client if you want inline assistance.
 
 ## Usage
 
-### Starting the Server
-
-You can start the server directly:
+### Starting the server
 
 ```bash
 python outlook_mcp_server.py
 ```
 
-Or allow an MCP client like Claude Desktop to start it via the configuration.
+On startup the script validates the Outlook COM bridge, writes status information to stdout, and begins serving FastMCP requests.
 
-### Available Tools
+### Tool reference
 
-The server provides the following tools:
+Each MCP tool accepts keyword arguments so clients can override defaults as needed.
 
-1. `get_current_datetime`: Returns the current local date/time with optional UTC data
-2. `list_folders`: Lists all available mail folders in Outlook
-3. `list_recent_emails`: Lists email titles from the specified number of days
-4. `list_sent_emails`: Shows recently sent items to recover past replies
-5. `search_emails`: Searches emails by contact name or keyword
-6. `list_pending_replies`: Highlights recent emails without an outgoing reply
-7. `get_email_by_number`: Retrieves detailed content of a specific email
-8. `get_email_context`: Expands an email with participants and thread snippets
-9. `list_upcoming_events`: Lists the next calendar events
-10. `search_calendar_events`: Searches calendar events by keyword
-11. `get_event_by_number`: Retrieves full details for a listed calendar event
-12. `reply_to_email_by_number`: Replies to a specific email
-13. `compose_email`: Creates and sends a new email
+- `get_current_datetime(include_utc=True)` - Returns local time plus UTC details (ISO stamps included when requested).
+- `list_folders()` - Enumerates top-level folders and two nested levels of subfolders for the current Outlook profile.
+- `list_recent_emails(days=7, folder_name=None, max_results=25, include_preview=True, include_all_folders=False)` - Lists newest messages with sender data, read state, attachment previews, categories, and optional multi-folder scans.
+- `list_sent_emails(days=7, folder_name=None, max_results=25, include_preview=True)` - Mirrors `list_recent_emails` for Sent Items (or a custom folder) and highlights recipient lists for historical context.
+- `search_emails(search_term, days=7, folder_name=None, max_results=25, include_preview=True, include_all_folders=False)` - Searches for keywords or names (supports `OR` separators) within Inbox or across all mail folders.
+- `list_pending_replies(days=14, folder_name=None, max_results=25, include_preview=True, include_all_folders=False, include_unread_only=False, conversation_lookback_days=None)` - Surfaces incoming mail that likely lacks an outgoing reply by checking conversation metadata, sent mail, and optional unread filters.
+- `get_email_by_number(email_number)` - Retrieves the full body, attachment list, conversation ID, and metadata for any message cached by the latest listing/search result.
+- `get_email_context(email_number, include_thread=True, thread_limit=5, lookback_days=30, include_sent=True, additional_folders=None)` - Expands a cached email with related conversation entries (including Sent Items), participants, and attachment summaries.
+- `list_upcoming_events(days=7, calendar_name=None, max_results=25, include_description=False, include_all_calendars=False)` - Lists appointments up to 90 days ahead, with optional aggregation across every accessible calendar.
+- `search_calendar_events(search_term, days=30, calendar_name=None, max_results=25, include_description=False, include_all_calendars=False)` - Keyword-searches Outlook calendars with the same aggregation and preview controls as the listing command.
+- `get_event_by_number(event_number)` - Returns full appointment metadata (attendees, recurrence flags, location, description preview) for events cached by the latest listing/search command.
+- `reply_to_email_by_number(email_number, reply_text)` - Prepares and sends a plain-text reply to a cached message.
+- `compose_email(recipient_email, subject, body, cc_email=None)` - Sends a new plain-text message with optional CC recipients.
 
-### Example Workflow
+### Workflow tips
 
-1. Use `list_folders` to see all available mail folders
-2. Use `list_recent_emails` to view recent emails (e.g., from last 7 days)
-3. Use `search_emails` to find specific emails by keywords
-4. Use `get_email_by_number` to view a complete email
-5. Use `reply_to_email_by_number` to respond to an email
+- Listing/search tools refresh the caches that power `get_email_by_number`, `get_email_context`, `get_event_by_number`, `reply_to_email_by_number`, and `compose_email`. Call a listing command first if a cache warning appears.
+- Use `include_all_folders=True` (mail) or `include_all_calendars=True` (events) to scan shared folders when the message location is unknown.
+- `list_pending_replies` automatically increases its conversation lookback (up to 180 days) so it can confirm whether a response exists in Sent Items.
+- Email previews are trimmed to 220 characters, and attachment previews contain at most five filenames for legibility.
+- Calendar scans include recurrences and cap out after 500 inspected appointments per folder to keep COM calls responsive.
 
 ## Examples
 
-### Listing Recent Emails
-```
-Could you show me my unread emails from the last 3 days?
-```
-
-### Searching for Emails
-```
-Search for emails about "project update OR meeting notes" in the last week
+```text
+List unread-focused pending replies for the last 10 days:
+list_pending_replies(days=10, include_unread_only=True, max_results=15)
 ```
 
-### Reading Email Details
-```
-Show me the details of email #2 from the list
-```
-
-### Replying to an Email
-```
-Reply to email #3 with: "Thanks for the information. I'll review this and get back to you tomorrow."
+```text
+Search all folders for project updates with OR keywords:
+search_emails("project update OR rollout", include_all_folders=True)
 ```
 
-### Composing a New Email
+```text
+Expand an email thread before summarizing it:
+get_email_context(email_number=3, thread_limit=8, lookback_days=60)
 ```
-Send an email to john.doe@example.com with subject "Meeting Agenda" and body "Here's the agenda for our upcoming meeting..."
+
+```text
+Inspect upcoming meetings across calendars and drill into one:
+list_upcoming_events(days=30, include_all_calendars=True, include_description=True)
+get_event_by_number(event_number=2)
 ```
 
-## Troubleshooting
+```text
+Reply inline after reviewing a cached message:
+reply_to_email_by_number(email_number=1, reply_text="Grazie per l'aggiornamento, ti rispondo entro domani.")
+```
 
-- **Connection Issues**: Ensure Outlook is running and properly configured
-- **Permission Errors**: Make sure the script has permission to access Outlook
-- **Search Problems**: For complex searches, try using OR operators between terms
-- **Email Access Errors**: Check if the email ID is valid and accessible
-- **Server Crashes**: Check Outlook's connection and stability
+```text
+Compose a new outbound message with CC:
+compose_email("team@example.com", "Report settimanale", "Allego il riepilogo delle attivita...", cc_email="manager@example.com")
+```
 
-## Security Considerations
+## Logging and troubleshooting
 
-This server has access to your Outlook email account and can read, send, and manage emails. Use it only with trusted MCP clients and in secure environments.
+- Detailed logs rotate in `logs/outlook_mcp_server.log` (5 MB per file, three retained backups).
+- If Outlook is closed or prompts for credentials, reopen it (or accept the prompt) before restarting the MCP server.
+- Cache errors normally mean a list/search command was not run during the current session; repeat the listing and retry.
+- `pywin32` security prompts may appear the first time the script automates Outlook; allow access and (optionally) whitelist the automation in the Outlook Trust Center.
 
 ## Limitations
 
-- Currently supports text emails only (not HTML)
-- Maximum email history is limited to 30 days
-- Search capabilities depend on Outlook's built-in search functionality
-- Only supports basic email functions (no calendar, contacts, etc.)
+- Email listings cap their window at 30 days (`MAX_DAYS`); calendar listings cap at 90 days (`MAX_EVENT_LOOKAHEAD_DAYS`).
+- Event scans stop after 500 appointments per folder; if your calendar is very busy, narrow `days` for better coverage.
+- `get_email_by_number` and `get_email_context` truncate bodies beyond ~4000 characters for readability.
+- Replies and composed emails are sent as plain text; existing Outlook signatures are not injected automatically.
+- Attachments are not downloaded; only their names and counts are exposed.
+- MCP interactions operate against the Outlook profile of the Windows session running the server; shared mailboxes must already be visible in Outlook.
