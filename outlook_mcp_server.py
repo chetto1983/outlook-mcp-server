@@ -1,13 +1,29 @@
+import argparse
 import datetime
 import logging
 import os
 import win32com.client
 from logging.handlers import RotatingFileHandler
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set, Tuple
+
 from mcp.server.fastmcp import FastMCP, Context
+from mcp.server.fastmcp.exceptions import ToolError
+
+try:
+    from fastapi import Body, FastAPI, HTTPException
+    from pydantic import BaseModel, Field
+    import uvicorn
+except ImportError:  # Optional dependencies loaded only for HTTP mode
+    Body = None  # type: ignore[assignment]
+    FastAPI = None  # type: ignore[assignment]
+    HTTPException = None  # type: ignore[assignment]
+    BaseModel = None  # type: ignore[assignment]
+    Field = None  # type: ignore[assignment]
+    uvicorn = None  # type: ignore[assignment]
+
 
 # Initialize FastMCP server
-mcp = FastMCP("outlook-assistant")
+mcp = FastMCP("outlook-assistant", host="0.0.0.0", port=8000)
 
 # Constants
 MAX_DAYS = 30
@@ -27,6 +43,14 @@ LAST_VERB_REPLY_CODES = {102, 103}
 DEFAULT_CONVERSATION_SAMPLE_LIMIT = 15
 MAX_CONVERSATION_LOOKBACK_DAYS = 180
 PENDING_SCAN_MULTIPLIER = 4
+MAX_EMAIL_SCAN_PER_FOLDER = 400
+DEFAULT_DOMAIN_ROOT_NAME = "Clienti"
+DEFAULT_DOMAIN_SUBFOLDERS = [
+    "00 - Generale",
+    "01 - Offerte",
+    "02 - Ordini",
+    "03 - Service",
+]
 
 def _setup_logger() -> logging.Logger:
     """Configure application-wide logging once."""
@@ -170,6 +194,63 @@ def _normalize_email_address(value: Optional[str]) -> Optional[str]:
             return candidate
     fallback = segments[0].strip().lower() if segments else text.lower()
     return fallback or None
+
+def _extract_email_domain(address: Optional[str]) -> Optional[str]:
+    """Return email domain portion."""
+    normalized = _normalize_email_address(address)
+    if not normalized or "@" not in normalized:
+        return None
+    return normalized.split("@", 1)[1]
+
+def _derive_sender_email(entry: Dict[str, Any]) -> Optional[str]:
+    """Extract sender email from cached entry."""
+    return entry.get("sender_email") or entry.get("sender")
+
+def _get_or_create_subfolder(parent, name: str):
+    """Return existing Outlook subfolder or create it."""
+    try:
+        for sub in parent.Folders:
+            if sub.Name.lower() == name.lower():
+                return sub, False
+    except Exception:
+        logger.debug("Impossibile enumerare le sottocartelle di '%s'.", getattr(parent, "Name", parent), exc_info=True)
+    try:
+        return parent.Folders.Add(name), True
+    except Exception as exc:
+        raise Exception(f"Impossibile creare la cartella '{name}': {exc}") from exc
+
+def _ensure_domain_folder_structure(
+    namespace,
+    domain: str,
+    root_folder_name: str = DEFAULT_DOMAIN_ROOT_NAME,
+    subfolders: Optional[List[str]] = None,
+):
+    """Ensure domain folder and optional subfolders exist under Inbox."""
+    if not subfolders:
+        subfolders = DEFAULT_DOMAIN_SUBFOLDERS
+    inbox = namespace.GetDefaultFolder(6)  # olFolderInbox
+    root_folder, _ = _get_or_create_subfolder(inbox, root_folder_name)
+    domain_folder, domain_created = _get_or_create_subfolder(root_folder, domain)
+    created_subfolders: List[str] = []
+    for name in subfolders:
+        existing = False
+        try:
+            for sub in domain_folder.Folders:
+                if sub.Name.lower() == name.lower():
+                    existing = True
+                    break
+        except Exception:
+            existing = False
+        if existing:
+            continue
+        try:
+            folder, created = _get_or_create_subfolder(domain_folder, name)
+        except Exception as exc:
+            logger.warning("Creazione della sottocartella '%s' fallita: %s", name, exc)
+            continue
+        if created:
+            created_subfolders.append(folder.Name)
+    return domain_folder, domain_created, created_subfolders
 
 def _parse_datetime_string(value: Optional[str]) -> Optional[datetime.datetime]:
     """Parse ISO-like or display datetime strings into datetime objects."""
@@ -461,6 +542,7 @@ def format_email(mail_item) -> Dict[str, Any]:
             "importance_label": importance_label,
             "categories": mail_item.Categories if hasattr(mail_item, 'Categories') else "",
             "folder_path": _safe_folder_path(mail_item),
+            "message_class": getattr(mail_item, "MessageClass", ""),
         }
         return email_data
     except Exception as e:
@@ -488,6 +570,18 @@ def get_emails_from_folder(folder, days: int, search_term: Optional[str] = None)
     threshold_date = now - datetime.timedelta(days=days)
     
     try:
+        try:
+            default_item_type = getattr(folder, "DefaultItemType", None)
+        except Exception:
+            default_item_type = None
+        if default_item_type not in (None, 0):  # 0 == olMailItem
+            logger.debug(
+                "Cartella '%s' ignorata (tipo elemento predefinito=%s).",
+                getattr(folder, "Name", str(folder)),
+                default_item_type,
+            )
+            return []
+
         # Set up filtering
         folder_items = folder.Items
         folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
@@ -528,7 +622,7 @@ def get_emails_from_folder(folder, days: int, search_term: Optional[str] = None)
                     
                     # Skip emails older than our threshold
                     if received_time < threshold_date:
-                        continue
+                        break
                     
                     # Manual search filter if needed
                     if search_term and folder_items == folder.Items:  # If we didn't apply filter earlier
@@ -551,6 +645,8 @@ def get_emails_from_folder(folder, days: int, search_term: Optional[str] = None)
                     email_data = format_email(item)
                     emails_list.append(email_data)
                     count += 1
+                    if count >= MAX_EMAIL_SCAN_PER_FOLDER:
+                        break
             except Exception as e:
                 logger.warning("Errore durante l'elaborazione di un messaggio: %s", str(e))
                 continue
@@ -588,30 +684,53 @@ def resolve_additional_folders(namespace, folder_names: Optional[List[str]]) -> 
     return resolved
 
 def get_all_mail_folders(namespace) -> List:
-    """Return a flat list of all accessible mail folders."""
-    folders = []
-    queue = []
-    try:
-        for root_folder in namespace.Folders:
-            queue.append(root_folder)
-    except Exception:
-        logger.warning("Impossibile enumerare le cartelle principali dell'account Outlook.")
-        return folders
+    """Return a flat list of all accessible mail folders prioritizing the inbox tree."""
+    folders: List = []
+    visited_paths: Set[str] = set()
 
-    while queue:
-        folder = queue.pop(0)
+    def enqueue(folder) -> None:
+        try:
+            path = folder.FolderPath
+        except Exception:
+            path = str(folder)
+        if path in visited_paths:
+            return
+        visited_paths.add(path)
         folders.append(folder)
         try:
             for subfolder in folder.Folders:
-                queue.append(subfolder)
+                enqueue(subfolder)
         except Exception:
-            continue
-    logger.debug("Rilevate %s cartelle complessive per la scansione globale.", len(folders))
+            return
+
+    try:
+        inbox = namespace.GetDefaultFolder(6)  # Inbox
+        enqueue(inbox)
+    except Exception:
+        logger.warning("Impossibile accedere alla Posta in arrivo predefinita durante la scansione globale.")
+        inbox = None
+
+    try:
+        for root_folder in namespace.Folders:
+            if inbox and root_folder.EntryID == inbox.EntryID:
+                continue
+            enqueue(root_folder)
+    except Exception:
+        logger.warning("Impossibile enumerare le cartelle principali dell'account Outlook.")
+
+    logger.debug("Rilevate %s cartelle complessive per la scansione globale (inbox prioritaria).", len(folders))
     return folders
 
-def collect_emails_across_folders(folders: List, days: int, search_term: Optional[str] = None) -> List[Dict[str, Any]]:
+def collect_emails_across_folders(
+    folders: List,
+    days: int,
+    search_term: Optional[str] = None,
+    target_total: Optional[int] = None,
+) -> List[Dict[str, Any]]:
     """Aggregate emails from multiple folders into a single newest-first list."""
     aggregated: Dict[str, Dict[str, Any]] = {}
+    total_folders = len(folders)
+    max_per_folder = max(150 // max(total_folders, 1), 5)
     for folder in folders:
         try:
             folder_emails = get_emails_from_folder(folder, days, search_term)
@@ -619,12 +738,23 @@ def collect_emails_across_folders(folders: List, days: int, search_term: Optiona
             logger.debug("Cartella ignorata durante la raccolta globale: %s", getattr(folder, "FolderPath", folder))
             continue
 
-        for email in folder_emails:
+        limited_emails = folder_emails[:max_per_folder]
+        if len(folder_emails) > len(limited_emails):
+            logger.debug(
+                "Cartella '%s': limitati %s messaggi su %s per contenere la scansione globale.",
+                getattr(folder, "Name", str(folder)),
+                len(limited_emails),
+                len(folder_emails),
+            )
+        for email in limited_emails:
             email_id = email.get("id")
             if not email_id:
                 continue
             if email_id not in aggregated:
                 aggregated[email_id] = email
+
+        if target_total and len(aggregated) >= target_total:
+            break
 
     # Sort by ISO timestamp if available, otherwise fallback to received_time string
     sorted_emails = sorted(
@@ -633,9 +763,11 @@ def collect_emails_across_folders(folders: List, days: int, search_term: Optiona
         reverse=True,
     )
     logger.info(
-        "Raccolti %s messaggi totali attraversando %s cartelle.",
+        "Raccolti %s messaggi totali attraversando %s cartelle (limite per cartella=%s%s).",
         len(sorted_emails),
         len(folders),
+        max_per_folder,
+        f", target={target_total}" if target_total else "",
     )
     return sorted_emails
 
@@ -972,8 +1104,27 @@ def _email_has_user_reply(
     lookback_days: int,
 ) -> bool:
     """Determine whether the user has already replied within a conversation."""
+    result, _, _ = _email_has_user_reply_with_context(
+        namespace=namespace,
+        email_data=email_data,
+        user_addresses=user_addresses,
+        conversation_limit=conversation_limit,
+        lookback_days=lookback_days,
+        collect_related=False,
+    )
+    return result
+
+def _email_has_user_reply_with_context(
+    namespace,
+    email_data: Dict[str, Any],
+    user_addresses: Set[str],
+    conversation_limit: int,
+    lookback_days: int,
+    collect_related: bool,
+) -> Tuple[bool, Optional[List[Dict[str, Any]]], Any]:
+    """Determine whether the user has already replied within a conversation."""
     if not email_data:
-        return False
+        return False, None, None
 
     normalized_user_addresses = (
         {
@@ -987,6 +1138,7 @@ def _email_has_user_reply(
 
     baseline_dt = _extract_best_timestamp(email_data)
     mail_item = None
+    captured_related: Optional[List[Dict[str, Any]]] = None
     try:
         mail_item = namespace.GetItemFromID(email_data.get("id"))
     except Exception:
@@ -1008,6 +1160,8 @@ def _email_has_user_reply(
                     include_sent=True,
                     additional_folders=None,
                 )
+                if collect_related:
+                    captured_related = related_entries
             except Exception:
                 logger.debug(
                     "Errore durante la ricerca dei messaggi correlati per %s.",
@@ -1016,6 +1170,9 @@ def _email_has_user_reply(
                 )
 
         for related in related_entries:
+            msg_class = (related.get("message_class") or "").lower()
+            if msg_class and not msg_class.startswith("ipm.note"):
+                continue
             sender_email = _normalize_email_address(related.get("sender_email")) or _normalize_email_address(
                 related.get("sender")
             )
@@ -1023,12 +1180,160 @@ def _email_has_user_reply(
                 continue
             related_dt = _extract_best_timestamp(related)
             if not baseline_dt or not related_dt or related_dt >= baseline_dt:
-                return True
+                return True, None, None
 
     if mail_item and _mail_item_marked_replied(mail_item, baseline_dt):
-        return True
+        return True, None, None
 
-    return False
+    return False, captured_related, mail_item
+
+def _build_conversation_outline(
+    namespace,
+    email_data: Dict[str, Any],
+    lookback_days: int,
+    max_items: int = 4,
+    preloaded_entries: Optional[List[Dict[str, Any]]] = None,
+    mail_item: Any = None,
+) -> Optional[str]:
+    """Create a compact summary of the most recent conversation messages."""
+    if max_items < 1:
+        return None
+
+    mail_id = email_data.get("id")
+    if not mail_id and not mail_item:
+        return None
+
+    local_mail_item = mail_item
+    if local_mail_item is None and mail_id:
+        try:
+            local_mail_item = namespace.GetItemFromID(mail_id)
+        except Exception:
+            logger.debug(
+                "Impossibile recuperare il messaggio %s per costruire il riepilogo conversazione.",
+                mail_id,
+                exc_info=True,
+            )
+            return None
+
+    if preloaded_entries is not None:
+        related_entries = preloaded_entries
+    else:
+        try:
+            related_entries = get_related_conversation_emails(
+                namespace=namespace,
+                mail_item=local_mail_item,
+                max_items=max(1, max_items - 1),
+                lookback_days=lookback_days,
+                include_sent=True,
+                additional_folders=None,
+            )
+        except Exception:
+            logger.debug(
+                "Errore durante la raccolta dei messaggi correlati per %s.",
+                mail_id,
+                exc_info=True,
+            )
+            related_entries = []
+
+    timeline: List[tuple[Optional[datetime.datetime], Dict[str, Any], bool]] = []
+    main_dt = _extract_best_timestamp(email_data)
+    timeline.append((main_dt, email_data, True))
+
+    for entry in related_entries:
+        timeline.append((_extract_best_timestamp(entry), entry, False))
+
+    filtered = [
+        (dt, entry, is_focus)
+        for dt, entry, is_focus in timeline
+        if entry
+    ]
+    if not filtered:
+        return None
+
+    filtered.sort(
+        key=lambda value: value[0] if value[0] else datetime.datetime.min,
+        reverse=True,
+    )
+
+    lines: List[str] = []
+    for dt, entry, is_focus in filtered[:max_items]:
+        msg_class = (entry.get("message_class") or "").lower()
+        if msg_class and not msg_class.startswith("ipm.note"):
+            if not is_focus:
+                continue
+        timestamp = (
+            dt.strftime("%Y-%m-%d %H:%M")
+            if isinstance(dt, datetime.datetime)
+            else entry.get("received_time")
+            or entry.get("sent_time")
+            or entry.get("last_modified_time")
+            or "Sconosciuto"
+        )
+        sender = entry.get("sender", "Sconosciuto")
+        subject = entry.get("subject", "(Senza oggetto)")
+        prefix = ">>" if is_focus else "- "
+        preview = entry.get("preview") or _build_body_preview(entry.get("body"), 160)
+        preview_line = ""
+        if preview:
+            preview_line = f"\n   Anteprima: {preview}"
+
+        lines.append(f"{prefix} {timestamp} · {sender}: {subject}{preview_line}")
+
+    return "\n".join(lines)
+
+@mcp.tool()
+def params(
+    protocolVersion: Optional[str] = None,  # type: ignore[non-literal-used]
+    capabilities: Optional[Dict[str, Any]] = None,
+    clientInfo: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    """
+    Provide handshake metadata compatible with MCP-aware HTTP clients (e.g. n8n).
+    """
+    requested_version = protocolVersion or "2025-03-26"
+    logger.info(
+        "params tool invocato (protocolVersion=%s, clientInfo=%s)",
+        requested_version,
+        clientInfo,
+    )
+
+    tool_summaries: Dict[str, Dict[str, Any]] = {}
+    for tool in mcp._tool_manager.list_tools():  # type: ignore[attr-defined]
+        tool_summaries[tool.name] = {
+            "description": getattr(tool, "description", None),
+            "inputSchema": getattr(tool, "input_schema", None),
+            "outputSchema": getattr(tool, "output_schema", None),
+            "annotations": getattr(tool, "annotations", None),
+        }
+
+    default_capabilities = {"tools": {"list": True, "call": True}}
+    response_capabilities: Dict[str, Any] = default_capabilities
+    if capabilities:
+        # Merge nested dicts without mutating caller-provided payload
+        response_capabilities = {**capabilities}
+        tools_caps = dict(default_capabilities.get("tools", {}))
+        tools_caps.update(capabilities.get("tools", {}))
+        response_capabilities["tools"] = tools_caps
+
+    return {
+        "protocolVersion": requested_version,
+        "serverInfo": {
+            "name": "outlook-assistant",
+            "version": "1.0.0-http",
+            "description": (
+                "Bridge MCP per Outlook. Gli strumenti abilitano ricerche email, "
+                "risposte rapide e consultazione calendario tramite HTTP."
+            ),
+        },
+        "capabilities": response_capabilities,
+        "tools": tool_summaries,
+        "httpBridge": {
+            "health": "GET /health",
+            "listTools": "GET /tools",
+            "invokeTool": "POST /tools/{tool_name}",
+            "invokeToolRoot": "POST /",
+        },
+    }
 
 # MCP Tools
 @mcp.tool()
@@ -1049,7 +1354,7 @@ def get_current_datetime(include_utc: bool = True) -> str:
             f"- Locale ISO: {local_dt.isoformat()}",
         ]
         if include_utc_bool:
-            utc_dt = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)
+            utc_dt = datetime.datetime.now(datetime.UTC).replace(tzinfo=datetime.timezone.utc)
             lines.append(f"- UTC: {utc_dt.strftime('%Y-%m-%d %H:%M:%S')}")
             lines.append(f"- UTC ISO: {utc_dt.isoformat()}")
         return "\n".join(lines)
@@ -1188,11 +1493,7 @@ def _present_email_listing(
             result += f"ID conversazione: {trimmed_conv}\n"
         result += "\n"
 
-    result += (
-        "Per leggere il contenuto completo usa lo strumento get_email_by_number con il numero del messaggio.\n"
-        "Per ottenere il contesto della conversazione usa lo strumento get_email_context."
-    )
-    return result
+    return result.rstrip()
 
 def _present_event_listing(
     events: List[Dict[str, Any]],
@@ -1257,10 +1558,7 @@ def _present_event_listing(
             result += f"Anteprima: {event['preview']}\n"
         result += "\n"
 
-    result += (
-        "Per leggere il dettaglio completo usa lo strumento get_event_by_number con il numero dell'evento."
-    )
-    return result
+    return result.rstrip()
 
 @mcp.tool()
 def list_recent_emails(
@@ -1517,6 +1815,7 @@ def list_pending_replies(
         return f"Errore: 'conversation_lookback_days' deve essere un intero tra 1 e {MAX_CONVERSATION_LOOKBACK_DAYS}"
 
     lookback_days = min(lookback_days, MAX_CONVERSATION_LOOKBACK_DAYS)
+    max_processed_before_break = max(max_results * PENDING_SCAN_MULTIPLIER, max_results + 25)
     logger.info(
         (
             "list_pending_replies chiamato con giorni=%s cartella=%s max_risultati=%s "
@@ -1542,7 +1841,11 @@ def list_pending_replies(
             if folder_name:
                 logger.info("Parametro folder_name ignorato poiche include_all_folders=True.")
             folders = get_all_mail_folders(namespace)
-            candidate_emails = collect_emails_across_folders(folders, days)
+            candidate_emails = collect_emails_across_folders(
+                folders,
+                days,
+                target_total=max_processed_before_break,
+            )
             folder_display = "Tutte le cartelle (senza risposta)"
         else:
             if folder_name:
@@ -1555,10 +1858,11 @@ def list_pending_replies(
                 folder = namespace.GetDefaultFolder(6)
                 candidate_emails = get_emails_from_folder(folder, days)
                 folder_display = "Posta in arrivo (senza risposta)"
+            if len(candidate_emails) > max_processed_before_break:
+                candidate_emails = candidate_emails[:max_processed_before_break]
 
         pending_emails: List[Dict[str, Any]] = []
         processed = 0
-        max_processed_before_break = max(max_results * PENDING_SCAN_MULTIPLIER, max_results + 25)
         truncated_scan = False
 
         for email in candidate_emails:
@@ -1580,13 +1884,16 @@ def list_pending_replies(
                 continue
 
             already_replied = False
+            related_entries: Optional[List[Dict[str, Any]]] = None
+            mail_item_ref = None
             try:
-                already_replied = _email_has_user_reply(
+                already_replied, related_entries, mail_item_ref = _email_has_user_reply_with_context(
                     namespace=namespace,
                     email_data=email,
                     user_addresses=user_addresses,
                     conversation_limit=DEFAULT_CONVERSATION_SAMPLE_LIMIT,
                     lookback_days=lookback_days,
+                    collect_related=True,
                 )
             except Exception:
                 logger.debug(
@@ -1594,11 +1901,24 @@ def list_pending_replies(
                     email.get("id"),
                     exc_info=True,
                 )
+                already_replied = False
+                related_entries = None
+                mail_item_ref = None
 
             if not already_replied:
+                outline = _build_conversation_outline(
+                    namespace=namespace,
+                    email_data=email,
+                    lookback_days=lookback_days,
+                    max_items=4,
+                    preloaded_entries=related_entries,
+                    mail_item=mail_item_ref,
+                )
+                if outline:
+                    email["_conversation_outline"] = outline
                 pending_emails.append(email)
 
-            if len(pending_emails) >= max_results and processed >= max_processed_before_break:
+            if len(pending_emails) >= max_results:
                 truncated_scan = processed < len(candidate_emails)
                 break
 
@@ -1774,7 +2094,7 @@ def get_email_by_number(email_number: int) -> str:
     try:
         if not email_cache:
             logger.warning("get_email_by_number chiamato ma la cache e vuota.")
-            return "Errore: nessun elenco disponibile. Usa prima list_recent_emails o search_emails."
+            return "Errore: nessun elenco messaggi attivo. Chiedimi prima di mostrare le email e poi ripeti la richiesta."
         
         if email_number not in email_cache:
             logger.warning("Messaggio numero %s non presente in cache per get_email_by_number.", email_number)
@@ -1852,7 +2172,7 @@ def get_email_by_number(email_number: int) -> str:
         
         result_lines.append("")
         result_lines.append(
-            "Per rispondere a questo messaggio usa lo strumento reply_to_email_by_number con questo numero."
+            "Se desideri rispondere a questo messaggio comunicamelo e usero questo numero come riferimento."
         )
         
         return "\n".join(result_lines)
@@ -1869,7 +2189,7 @@ def get_event_by_number(event_number: int) -> str:
     try:
         if not calendar_cache:
             logger.warning("get_event_by_number chiamato ma la cache eventi e vuota.")
-            return "Errore: nessun elenco eventi disponibile. Usa prima list_upcoming_events o search_calendar_events."
+            return "Errore: nessun elenco eventi attivo. Chiedimi di aggiornare gli eventi e poi ripeti la richiesta."
 
         if event_number not in calendar_cache:
             logger.warning("Evento numero %s non presente in cache per get_event_by_number.", event_number)
@@ -1915,6 +2235,156 @@ def get_event_by_number(event_number: int) -> str:
         logger.exception("Errore nel recupero dei dettagli per l'evento #%s.", event_number)
         return f"Errore durante il recupero dei dettagli dell'evento: {str(e)}"
 
+
+@mcp.tool()
+def ensure_domain_folder(
+    email_number: Optional[int] = None,
+    sender_email: Optional[str] = None,
+    root_folder_name: Optional[str] = None,
+    subfolders: Optional[str] = None,
+) -> str:
+    """Crea (se manca) la struttura di cartelle per il dominio del mittente."""
+    try:
+        target_email = sender_email
+        email_entry: Optional[Dict[str, Any]] = None
+        if email_number:
+            if not email_cache:
+                return "Errore: nessun elenco messaggi attivo. Mostra prima le email e riprova."
+            email_entry = email_cache.get(email_number)
+            if not email_entry:
+                return f"Errore: il messaggio #{email_number} non e presente nella cache corrente."
+            target_email = target_email or _derive_sender_email(email_entry)
+        if not target_email:
+            return "Errore: specifica un mittente (sender_email) oppure il numero di un messaggio gia elencato."
+
+        domain = _extract_email_domain(target_email)
+        if not domain:
+            return f"Errore: impossibile determinare il dominio dal mittente '{target_email}'."
+
+        custom_subfolders: Optional[List[str]] = None
+        if subfolders:
+            custom_subfolders = [folder.strip() for folder in subfolders.split("|") if folder.strip()]
+
+        _, namespace = connect_to_outlook()
+        domain_folder, domain_created, created_subfolders = _ensure_domain_folder_structure(
+            namespace=namespace,
+            domain=domain,
+            root_folder_name=root_folder_name or DEFAULT_DOMAIN_ROOT_NAME,
+            subfolders=custom_subfolders or DEFAULT_DOMAIN_SUBFOLDERS,
+        )
+        folder_path = getattr(domain_folder, "FolderPath", f"{domain_folder}")
+        summary_parts = [f"Cartella dominio '{domain}' pronta: {folder_path}"]
+        if domain_created:
+            summary_parts.append("Cartella dominio creata ex novo.")
+        if created_subfolders:
+            summary_parts.append(
+                "Sottocartelle create: " + ", ".join(created_subfolders)
+            )
+        return " ".join(summary_parts)
+    except Exception as exc:
+        logger.exception("Errore durante ensure_domain_folder (email_number=%s).", email_number)
+        return f"Errore durante la verifica/creazione della cartella dominio: {exc}"
+
+
+@mcp.tool()
+def move_email_to_domain_folder(
+    email_number: int,
+    root_folder_name: Optional[str] = None,
+    create_if_missing: bool = True,
+    subfolders: Optional[str] = None,
+) -> str:
+    """Sposta un messaggio nella cartella del dominio mittente creando la struttura se necessario."""
+    try:
+        if not email_cache or email_number not in email_cache:
+            return "Errore: nessun elenco messaggi attivo o numero non valido."
+
+        email_entry = email_cache[email_number]
+        sender = _derive_sender_email(email_entry)
+        if not sender:
+            return "Errore: il messaggio non contiene un mittente valido."
+        domain = _extract_email_domain(sender)
+        if not domain:
+            return f"Errore: impossibile determinare il dominio dal mittente '{sender}'."
+
+        _, namespace = connect_to_outlook()
+
+        if create_if_missing:
+            custom_subfolders = [seg.strip() for seg in subfolders.split("|") if seg.strip()] if subfolders else None
+            domain_folder, _, _ = _ensure_domain_folder_structure(
+                namespace=namespace,
+                domain=domain,
+                root_folder_name=root_folder_name or DEFAULT_DOMAIN_ROOT_NAME,
+                subfolders=custom_subfolders or DEFAULT_DOMAIN_SUBFOLDERS,
+            )
+        else:
+            inbox = namespace.GetDefaultFolder(6)
+            root_folder = None
+            try:
+                for sub in inbox.Folders:
+                    if sub.Name.lower() == (root_folder_name or DEFAULT_DOMAIN_ROOT_NAME).lower():
+                        root_folder = sub
+                        break
+            except Exception:
+                root_folder = None
+            domain_folder = None
+            if root_folder:
+                try:
+                    for sub in root_folder.Folders:
+                        if sub.Name.lower() == domain.lower():
+                            domain_folder = sub
+                            break
+                except Exception:
+                    domain_folder = None
+            if not domain_folder:
+                return "Cartella dominio non trovata e creazione disabilitata."
+
+        mail_item = namespace.GetItemFromID(email_entry["id"])
+        if not mail_item:
+            return f"Errore: impossibile recuperare il messaggio #{email_number} da Outlook."
+
+        mail_item.Move(domain_folder)
+        folder_path = getattr(domain_folder, "FolderPath", f"{domain_folder}")
+        return (
+            f"Messaggio #{email_number} spostato nella cartella dominio '{domain}' "
+            f"({folder_path})."
+        )
+    except Exception as exc:
+        logger.exception("Errore durante move_email_to_domain_folder per messaggio #%s.", email_number)
+        return f"Errore durante lo spostamento nella cartella dominio: {exc}"
+
+
+@mcp.tool()
+def set_email_category(
+    email_number: int,
+    category: str,
+    overwrite: bool = False,
+) -> str:
+    """Applica o aggiunge una categoria a un messaggio gia elencato."""
+    try:
+        if not category.strip():
+            return "Errore: specifica una categoria valida."
+        if not email_cache or email_number not in email_cache:
+            return "Errore: nessun elenco messaggi attivo o numero non valido."
+
+        email_entry = email_cache[email_number]
+        _, namespace = connect_to_outlook()
+        mail_item = namespace.GetItemFromID(email_entry["id"])
+        if not mail_item:
+            return f"Errore: impossibile recuperare il messaggio #{email_number} da Outlook."
+
+        current_categories = getattr(mail_item, "Categories", "") or ""
+        if overwrite or not current_categories:
+            mail_item.Categories = category
+        else:
+            existing = {seg.strip() for seg in current_categories.split(";") if seg.strip()}
+            existing.add(category.strip())
+            mail_item.Categories = "; ".join(sorted(existing))
+        mail_item.Save()
+        return f"Categoria '{category}' applicata al messaggio #{email_number}."
+    except Exception as exc:
+        logger.exception("Errore durante set_email_category per messaggio #%s.", email_number)
+        return f"Errore durante l'aggiornamento delle categorie: {exc}"
+
 @mcp.tool()
 def get_email_context(
     email_number: int,
@@ -1941,7 +2411,7 @@ def get_email_context(
     try:
         if not email_cache:
             logger.warning("get_email_context chiamato ma la cache e vuota.")
-            return "Errore: nessun elenco disponibile. Usa prima list_recent_emails o search_emails."
+            return "Errore: nessun elenco messaggi attivo. Chiedimi prima di mostrare le email e poi ripeti la richiesta."
         
         if email_number not in email_cache:
             logger.warning("Messaggio numero %s non presente in cache per get_email_context.", email_number)
@@ -2058,7 +2528,7 @@ def get_email_context(
         context_lines.append("")
         context_lines.append("Corpo del messaggio corrente:")
         context_lines.append(truncated_body)
-        context_lines.append("Per il corpo completo usa get_email_by_number con questo numero di messaggio.")
+        context_lines.append("Per leggere il corpo completo chiedimi i dettagli di questo messaggio e li recuperero subito.")
 
         if include_thread_bool:
             context_lines.append("")
@@ -2095,7 +2565,7 @@ def get_email_context(
 
         context_lines.append("")
         context_lines.append(
-            "Suggerimento: usa reply_to_email_by_number per rispondere oppure compose_email per iniziare un nuovo thread."
+            "Suggerimento: fammi sapere se vuoi rispondere o iniziare un nuovo thread e preparero la bozza corrispondente."
         )
 
         return "\n".join(context_lines)
@@ -2119,7 +2589,7 @@ def reply_to_email_by_number(email_number: int, reply_text: str) -> str:
     try:
         if not email_cache:
             logger.warning("reply_to_email_by_number chiamato ma la cache e vuota.")
-            return "Errore: nessun elenco disponibile. Usa prima list_recent_emails o search_emails."
+            return "Errore: nessun elenco messaggi attivo. Chiedimi prima di mostrare le email e poi ripeti la richiesta."
         
         if email_number not in email_cache:
             logger.warning("Messaggio numero %s non presente in cache per reply_to_email_by_number.", email_number)
@@ -2195,23 +2665,288 @@ def compose_email(recipient_email: str, subject: str, body: str, cc_email: Optio
         logger.exception("Errore durante l'invio dell'email a %s con oggetto '%s'.", recipient_email, subject)
         return f"Errore durante l'invio dell'email: {str(e)}"
 
+# ---------------------------------------------------------------------------
+# Application entrypoints
+# ---------------------------------------------------------------------------
+
+def _serialize_tool_metadata(tool: Any) -> Dict[str, Any]:
+    """Convert FastMCP tool metadata into plain dicts for JSON responses."""
+    return {
+        "name": getattr(tool, "name", None),
+        "description": getattr(tool, "description", None),
+        "input_schema": getattr(tool, "inputSchema", None),
+        "output_schema": getattr(tool, "outputSchema", None),
+        "annotations": getattr(tool, "annotations", None),
+    }
+
+
+def _serialize_contents(contents: List[Any]) -> List[Dict[str, Any]]:
+    """Convert FastMCP content payloads into JSON serializable dictionaries."""
+    serialized: List[Dict[str, Any]] = []
+    for item in contents:
+        if hasattr(item, "__dict__"):
+            # Copy to avoid leaking internal references
+            serialized.append(dict(item.__dict__))
+        else:
+            serialized.append({"type": "text", "text": str(item)})
+    return serialized
+
+
+def _verify_outlook_connection() -> None:
+    """Validate Outlook availability before starting any server mode."""
+    print("Connessione a Outlook...")
+    logger.info("Verifica della connessione a Outlook in corso.")
+    outlook, namespace = connect_to_outlook()
+    inbox = namespace.GetDefaultFolder(6)  # 6 = Inbox
+    inbox_items = getattr(getattr(inbox, "Items", None), "Count", "sconosciuto")
+    print(f"Connessione a Outlook riuscita. La Posta in arrivo contiene {inbox_items} elementi.")
+    logger.info(
+        "Connessione a Outlook verificata. La Posta in arrivo contiene %s elementi.",
+        inbox_items,
+    )
+    # Release COM references to avoid locking Outlook instances unnecessarily
+    del inbox
+    del namespace
+    del outlook
+
+
+def _create_http_app() -> "FastAPI":
+    """Instantiate the optional FastAPI bridge for HTTP integrations."""
+    if (
+        FastAPI is None
+        or BaseModel is None
+        or Field is None
+        or HTTPException is None
+        or Body is None
+        or uvicorn is None
+    ):
+        raise RuntimeError(
+            "La modalita HTTP richiede fastapi, uvicorn e pydantic. "
+            "Installa le dipendenze: pip install fastapi uvicorn"
+        )
+
+    class ToolCallRequest(BaseModel):
+        """Pydantic model describing an HTTP tool invocation."""
+
+        arguments: Dict[str, Any] = Field(default_factory=dict)
+
+    app = FastAPI(
+        title="Outlook MCP HTTP Bridge",
+        description="Bridge HTTP leggero per richiamare gli strumenti MCP di Outlook da automazioni esterne (es. n8n).",
+        version="1.0.0",
+    )
+
+    async def _handle_tool_invocation(tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+        """Shared execution helper for HTTP-triggered tool calls."""
+        logger.info("Invocazione HTTP del tool %s con argomenti=%s", tool_name, arguments)
+        try:
+            contents, output = await mcp.call_tool(tool_name, arguments)
+            return {
+                "tool": tool_name,
+                "content": _serialize_contents(contents),
+                "result": output,
+            }
+        except ToolError as exc:
+            logger.warning("Tool %s non trovato per invocazione HTTP: %s", tool_name, exc)
+            raise HTTPException(status_code=404, detail=str(exc))  # type: ignore[misc]
+        except Exception as exc:  # pylint: disable=broad-except
+            logger.exception("Errore durante l'esecuzione HTTP del tool %s.", tool_name)
+            raise HTTPException(status_code=500, detail=str(exc))  # type: ignore[misc]
+
+    def _resolve_root_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Normalize POST / payloads into {'tool': str, 'arguments': dict}."""
+        preferred_keys = ("tool", "tool_name", "toolName", "name")
+        tool_name: Optional[str] = None
+        arguments: Any = payload.get("arguments", {})
+
+        for key in preferred_keys:
+            value = payload.get(key)
+            if isinstance(value, str) and value.strip():
+                tool_name = value.strip()
+                break
+
+        if tool_name is None:
+            candidate_pairs = [
+                (key, value)
+                for key, value in payload.items()
+                if key not in {"arguments"}
+                and isinstance(key, str)
+                and isinstance(value, dict)
+            ]
+            if len(candidate_pairs) == 1:
+                tool_name, arguments = candidate_pairs[0]
+
+        if tool_name is None:
+            raise HTTPException(
+                status_code=400,
+                detail=(
+                    "Specifica il tool da eseguire usando il campo 'tool' (stringa) "
+                    "oppure struttura il payload come {\"nome_tool\": {...}}."
+                ),
+            )
+
+        if not isinstance(arguments, dict):
+            raise HTTPException(
+                status_code=400,
+                detail="Il campo 'arguments' deve essere un oggetto JSON (dizionario).",
+            )
+
+        return {"tool": tool_name, "arguments": arguments}
+
+    @app.get("/")
+    async def root() -> Dict[str, Any]:
+        """Provide a quick-start payload when browsing the root endpoint."""
+        tools = await mcp.list_tools()
+        return {
+            "message": "Outlook MCP HTTP Bridge attivo. Usa POST /tools/{tool_name} oppure POST / con {\"tool\": \"nome\", \"arguments\": {...}}.",
+            "available_tools": [tool.name for tool in tools],
+        }
+
+    @app.post("/")
+    async def invoke_tool_root(payload: Dict[str, Any] = Body(...)) -> Dict[str, Any]:
+        """Allow POST / to execute a tool with flexible payload aliases."""
+        normalized = _resolve_root_payload(payload)
+        return await _handle_tool_invocation(
+            normalized["tool"], normalized.get("arguments", {})
+        )
+
+    @app.get("/health")
+    async def health_check() -> Dict[str, str]:
+        """Simple readiness probe for container orchestrators."""
+        return {"status": "ok"}
+
+    @app.get("/tools")
+    async def list_tools() -> Dict[str, Any]:
+        """Return metadata for the registered MCP tools."""
+        tools = await mcp.list_tools()
+        return {"tools": [_serialize_tool_metadata(tool) for tool in tools]}
+
+    @app.post("/tools/{tool_name}")
+    async def invoke_tool(tool_name: str, request: ToolCallRequest) -> Dict[str, Any]:
+        """Execute an MCP tool and return the serialized content/result."""
+        arguments = request.arguments or {}
+        return await _handle_tool_invocation(tool_name, arguments)
+
+    return app
+
+
+def _start_http_bridge(host: str, port: int) -> None:
+    """Run the FastAPI HTTP server for MCP bridge mode."""
+    app = _create_http_app()
+    logger.info("Avvio del bridge HTTP su http://%s:%s", host, port)
+    uvicorn.run(app, host=host, port=port, log_level="info")  # type: ignore[arg-type]
+
+
+def _build_arg_parser() -> argparse.ArgumentParser:
+    """Create CLI parser supporting both MCP and HTTP bridge modes."""
+    parser = argparse.ArgumentParser(
+        description="Outlook MCP Server - accesso diretto o bridge HTTP."
+    )
+    parser.add_argument(
+        "--mode",
+        choices=("mcp", "http"),
+        default="mcp",
+        help="Modalita di esecuzione: 'mcp' (default) per FastMCP oppure 'http' per il bridge REST.",
+    )
+    parser.add_argument(
+        "--host",
+        default="0.0.0.0",
+        help="Indirizzo di bind per i server di rete (streamable-http, sse o bridge REST).",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8000,
+        help="Porta di ascolto per i server di rete (streamable-http, sse o bridge REST).",
+    )
+    parser.add_argument(
+        "--transport",
+        choices=("stdio", "sse", "streamable-http"),
+        default="stdio",
+        help="Trasporto FastMCP quando --mode=mcp. Usa 'streamable-http' per n8n o altri client MCP HTTP.",
+    )
+    parser.add_argument(
+        "--stream-path",
+        default="/mcp",
+        help="Percorso base per il trasporto streamable-http (solo quando --transport=streamable-http).",
+    )
+    parser.add_argument(
+        "--mount-path",
+        default="/",
+        help="Percorso di montaggio SSE (solo quando --transport=sse).",
+    )
+    parser.add_argument(
+        "--sse-path",
+        default="/sse",
+        help="Endpoint SSE relativo (solo quando --transport=sse).",
+    )
+    parser.add_argument(
+        "--skip-outlook-check",
+        action="store_true",
+        help="Salta il controllo iniziale della connessione a Outlook (sconsigliato).",
+    )
+    return parser
+
+
+def main() -> None:
+    """Entrypoint principale per il server MCP/bridge HTTP."""
+    parser = _build_arg_parser()
+    args = parser.parse_args()
+
+    print("Avvio di Outlook MCP Server...")
+    logger.info("Outlook MCP Server avviato in modalita %s.", args.mode)
+
+    if not args.skip_outlook_check:
+        _verify_outlook_connection()
+    else:
+        logger.warning("Controllo iniziale di Outlook disabilitato per richiesta esplicita.")
+
+    if args.mode == "mcp":
+        transport = args.transport
+        if transport in {"sse", "streamable-http"}:
+            mcp.settings.host = args.host
+            mcp.settings.port = args.port
+        if transport == "sse":
+            mcp.settings.mount_path = args.mount_path
+            mcp.settings.sse_path = args.sse_path
+            print(
+                f"Avvio del server MCP (SSE) su http://{args.host}:{args.port}{args.sse_path} "
+                "(Ctrl+C per interrompere)."
+            )
+            logger.info(
+                "Server MCP avviato in modalita SSE su http://%s:%s%s (mount=%s).",
+                args.host,
+                args.port,
+                args.sse_path,
+                args.mount_path,
+            )
+            mcp.run(transport="sse", mount_path=args.mount_path)
+        elif transport == "streamable-http":
+            mcp.settings.streamable_http_path = args.stream_path
+            print(
+                f"Avvio del server MCP (streamable-http) su "
+                f"http://{args.host}:{args.port}{args.stream_path} (Ctrl+C per interrompere)."
+            )
+            logger.info(
+                "Server MCP avviato in modalita streamable-http su http://%s:%s%s.",
+                args.host,
+                args.port,
+                args.stream_path,
+            )
+            mcp.run(transport="streamable-http")
+        else:
+            print("Avvio del server MCP (stdio). Premi Ctrl+C per interrompere.")
+            logger.info("Server MCP avviato su stdio.")
+            mcp.run()
+    else:
+        print(f"Avvio del bridge HTTP su http://{args.host}:{args.port} (Ctrl+C per interrompere).")
+        _start_http_bridge(args.host, args.port)
+
+
 # Run the server
 if __name__ == "__main__":
-    print("Avvio di Outlook MCP Server...")
-    print("Connessione a Outlook...")
-    logger.info("Avvio di Outlook MCP Server.")
-    
     try:
-        # Test Outlook connection
-        outlook, namespace = connect_to_outlook()
-        inbox = namespace.GetDefaultFolder(6)  # 6 is inbox
-        print(f"Connessione a Outlook riuscita. La Posta in arrivo contiene {inbox.Items.Count} elementi.")
-        logger.info("Connessione a Outlook riuscita. La Posta in arrivo contiene %s elementi.", inbox.Items.Count)
-        
-        # Run the MCP server
-        print("Avvio del server MCP. Premi Ctrl+C per interrompere.")
-        logger.info("Server MCP avviato. In attesa di richieste.")
-        mcp.run()
-    except Exception as e:
-        print(f"Errore durante l'avvio del server: {str(e)}")
+        main()
+    except Exception as exc:  # pylint: disable=broad-except
+        print(f"Errore durante l'avvio del server: {str(exc)}")
         logger.exception("Errore durante l'avvio di Outlook MCP Server.")

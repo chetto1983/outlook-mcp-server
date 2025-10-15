@@ -16,7 +16,7 @@ Outlook MCP Server exposes Microsoft Outlook email and calendar data through Ant
 
 - Windows with Microsoft Outlook installed, configured, and signed in
 - Python 3.10 or newer
-- Python packages from `requirements.txt` (`mcp>=1.2.0`, `pywin32>=305`)
+- Python packages from `requirements.txt` (core: `mcp>=1.2.0`, `pywin32>=305`; HTTP bridge extras: `fastapi>=0.110`, `uvicorn[standard]>=0.27`)
 - An MCP-compatible client (Claude Desktop or another MCP host)
 
 ## Installation
@@ -60,10 +60,57 @@ python outlook_mcp_server.py
 
 On startup the script validates the Outlook COM bridge, writes status information to stdout, and begins serving FastMCP requests.
 
+### Streamable HTTP transport (n8n, Docker)
+
+The MCP specification defines a **streamable HTTP** transport that n8n supports out of the box. Run the server with this transport so the n8n MCP Client node can list and invoke tools directly.
+
+1. Install the optional runtime dependency if you have not already: `pip install uvicorn[standard]`.
+2. Start the server from the Windows host that can reach Outlook:
+
+   ```bash
+   python outlook_mcp_server.py --mode mcp --transport streamable-http --host 0.0.0.0 --port 8000 --stream-path /mcp
+   ```
+
+   The server checks the Outlook COM bridge, binds to `http://0.0.0.0:8000`, and exposes a streamable MCP endpoint at `/mcp`.
+
+3. In n8n (Docker) configure the **MCP Client Tool** node:
+   - `Endpoint`: `http://host.docker.internal:8000/mcp` (adjust if Docker cannot resolve `host.docker.internal`)
+   - `Transport`: **HTTP Streamable**
+   - Authentication: set according to your network needs (defaults to “None”)
+   - Select the Outlook tools you want to expose to your workflow
+
+If you prefer Server-Sent Events, start the server with `--transport sse --sse-path /sse --mount-path /` and point the n8n node’s SSE endpoint to `http://host.docker.internal:8000/sse`.
+
+### REST bridge mode (optional)
+
+For simple automations that only need to trigger specific tools over plain REST (without implementing the MCP protocol), you can launch the lightweight FastAPI shim:
+
+1. Install the optional dependencies: `pip install fastapi uvicorn[standard]`.
+2. Start the bridge:
+
+   ```bash
+   python outlook_mcp_server.py --mode http --host 0.0.0.0 --port 8000
+   ```
+
+3. Call the HTTP endpoints from your automation platform:
+   - `POST http://host.docker.internal:8000/tools/list_recent_emails` with body `{"arguments": {...}}`
+   - Alternatively `POST http://host.docker.internal:8000/` with `{"tool": "list_recent_emails", "arguments": {...}}`
+
+Available endpoints in REST mode:
+
+- `GET /health` – readiness probe
+- `GET /tools` – list tool metadata (names, schemas, descriptions)
+- `GET /` – quick-start message plus the currently registered tool names
+- `POST /tools/{tool_name}` – execute any MCP tool; supply arguments as JSON body
+- `POST /` – alternative execution form using a body like `{"tool": "list_recent_emails", "arguments": {...}}` (also accepts `{"list_recent_emails": {...}}`)
+
+> **Note:** Regardless of the transport, the server must run on the Windows host where Outlook is available. Docker containers cannot access the COM automation layer directly.
+
 ### Tool reference
 
 Each MCP tool accepts keyword arguments so clients can override defaults as needed.
 
+- `params()` - Returns general metadata and HTTP endpoint pointers for automation handshakes (used by some n8n MCP nodes).
 - `get_current_datetime(include_utc=True)` - Returns local time plus UTC details (ISO stamps included when requested).
 - `list_folders()` - Enumerates top-level folders and two nested levels of subfolders for the current Outlook profile.
 - `list_recent_emails(days=7, folder_name=None, max_results=25, include_preview=True, include_all_folders=False)` - Lists newest messages with sender data, read state, attachment previews, categories, and optional multi-folder scans.
@@ -85,6 +132,27 @@ Each MCP tool accepts keyword arguments so clients can override defaults as need
 - `list_pending_replies` automatically increases its conversation lookback (up to 180 days) so it can confirm whether a response exists in Sent Items.
 - Email previews are trimmed to 220 characters, and attachment previews contain at most five filenames for legibility.
 - Calendar scans include recurrences and cap out after 500 inspected appointments per folder to keep COM calls responsive.
+
+## Outlook automation roadmap
+
+The next Outlook-first enhancements (all executable directly through the MCP server) are grouped into five pillars:
+
+1. **Dynamic domain folders**
+   - Rilevare il dominio del mittente quando arriva un nuovo messaggio (via hook COM o strumenti MCP) e creare automaticamente la gerarchia `Clienti/<dominio>/...`.
+   - Spostare subito il messaggio nella sottocartella adeguata, riutilizzando la struttura per tutte le email successive dello stesso dominio.
+2. **Priorità e promemoria interni**
+   - Applicare categorie/flag Outlook per messaggi “Azione/Critico”, così n8n o altri flussi possono reagire senza scansioni pesanti.
+   - Mantenere un log leggero delle azioni critiche per offrirle via MCP senza riesaminare tutte le cartelle.
+3. **Monitoraggio meeting e inviti**
+   - Agganciarsi agli eventi calendario per intercettare aggiornamenti/cancellazioni e leggere `responseStatus` degli invitati.
+   - Esporre strumenti MCP dedicati per inviare promemoria o riconfermare la partecipazione direttamente da Outlook.
+4. **Mailbox condivise e nuovo Outlook**
+   - Estendere regole e categorie a mailbox condivise già montate; valutare limiti del “New Outlook” e usare flag/stati quando le categorie non sono disponibili.
+5. **Bozze intelligenti e pianificazione**
+   - Aggiungere tool MCP per depositare bozze in Draft a partire dal contesto email (senza API esterne).
+   - Creare appuntamenti follow-up con COM `Appointments.Add`, così n8n deve solo orchestrare notifiche esterne.
+
+Ogni passo resta compatibile con n8n: il server MCP gestisce Outlook, mentre n8n si occupa delle automazioni cross-canale (Telegram, CRM, task manager).
 
 ## Examples
 
