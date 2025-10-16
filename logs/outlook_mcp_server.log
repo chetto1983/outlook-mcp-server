@@ -1,530 +1,63 @@
-2025-10-13 14:48:12,717 | INFO | outlook_mcp_server | Avvio di Outlook MCP Server.
-2025-10-13 14:48:15,167 | INFO | outlook_mcp_server | Connessione a Outlook riuscita. La Posta in arrivo contiene 2097 elementi.
-2025-10-13 14:48:15,170 | INFO | outlook_mcp_server | Server MCP avviato. In attesa di richieste.
-2025-10-13 16:45:33,292 | INFO | outlook_mcp_server | Avvio di Outlook MCP Server.
-2025-10-13 16:45:33,315 | INFO | outlook_mcp_server | Connessione a Outlook riuscita. La Posta in arrivo contiene 2102 elementi.
-2025-10-13 16:45:33,317 | INFO | outlook_mcp_server | Server MCP avviato. In attesa di richieste.
-2025-10-14 09:09:35,034 | INFO | outlook_mcp_server | Avvio di Outlook MCP Server.
-2025-10-14 09:09:35,650 | INFO | outlook_mcp_server | Connessione a Outlook riuscita. La Posta in arrivo contiene 2102 elementi.
-2025-10-14 09:09:35,652 | INFO | outlook_mcp_server | Server MCP avviato. In attesa di richieste.
-2025-10-14 18:28:11,194 | INFO | outlook_mcp_server | Avvio di Outlook MCP Server.
-2025-10-14 18:28:13,210 | INFO | outlook_mcp_server | Connessione a Outlook riuscita. La Posta in arrivo contiene 2105 elementi.
-2025-10-14 18:28:13,214 | INFO | outlook_mcp_server | Server MCP avviato. In attesa di richieste.
-2025-10-14 18:33:10,539 | INFO | outlook_mcp_server | Avvio di Outlook MCP Server.
-2025-10-14 18:33:10,588 | INFO | outlook_mcp_server | Connessione a Outlook riuscita. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 18:33:10,595 | INFO | outlook_mcp_server | Server MCP avviato. In attesa di richieste.
-2025-10-14 18:34:26,969 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=False
-2025-10-14 18:34:47,272 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=False
-2025-10-14 18:36:45,900 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-14 18:36:45,906 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 18:36:46,884 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 18:36:46,888 | INFO | outlook_mcp_server | Server MCP avviato. In attesa di richieste FastMCP.
-2025-10-14 18:37:52,978 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-14 18:37:52,986 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 18:37:53,845 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 18:37:53,850 | INFO | outlook_mcp_server | Server MCP avviato. In attesa di richieste FastMCP.
-2025-10-14 18:39:16,320 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-14 18:39:16,324 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 18:39:17,142 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 18:39:17,145 | INFO | outlook_mcp_server | Server MCP avviato. In attesa di richieste FastMCP.
-2025-10-14 18:40:27,756 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita http.
-2025-10-14 18:40:27,759 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 18:40:28,580 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 18:40:28,587 | INFO | outlook_mcp_server | Avvio del bridge HTTP su http://0.0.0.0:8000
-2025-10-14 18:42:01,103 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita http.
-2025-10-14 18:42:01,107 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 18:42:01,995 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 18:42:02,002 | INFO | outlook_mcp_server | Avvio del bridge HTTP su http://0.0.0.0:8000
-2025-10-14 18:43:54,424 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita http.
-2025-10-14 18:43:54,427 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 18:43:55,275 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 18:43:55,283 | INFO | outlook_mcp_server | Avvio del bridge HTTP su http://0.0.0.0:8000
-2025-10-14 18:44:02,815 | INFO | outlook_mcp_server | Invocazione HTTP del tool params con argomenti={'protocolVersion': '2025-03-26', 'capabilities': {'tools': {}}, 'clientInfo': {'name': '@n8n/n8n-nodes-langchain.mcpClientTool', 'version': '1.2'}}
-2025-10-14 18:44:02,819 | WARNING | outlook_mcp_server | Tool params non trovato per invocazione HTTP: Unknown tool: params
-2025-10-14 18:45:54,378 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita http.
-2025-10-14 18:45:54,382 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 18:45:55,252 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 18:45:55,260 | INFO | outlook_mcp_server | Avvio del bridge HTTP su http://0.0.0.0:8000
-2025-10-14 18:46:20,217 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita http.
-2025-10-14 18:46:20,222 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 18:46:21,063 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 18:46:21,071 | INFO | outlook_mcp_server | Avvio del bridge HTTP su http://0.0.0.0:8000
-2025-10-14 18:46:26,001 | INFO | outlook_mcp_server | Invocazione HTTP del tool params con argomenti={'protocolVersion': '2025-03-26', 'capabilities': {'tools': {}}, 'clientInfo': {'name': '@n8n/n8n-nodes-langchain.mcpClientTool', 'version': '1.2'}}
-2025-10-14 18:46:26,006 | INFO | outlook_mcp_server | params tool invocato per recuperare le informazioni di configurazione.
-2025-10-14 18:46:58,323 | INFO | outlook_mcp_server | Invocazione HTTP del tool params con argomenti={'protocolVersion': '2025-03-26', 'capabilities': {'tools': {}}, 'clientInfo': {'name': '@n8n/n8n-nodes-langchain.mcpClientTool', 'version': '1.2'}}
-2025-10-14 18:46:58,328 | INFO | outlook_mcp_server | params tool invocato per recuperare le informazioni di configurazione.
-2025-10-14 18:47:38,250 | INFO | outlook_mcp_server | Invocazione HTTP del tool params con argomenti={'protocolVersion': '2025-03-26', 'capabilities': {'tools': {}}, 'clientInfo': {'name': '@n8n/n8n-nodes-langchain.mcpClientTool', 'version': '1.2'}}
-2025-10-14 18:47:38,255 | INFO | outlook_mcp_server | params tool invocato per recuperare le informazioni di configurazione.
-2025-10-14 18:49:44,456 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-14 18:49:44,460 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 18:49:45,405 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 18:49:45,409 | INFO | outlook_mcp_server | Server MCP avviato. In attesa di richieste FastMCP.
-2025-10-14 18:50:01,441 | INFO | outlook_mcp_server | params tool invocato (protocolVersion=2025-03-26, clientInfo={'name': 'test', 'version': '1.0'})
-2025-10-14 18:50:20,382 | INFO | outlook_mcp_server | params tool invocato (protocolVersion=2025-03-26, clientInfo={'name': 'test', 'version': '1.0'})
-2025-10-14 18:50:44,688 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita http.
-2025-10-14 18:50:44,694 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 18:50:45,526 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 18:50:45,533 | INFO | outlook_mcp_server | Avvio del bridge HTTP su http://0.0.0.0:8000
-2025-10-14 18:51:06,007 | INFO | outlook_mcp_server | Invocazione HTTP del tool params con argomenti={'protocolVersion': '2025-03-26', 'capabilities': {'tools': {}}, 'clientInfo': {'name': '@n8n/n8n-nodes-langchain.mcpClientTool', 'version': '1.2'}}
-2025-10-14 18:51:06,011 | INFO | outlook_mcp_server | params tool invocato (protocolVersion=2025-03-26, clientInfo={'name': '@n8n/n8n-nodes-langchain.mcpClientTool', 'version': '1.2'})
-2025-10-14 18:51:26,562 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita http.
-2025-10-14 18:51:26,565 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 18:51:27,341 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 18:51:27,347 | INFO | outlook_mcp_server | Avvio del bridge HTTP su http://0.0.0.0:8000
-2025-10-14 18:51:40,899 | INFO | outlook_mcp_server | Invocazione HTTP del tool params con argomenti={'protocolVersion': '2025-03-26', 'capabilities': {'tools': {}}, 'clientInfo': {'name': '@n8n/n8n-nodes-langchain.mcpClientTool', 'version': '1.2'}}
-2025-10-14 18:51:40,903 | INFO | outlook_mcp_server | params tool invocato (protocolVersion=2025-03-26, clientInfo={'name': '@n8n/n8n-nodes-langchain.mcpClientTool', 'version': '1.2'})
-2025-10-14 18:52:05,119 | INFO | outlook_mcp_server | params tool invocato (protocolVersion=2025-03-26, clientInfo=None)
-2025-10-14 18:57:17,935 | INFO | outlook_mcp_server | Invocazione HTTP del tool params con argomenti={'protocolVersion': '2025-03-26', 'capabilities': {'tools': {}}, 'clientInfo': {'name': '@n8n/n8n-nodes-langchain.mcpClientTool', 'version': '1.2'}}
-2025-10-14 18:57:17,939 | INFO | outlook_mcp_server | params tool invocato (protocolVersion=2025-03-26, clientInfo={'name': '@n8n/n8n-nodes-langchain.mcpClientTool', 'version': '1.2'})
-2025-10-14 18:59:17,265 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita http.
-2025-10-14 18:59:17,269 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 18:59:18,110 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 18:59:18,124 | INFO | outlook_mcp_server | Avvio del bridge HTTP su http://0.0.0.0:8000
-2025-10-14 19:00:01,684 | INFO | outlook_mcp_server | Invocazione HTTP del tool params con argomenti={'protocolVersion': '2025-03-26', 'capabilities': {'tools': {}}, 'clientInfo': {'name': '@n8n/n8n-nodes-langchain.mcpClientTool', 'version': '1.2'}}
-2025-10-14 19:00:01,689 | INFO | outlook_mcp_server | params tool invocato (protocolVersion=2025-03-26, clientInfo={'name': '@n8n/n8n-nodes-langchain.mcpClientTool', 'version': '1.2'})
-2025-10-14 19:01:53,731 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-14 19:01:53,736 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 19:01:54,598 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 19:01:54,602 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-14 19:03:24,173 | INFO | outlook_mcp_server | list_folders chiamato.
-2025-10-14 19:04:43,471 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
-2025-10-14 19:07:08,004 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-14 19:07:08,007 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-14 19:07:08,833 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2106 elementi.
-2025-10-14 19:07:08,837 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-15 08:07:09,350 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-15 08:07:09,354 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-15 08:07:10,174 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2091 elementi.
-2025-10-15 08:07:10,177 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-15 08:08:24,070 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
-2025-10-15 08:15:34,037 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=1 calendario=None max_risultati=25 descrizione=True tutti_i_calendari=False
-2025-10-15 08:15:36,106 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-15 08:15:36,108 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 1 eventi su 1 (calendario=Calendario).
-2025-10-15 08:21:14,909 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=7 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=False
-2025-10-15 08:21:15,532 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.
-2025-10-15 08:21:19,939 | INFO | outlook_mcp_server | list_recent_emails: restituiti 10 messaggi su 34 (termine=None cartella=Posta in arrivo).
-2025-10-15 08:23:00,121 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=7 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False
-2025-10-15 08:23:00,703 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.
-2025-10-15 08:23:04,893 | INFO | outlook_mcp_server | list_recent_emails: restituiti 25 messaggi su 34 (termine=None cartella=Posta in arrivo).
-2025-10-15 08:48:45,507 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-15 08:48:45,510 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-15 08:48:45,530 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2092 elementi.
-2025-10-15 08:48:45,532 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-15 08:55:00,183 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=7 calendario=None max_risultati=10 descrizione=True tutti_i_calendari=True
-2025-10-15 08:55:02,063 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-15 08:55:02,391 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
-2025-10-15 08:55:02,408 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
-2025-10-15 08:55:02,410 | INFO | outlook_mcp_server | Aggregati 1 eventi provenienti da 3 cartelle calendario.
-2025-10-15 08:55:02,411 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 1 eventi su 1 (calendario=Tutti i calendari).
-2025-10-15 08:56:27,508 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=14 calendario=None max_risultati=25 descrizione=True tutti_i_calendari=False
-2025-10-15 08:56:28,478 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-15 08:56:28,480 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 1 eventi su 1 (calendario=Calendario).
-2025-10-15 08:57:24,471 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=30 calendario=None max_risultati=25 descrizione=True tutti_i_calendari=False
-2025-10-15 08:57:25,285 | INFO | outlook_mcp_server | Recuperati 4 eventi dalla cartella calendario 'Calendario'.
-2025-10-15 08:57:25,287 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 4 eventi su 4 (calendario=Calendario).
-2025-10-15 09:12:25,775 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-15 09:12:25,777 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-15 09:12:25,793 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2093 elementi.
-2025-10-15 09:12:25,796 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-15 09:13:50,844 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
-2025-10-15 09:14:07,876 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=30 calendario=None max_risultati=25 descrizione=False tutti_i_calendari=True
-2025-10-15 09:14:09,290 | INFO | outlook_mcp_server | Recuperati 4 eventi dalla cartella calendario 'Calendario'.
-2025-10-15 09:14:09,656 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Festività in Italia'.
-2025-10-15 09:14:09,663 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
-2025-10-15 09:14:09,665 | INFO | outlook_mcp_server | Aggregati 5 eventi provenienti da 3 cartelle calendario.
-2025-10-15 09:14:09,666 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 5 eventi su 5 (calendario=Tutti i calendari).
-2025-10-15 09:14:44,208 | INFO | outlook_mcp_server | Recupero dettagli completi per l'evento #2.
-2025-10-15 09:16:28,004 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=True lookback_conv=28
-2025-10-15 09:16:28,052 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=14 termine=None.
-2025-10-15 09:16:39,083 | INFO | outlook_mcp_server | list_pending_replies ha trovato 1 messaggi da gestire su 76 analizzati.
-2025-10-15 09:16:39,085 | INFO | outlook_mcp_server | list_pending_replies: restituiti 1 messaggi su 1 (termine=None cartella=Posta in arrivo (senza risposta)).
-2025-10-15 09:21:09,266 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-15 09:21:09,269 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-15 09:21:09,287 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2093 elementi.
-2025-10-15 09:21:09,289 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-15 09:22:13,096 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=True lookback_conv=28
-2025-10-15 09:22:13,136 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=14 termine=None.
-2025-10-15 09:22:24,036 | INFO | outlook_mcp_server | list_pending_replies ha trovato 1 messaggi da gestire su 76 analizzati.
-2025-10-15 09:22:24,037 | INFO | outlook_mcp_server | list_pending_replies: restituiti 1 messaggi su 1 (termine=None cartella=Posta in arrivo (senza risposta)).
-2025-10-15 09:24:17,840 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
-2025-10-15 09:30:11,500 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-15 09:30:11,504 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-15 09:30:11,522 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2093 elementi.
-2025-10-15 09:30:11,524 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-15 09:38:54,410 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=30 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=60
-2025-10-15 09:38:54,455 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=30 termine=None.
-2025-10-15 09:44:08,141 | INFO | outlook_mcp_server | list_pending_replies ha trovato 45 messaggi da gestire su 100 analizzati.
-2025-10-15 09:44:08,143 | INFO | outlook_mcp_server | list_pending_replies: restituiti 25 messaggi su 45 (termine=None cartella=Posta in arrivo (senza risposta)).
-2025-10-15 09:48:46,086 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-15 09:48:46,089 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-15 09:48:46,106 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2094 elementi.
-2025-10-15 09:48:46,109 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-15 09:49:09,586 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=30 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=True solo_non_letti=False lookback_conv=60
-2025-10-15 09:49:10,151 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'davide.marchetto@sacchi.it' con giorni=30 termine=None.
-2025-10-15 09:49:10,158 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cartelle pubbliche - davide.marchetto@sacchi.it' con giorni=30 termine=None.
-2025-10-15 09:49:10,166 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta eliminata' con giorni=30 termine=None.
-2025-10-15 09:49:10,261 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=30 termine=None.
-2025-10-15 09:49:23,422 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in uscita' con giorni=30 termine=None.
-2025-10-15 09:49:23,428 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=30 termine=None.
-2025-10-15 09:49:31,566 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella 'Contatti'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:49:31,650 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta indesiderata' con giorni=30 termine=None.
-2025-10-15 09:49:31,657 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cronologia delle conversazioni' con giorni=30 termine=None.
-2025-10-15 09:49:31,667 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella 'Calendario'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:49:31,717 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Bozze' con giorni=30 termine=None.
-2025-10-15 09:49:31,728 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella 'Attività'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:49:31,776 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Files' con giorni=30 termine=None.
-2025-10-15 09:49:31,782 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Social Activity Notifications' con giorni=30 termine=None.
-2025-10-15 09:49:31,791 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'EventCheckPoints' con giorni=30 termine=None.
-2025-10-15 09:49:31,797 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posposto' con giorni=30 termine=None.
-2025-10-15 09:49:31,805 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella 'Note'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:49:31,859 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Marco Meldini' con giorni=30 termine=None.
-2025-10-15 09:49:33,468 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella 'Journal'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:49:33,507 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Problemi di sincronizzazione' con giorni=30 termine=None.
-2025-10-15 09:50:05,013 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feed RSS' con giorni=30 termine=None.
-2025-10-15 09:50:05,021 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Archivio' con giorni=30 termine=None.
-2025-10-15 09:50:05,028 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cartella radice di Yammer' con giorni=30 termine=None.
-2025-10-15 09:50:05,036 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Impostazioni azioni rapide' con giorni=30 termine=None.
-2025-10-15 09:50:05,044 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella 'ExternalContacts'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:50:05,095 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conversation Action Settings' con giorni=30 termine=None.
-2025-10-15 09:50:05,101 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Preferite' con giorni=30 termine=None.
-2025-10-15 09:50:05,190 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Tutte le cartelle pubbliche' con giorni=30 termine=None.
-2025-10-15 09:50:05,240 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella 'Recipient Cache'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:50:05,288 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella '{06967759-274D-40B2-A3EB-D7F9E73727D7}'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:50:05,346 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella 'PeopleCentricConversation Buddies'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:50:05,398 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella 'Companies'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:50:05,442 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella 'GAL Contacts'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:50:05,491 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella 'Organizational Contacts'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:50:05,543 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella '{A9E2BC46-B3A0-4243-B315-60D991004455}'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:50:05,583 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Chat del team' con giorni=30 termine=None.
-2025-10-15 09:50:05,593 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella 'Festività in Italia'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:50:05,638 | ERROR | outlook_mcp_server | Errore nel recupero dei messaggi dalla cartella 'Compleanni'.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp_server.py", line 510, in get_emails_from_folder
-    folder_items.Sort("[ReceivedTime]", True)  # Sort by received time, newest first
-    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<COMObject <unknown>>", line 2, in Sort
-pywintypes.com_error: (-2147352567, 'Eccezione.', (4096, 'Microsoft Outlook', 'Proprietà "ReceivedTime" sconosciuta.', None, 0, -2147352567), None)
-2025-10-15 09:50:05,824 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori del server' con giorni=30 termine=None.
-2025-10-15 09:50:05,885 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conflitti' con giorni=30 termine=None.
-2025-10-15 09:50:05,954 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori in locale' con giorni=30 termine=None.
-2025-10-15 09:50:05,971 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feeds' con giorni=30 termine=None.
-2025-10-15 09:50:05,978 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Inbound' con giorni=30 termine=None.
-2025-10-15 09:50:05,983 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Outbound' con giorni=30 termine=None.
-2025-10-15 09:50:05,987 | INFO | outlook_mcp_server | Raccolti 733 messaggi totali attraversando 44 cartelle.
-2025-10-15 09:50:51,299 | INFO | outlook_mcp_server | list_pending_replies ha trovato 10 messaggi da gestire su 60 analizzati.
-2025-10-15 09:50:51,301 | INFO | outlook_mcp_server | list_pending_replies: restituiti 10 messaggi su 10 (termine=None cartella=Tutte le cartelle (senza risposta)).
-2025-10-15 09:51:36,354 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-15 09:51:36,357 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-15 09:51:36,377 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2094 elementi.
-2025-10-15 09:51:36,380 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-15 09:52:38,392 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=True solo_non_letti=False lookback_conv=28
-2025-10-15 09:52:40,577 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'davide.marchetto@sacchi.it' con giorni=14 termine=None.
-2025-10-15 09:52:40,589 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta eliminata' con giorni=14 termine=None.
-2025-10-15 09:52:40,681 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=14 termine=None.
-2025-10-15 09:52:51,556 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in uscita' con giorni=14 termine=None.
-2025-10-15 09:52:51,563 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=14 termine=None.
-2025-10-15 09:52:56,942 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta indesiderata' con giorni=14 termine=None.
-2025-10-15 09:52:56,950 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cronologia delle conversazioni' con giorni=14 termine=None.
-2025-10-15 09:52:56,958 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Bozze' con giorni=14 termine=None.
-2025-10-15 09:52:56,968 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Files' con giorni=14 termine=None.
-2025-10-15 09:52:56,975 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Social Activity Notifications' con giorni=14 termine=None.
-2025-10-15 09:52:56,981 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'EventCheckPoints' con giorni=14 termine=None.
-2025-10-15 09:52:56,989 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posposto' con giorni=14 termine=None.
-2025-10-15 09:52:56,998 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Marco Meldini' con giorni=14 termine=None.
-2025-10-15 09:52:58,016 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Problemi di sincronizzazione' con giorni=14 termine=None.
-2025-10-15 09:53:21,216 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feed RSS' con giorni=14 termine=None.
-2025-10-15 09:53:21,223 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Archivio' con giorni=14 termine=None.
-2025-10-15 09:53:21,230 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cartella radice di Yammer' con giorni=14 termine=None.
-2025-10-15 09:53:21,236 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Impostazioni azioni rapide' con giorni=14 termine=None.
-2025-10-15 09:53:21,244 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conversation Action Settings' con giorni=14 termine=None.
-2025-10-15 09:53:21,264 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Chat del team' con giorni=14 termine=None.
-2025-10-15 09:53:21,273 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori del server' con giorni=14 termine=None.
-2025-10-15 09:53:21,334 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conflitti' con giorni=14 termine=None.
-2025-10-15 09:53:21,388 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori in locale' con giorni=14 termine=None.
-2025-10-15 09:53:21,403 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feeds' con giorni=14 termine=None.
-2025-10-15 09:53:21,409 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Inbound' con giorni=14 termine=None.
-2025-10-15 09:53:21,416 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Outbound' con giorni=14 termine=None.
-2025-10-15 09:53:21,418 | INFO | outlook_mcp_server | Raccolti 395 messaggi totali attraversando 44 cartelle.
-2025-10-15 09:55:37,358 | INFO | outlook_mcp_server | list_pending_replies ha trovato 25 messaggi da gestire su 218 analizzati.
-2025-10-15 09:55:37,359 | INFO | outlook_mcp_server | list_pending_replies: restituiti 25 messaggi su 25 (termine=None cartella=Tutte le cartelle (senza risposta)).
-2025-10-15 09:57:26,267 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-15 09:57:26,270 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-15 09:57:26,287 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2095 elementi.
-2025-10-15 09:57:26,289 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-15 09:57:50,879 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=7 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=False solo_non_letti=True lookback_conv=14
-2025-10-15 09:57:50,914 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.
-2025-10-15 09:57:56,892 | INFO | outlook_mcp_server | list_pending_replies ha trovato 1 messaggi da gestire su 37 analizzati.
-2025-10-15 09:57:56,893 | INFO | outlook_mcp_server | list_pending_replies: restituiti 1 messaggi su 1 (termine=None cartella=Posta in arrivo (senza risposta)).
-2025-10-15 10:02:21,544 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-15 10:02:21,545 | INFO | outlook_mcp_server | list_pending_replies ha trovato 2 messaggi da gestire su 2 analizzati.
-2025-10-15 10:02:21,546 | INFO | outlook_mcp_server | list_pending_replies: restituiti 2 messaggi su 2 (termine=None cartella=Posta in arrivo (senza risposta)).
-2025-10-15 10:03:43,242 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-15 10:03:43,245 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-15 10:03:43,262 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2095 elementi.
-2025-10-15 10:03:43,264 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-15 10:03:50,777 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-15 10:03:50,780 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-15 10:03:50,796 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2095 elementi.
-2025-10-15 10:03:50,798 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-15 10:06:37,601 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=True solo_non_letti=False lookback_conv=28
-2025-10-15 10:06:38,189 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'davide.marchetto@sacchi.it' con giorni=14 termine=None.
-2025-10-15 10:06:38,198 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta eliminata' con giorni=14 termine=None.
-2025-10-15 10:06:38,296 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=14 termine=None.
-2025-10-15 10:06:41,801 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in uscita' con giorni=14 termine=None.
-2025-10-15 10:06:41,809 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=14 termine=None.
-2025-10-15 10:06:44,531 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta indesiderata' con giorni=14 termine=None.
-2025-10-15 10:06:44,542 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cronologia delle conversazioni' con giorni=14 termine=None.
-2025-10-15 10:06:44,555 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Bozze' con giorni=14 termine=None.
-2025-10-15 10:06:44,565 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Files' con giorni=14 termine=None.
-2025-10-15 10:06:44,576 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Social Activity Notifications' con giorni=14 termine=None.
-2025-10-15 10:06:44,587 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'EventCheckPoints' con giorni=14 termine=None.
-2025-10-15 10:06:44,596 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posposto' con giorni=14 termine=None.
-2025-10-15 10:06:44,613 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Marco Meldini' con giorni=14 termine=None.
-2025-10-15 10:06:45,502 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Problemi di sincronizzazione' con giorni=14 termine=None.
-2025-10-15 10:06:54,336 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feed RSS' con giorni=14 termine=None.
-2025-10-15 10:06:54,345 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Archivio' con giorni=14 termine=None.
-2025-10-15 10:06:54,353 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cartella radice di Yammer' con giorni=14 termine=None.
-2025-10-15 10:06:54,366 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Impostazioni azioni rapide' con giorni=14 termine=None.
-2025-10-15 10:06:54,378 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conversation Action Settings' con giorni=14 termine=None.
-2025-10-15 10:06:54,405 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Chat del team' con giorni=14 termine=None.
-2025-10-15 10:06:54,420 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori del server' con giorni=14 termine=None.
-2025-10-15 10:06:54,491 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conflitti' con giorni=14 termine=None.
-2025-10-15 10:06:54,557 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori in locale' con giorni=14 termine=None.
-2025-10-15 10:06:54,573 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feeds' con giorni=14 termine=None.
-2025-10-15 10:06:54,584 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Inbound' con giorni=14 termine=None.
-2025-10-15 10:06:54,593 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Outbound' con giorni=14 termine=None.
-2025-10-15 10:06:54,596 | INFO | outlook_mcp_server | Raccolti 23 messaggi totali attraversando 44 cartelle (limite per cartella=5).
-2025-10-15 10:06:59,022 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=30 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=True solo_non_letti=False lookback_conv=60
-2025-10-15 10:06:59,805 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'davide.marchetto@sacchi.it' con giorni=30 termine=None.
-2025-10-15 10:06:59,836 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta eliminata' con giorni=30 termine=None.
-2025-10-15 10:07:00,052 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=30 termine=None.
-2025-10-15 10:07:24,347 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in uscita' con giorni=30 termine=None.
-2025-10-15 10:07:24,364 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=30 termine=None.
-2025-10-15 10:07:36,397 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta indesiderata' con giorni=30 termine=None.
-2025-10-15 10:07:36,416 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cronologia delle conversazioni' con giorni=30 termine=None.
-2025-10-15 10:07:36,438 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Bozze' con giorni=30 termine=None.
-2025-10-15 10:07:36,464 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Files' con giorni=30 termine=None.
-2025-10-15 10:07:36,489 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Social Activity Notifications' con giorni=30 termine=None.
-2025-10-15 10:07:36,507 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'EventCheckPoints' con giorni=30 termine=None.
-2025-10-15 10:07:36,522 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posposto' con giorni=30 termine=None.
-2025-10-15 10:07:36,541 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Marco Meldini' con giorni=30 termine=None.
-2025-10-15 10:07:39,388 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Problemi di sincronizzazione' con giorni=30 termine=None.
-2025-10-15 10:07:53,737 | INFO | outlook_mcp_server | list_pending_replies ha trovato 10 messaggi da gestire su 23 analizzati.
-2025-10-15 10:07:53,739 | INFO | outlook_mcp_server | list_pending_replies: restituiti 10 messaggi su 10 (termine=None cartella=Tutte le cartelle (senza risposta)).
-2025-10-15 10:07:58,231 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feed RSS' con giorni=30 termine=None.
-2025-10-15 10:07:58,239 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Archivio' con giorni=30 termine=None.
-2025-10-15 10:07:58,246 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cartella radice di Yammer' con giorni=30 termine=None.
-2025-10-15 10:07:58,252 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Impostazioni azioni rapide' con giorni=30 termine=None.
-2025-10-15 10:07:58,261 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conversation Action Settings' con giorni=30 termine=None.
-2025-10-15 10:07:58,282 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Chat del team' con giorni=30 termine=None.
-2025-10-15 10:07:58,292 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori del server' con giorni=30 termine=None.
-2025-10-15 10:07:58,354 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conflitti' con giorni=30 termine=None.
-2025-10-15 10:07:58,405 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori in locale' con giorni=30 termine=None.
-2025-10-15 10:07:58,415 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feeds' con giorni=30 termine=None.
-2025-10-15 10:07:58,422 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Inbound' con giorni=30 termine=None.
-2025-10-15 10:07:58,429 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Outbound' con giorni=30 termine=None.
-2025-10-15 10:07:58,431 | INFO | outlook_mcp_server | Raccolti 23 messaggi totali attraversando 44 cartelle (limite per cartella=5).
-2025-10-15 10:08:06,047 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=True solo_non_letti=False lookback_conv=28
-2025-10-15 10:08:06,763 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'davide.marchetto@sacchi.it' con giorni=14 termine=None.
-2025-10-15 10:08:06,782 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta eliminata' con giorni=14 termine=None.
-2025-10-15 10:08:06,942 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=14 termine=None.
-2025-10-15 10:08:15,360 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in uscita' con giorni=14 termine=None.
-2025-10-15 10:08:15,376 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=14 termine=None.
-2025-10-15 10:08:20,761 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta indesiderata' con giorni=14 termine=None.
-2025-10-15 10:08:20,776 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cronologia delle conversazioni' con giorni=14 termine=None.
-2025-10-15 10:08:20,795 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Bozze' con giorni=14 termine=None.
-2025-10-15 10:08:20,815 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Files' con giorni=14 termine=None.
-2025-10-15 10:08:20,832 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Social Activity Notifications' con giorni=14 termine=None.
-2025-10-15 10:08:20,847 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'EventCheckPoints' con giorni=14 termine=None.
-2025-10-15 10:08:20,862 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posposto' con giorni=14 termine=None.
-2025-10-15 10:08:20,881 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Marco Meldini' con giorni=14 termine=None.
-2025-10-15 10:08:22,640 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Problemi di sincronizzazione' con giorni=14 termine=None.
-2025-10-15 10:08:38,369 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feed RSS' con giorni=14 termine=None.
-2025-10-15 10:08:38,383 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Archivio' con giorni=14 termine=None.
-2025-10-15 10:08:38,397 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cartella radice di Yammer' con giorni=14 termine=None.
-2025-10-15 10:08:38,413 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Impostazioni azioni rapide' con giorni=14 termine=None.
-2025-10-15 10:08:38,434 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conversation Action Settings' con giorni=14 termine=None.
-2025-10-15 10:08:38,494 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Chat del team' con giorni=14 termine=None.
-2025-10-15 10:08:38,533 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori del server' con giorni=14 termine=None.
-2025-10-15 10:08:38,601 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conflitti' con giorni=14 termine=None.
-2025-10-15 10:08:38,740 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori in locale' con giorni=14 termine=None.
-2025-10-15 10:08:38,763 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feeds' con giorni=14 termine=None.
-2025-10-15 10:08:38,776 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Inbound' con giorni=14 termine=None.
-2025-10-15 10:08:38,790 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Outbound' con giorni=14 termine=None.
-2025-10-15 10:08:38,794 | INFO | outlook_mcp_server | Raccolti 23 messaggi totali attraversando 44 cartelle (limite per cartella=5).
-2025-10-15 10:08:53,572 | INFO | outlook_mcp_server | list_pending_replies ha trovato 10 messaggi da gestire su 23 analizzati.
-2025-10-15 10:08:53,574 | INFO | outlook_mcp_server | list_pending_replies: restituiti 10 messaggi su 10 (termine=None cartella=Tutte le cartelle (senza risposta)).
-2025-10-15 10:09:29,323 | INFO | outlook_mcp_server | list_pending_replies ha trovato 10 messaggi da gestire su 23 analizzati.
-2025-10-15 10:09:29,324 | INFO | outlook_mcp_server | list_pending_replies: restituiti 10 messaggi su 10 (termine=None cartella=Tutte le cartelle (senza risposta)).
-2025-10-15 10:09:52,086 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=True solo_non_letti=False lookback_conv=28
-2025-10-15 10:09:52,517 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'davide.marchetto@sacchi.it' con giorni=14 termine=None.
-2025-10-15 10:09:52,528 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta eliminata' con giorni=14 termine=None.
-2025-10-15 10:09:52,600 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=14 termine=None.
-2025-10-15 10:09:56,093 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in uscita' con giorni=14 termine=None.
-2025-10-15 10:09:56,100 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=14 termine=None.
-2025-10-15 10:09:58,241 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta indesiderata' con giorni=14 termine=None.
-2025-10-15 10:09:58,248 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cronologia delle conversazioni' con giorni=14 termine=None.
-2025-10-15 10:09:58,257 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Bozze' con giorni=14 termine=None.
-2025-10-15 10:09:58,266 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Files' con giorni=14 termine=None.
-2025-10-15 10:09:58,274 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Social Activity Notifications' con giorni=14 termine=None.
-2025-10-15 10:09:58,281 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'EventCheckPoints' con giorni=14 termine=None.
-2025-10-15 10:09:58,288 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posposto' con giorni=14 termine=None.
-2025-10-15 10:09:58,296 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Marco Meldini' con giorni=14 termine=None.
-2025-10-15 10:09:58,966 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Problemi di sincronizzazione' con giorni=14 termine=None.
-2025-10-15 10:10:05,716 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feed RSS' con giorni=14 termine=None.
-2025-10-15 10:10:05,723 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Archivio' con giorni=14 termine=None.
-2025-10-15 10:10:05,730 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cartella radice di Yammer' con giorni=14 termine=None.
-2025-10-15 10:10:05,737 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Impostazioni azioni rapide' con giorni=14 termine=None.
-2025-10-15 10:10:05,745 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conversation Action Settings' con giorni=14 termine=None.
-2025-10-15 10:10:05,768 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Chat del team' con giorni=14 termine=None.
-2025-10-15 10:10:05,778 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori del server' con giorni=14 termine=None.
-2025-10-15 10:10:05,845 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conflitti' con giorni=14 termine=None.
-2025-10-15 10:10:05,913 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori in locale' con giorni=14 termine=None.
-2025-10-15 10:10:05,925 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feeds' con giorni=14 termine=None.
-2025-10-15 10:10:05,933 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Inbound' con giorni=14 termine=None.
-2025-10-15 10:10:05,940 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Outbound' con giorni=14 termine=None.
-2025-10-15 10:10:05,943 | INFO | outlook_mcp_server | Raccolti 23 messaggi totali attraversando 44 cartelle (limite per cartella=5).
-2025-10-15 10:10:46,783 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=2 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=14
-2025-10-15 10:10:46,869 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=2 termine=None.
-2025-10-15 10:11:01,887 | INFO | outlook_mcp_server | list_pending_replies ha trovato 10 messaggi da gestire su 23 analizzati.
-2025-10-15 10:11:01,888 | INFO | outlook_mcp_server | list_pending_replies: restituiti 10 messaggi su 10 (termine=None cartella=Tutte le cartelle (senza risposta)).
-2025-10-15 10:11:30,386 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=True solo_non_letti=False lookback_conv=28
-2025-10-15 10:11:31,170 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'davide.marchetto@sacchi.it' con giorni=14 termine=None.
-2025-10-15 10:11:31,192 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta eliminata' con giorni=14 termine=None.
-2025-10-15 10:11:31,382 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=14 termine=None.
-2025-10-15 10:11:43,384 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in uscita' con giorni=14 termine=None.
-2025-10-15 10:11:43,399 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=14 termine=None.
-2025-10-15 10:11:46,660 | INFO | outlook_mcp_server | list_pending_replies ha trovato 10 messaggi da gestire su 15 analizzati.
-2025-10-15 10:11:46,661 | INFO | outlook_mcp_server | list_pending_replies: restituiti 10 messaggi su 10 (termine=None cartella=Posta in arrivo (senza risposta)).
-2025-10-15 10:11:47,663 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta indesiderata' con giorni=14 termine=None.
-2025-10-15 10:11:47,671 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cronologia delle conversazioni' con giorni=14 termine=None.
-2025-10-15 10:11:47,681 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Bozze' con giorni=14 termine=None.
-2025-10-15 10:11:47,690 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Files' con giorni=14 termine=None.
-2025-10-15 10:11:47,698 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Social Activity Notifications' con giorni=14 termine=None.
-2025-10-15 10:11:47,705 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'EventCheckPoints' con giorni=14 termine=None.
-2025-10-15 10:11:47,712 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posposto' con giorni=14 termine=None.
-2025-10-15 10:11:47,721 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Marco Meldini' con giorni=14 termine=None.
-2025-10-15 10:11:48,371 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Problemi di sincronizzazione' con giorni=14 termine=None.
-2025-10-15 10:11:55,044 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feed RSS' con giorni=14 termine=None.
-2025-10-15 10:11:55,051 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Archivio' con giorni=14 termine=None.
-2025-10-15 10:11:55,059 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cartella radice di Yammer' con giorni=14 termine=None.
-2025-10-15 10:11:55,066 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Impostazioni azioni rapide' con giorni=14 termine=None.
-2025-10-15 10:11:55,075 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conversation Action Settings' con giorni=14 termine=None.
-2025-10-15 10:11:55,097 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Chat del team' con giorni=14 termine=None.
-2025-10-15 10:11:55,107 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori del server' con giorni=14 termine=None.
-2025-10-15 10:11:55,163 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conflitti' con giorni=14 termine=None.
-2025-10-15 10:11:55,216 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori in locale' con giorni=14 termine=None.
-2025-10-15 10:11:55,226 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feeds' con giorni=14 termine=None.
-2025-10-15 10:11:55,234 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Inbound' con giorni=14 termine=None.
-2025-10-15 10:11:55,241 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Outbound' con giorni=14 termine=None.
-2025-10-15 10:11:55,243 | INFO | outlook_mcp_server | Raccolti 23 messaggi totali attraversando 44 cartelle (limite per cartella=5).
-2025-10-15 10:12:46,118 | INFO | outlook_mcp_server | list_pending_replies ha trovato 10 messaggi da gestire su 23 analizzati.
-2025-10-15 10:12:46,120 | INFO | outlook_mcp_server | list_pending_replies: restituiti 10 messaggi su 10 (termine=None cartella=Tutte le cartelle (senza risposta)).
-2025-10-15 10:13:20,788 | INFO | outlook_mcp_server | Recupero dettagli completi per il messaggio #1.
-2025-10-15 10:25:05,735 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-15 10:25:05,736 | INFO | outlook_mcp_server | list_pending_replies ha trovato 2 messaggi da gestire su 2 analizzati.
-2025-10-15 10:25:05,738 | INFO | outlook_mcp_server | list_pending_replies: restituiti 2 messaggi su 2 (termine=None cartella=Posta in arrivo (senza risposta)).
-2025-10-15 10:31:57,352 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-15 10:31:57,354 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-15 10:31:57,374 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2095 elementi.
-2025-10-15 10:31:57,376 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-15 10:33:59,498 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=1 calendario=None max_risultati=5 descrizione=True tutti_i_calendari=False
-2025-10-15 10:34:00,305 | INFO | outlook_mcp_server | Recuperati 2 eventi dalla cartella calendario 'Calendario'.
-2025-10-15 10:34:00,308 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 2 eventi su 2 (calendario=Calendario).
-2025-10-15 10:45:43,353 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-15 10:45:43,354 | INFO | outlook_mcp_server | list_pending_replies ha trovato 2 messaggi da gestire su 2 analizzati.
-2025-10-15 10:45:43,355 | INFO | outlook_mcp_server | list_pending_replies: restituiti 2 messaggi su 2 (termine=None cartella=Posta in arrivo (senza risposta)).
-2025-10-15 11:00:36,950 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-15 11:00:36,954 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-15 11:00:36,971 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2097 elementi.
-2025-10-15 11:00:36,974 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-15 11:02:50,376 | INFO | outlook_mcp_server | search_emails chiamato con termine='piermarino andrea' giorni=7 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False
-2025-10-15 11:02:50,395 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=piermarino andrea.
-2025-10-15 11:02:54,240 | INFO | outlook_mcp_server | search_emails: restituiti 3 messaggi su 3 (termine=piermarino andrea cartella=Posta in arrivo).
-2025-10-15 11:04:46,795 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=25 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False
-2025-10-15 11:04:46,811 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=25 termine=None.
-2025-10-15 11:04:52,921 | INFO | outlook_mcp_server | list_recent_emails: restituiti 25 messaggi su 138 (termine=None cartella=Posta in arrivo).
+2025-10-16 14:32:47,967 | INFO | outlook_mcp_server | create_folder chiamato (nome=Aurgente parent_id=None parent_path=None parent_name=None tipo=None allow_existing=False).
+2025-10-16 14:33:31,639 | INFO | outlook_mcp_server | create_folder chiamato (nome=Aurgente parent_id=None parent_path=None parent_name=None tipo=None allow_existing=False).
+2025-10-16 14:34:05,450 | INFO | outlook_mcp_server | create_folder chiamato (nome=Urgente parent_id=None parent_path=None parent_name=Posta in arrivo tipo=None allow_existing=False).
+2025-10-16 14:34:39,358 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=2 id=None target_id=None target_path=None target_nome=Urgente crea=False).
+2025-10-16 14:34:39,430 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=1 id=None target_id=None target_path=None target_nome=Urgente crea=False).
+2025-10-16 15:01:57,194 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=1 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=True offset=0 unread_only=True folder_ids=[] folder_paths=[]
+2025-10-16 15:01:57,795 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=1 termine=None.
+2025-10-16 15:01:58,179 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Urgente' con giorni=1 termine=None.
+2025-10-16 15:01:58,219 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'davide.marchetto@sacchi.it' con giorni=1 termine=None.
+2025-10-16 15:01:58,226 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta eliminata' con giorni=1 termine=None.
+2025-10-16 15:01:58,404 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'MCP_AUTOTEST_RENAMED' con giorni=1 termine=None.
+2025-10-16 15:01:58,410 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'MCP_AUTOTEST_MOVE' con giorni=1 termine=None.
+2025-10-16 15:01:58,417 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in uscita' con giorni=1 termine=None.
+2025-10-16 15:01:58,424 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=1 termine=None.
+2025-10-16 15:01:58,797 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta indesiderata' con giorni=1 termine=None.
+2025-10-16 15:01:58,804 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cronologia delle conversazioni' con giorni=1 termine=None.
+2025-10-16 15:01:58,810 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Chat del team' con giorni=1 termine=None.
+2025-10-16 15:01:58,822 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Bozze' con giorni=1 termine=None.
+2025-10-16 15:01:58,830 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Files' con giorni=1 termine=None.
+2025-10-16 15:01:58,837 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Social Activity Notifications' con giorni=1 termine=None.
+2025-10-16 15:01:58,843 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'EventCheckPoints' con giorni=1 termine=None.
+2025-10-16 15:01:58,849 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posposto' con giorni=1 termine=None.
+2025-10-16 15:01:58,858 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Marco Meldini' con giorni=1 termine=None.
+2025-10-16 15:01:58,868 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Problemi di sincronizzazione' con giorni=1 termine=None.
+2025-10-16 15:01:59,493 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori del server' con giorni=1 termine=None.
+2025-10-16 15:01:59,600 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conflitti' con giorni=1 termine=None.
+2025-10-16 15:01:59,608 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori in locale' con giorni=1 termine=None.
+2025-10-16 15:01:59,618 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feed RSS' con giorni=1 termine=None.
+2025-10-16 15:01:59,625 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Archivio' con giorni=1 termine=None.
+2025-10-16 15:01:59,631 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cartella radice di Yammer' con giorni=1 termine=None.
+2025-10-16 15:01:59,637 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feeds' con giorni=1 termine=None.
+2025-10-16 15:01:59,644 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Inbound' con giorni=1 termine=None.
+2025-10-16 15:01:59,650 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Outbound' con giorni=1 termine=None.
+2025-10-16 15:01:59,657 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Impostazioni azioni rapide' con giorni=1 termine=None.
+2025-10-16 15:01:59,665 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conversation Action Settings' con giorni=1 termine=None.
+2025-10-16 15:01:59,672 | INFO | outlook_mcp_server | Raccolti 21 messaggi totali attraversando 47 cartelle (limite per cartella=5).
+2025-10-16 15:01:59,673 | INFO | outlook_mcp_server | list_recent_emails: restituiti 8 messaggi su 8 (termine=None cartella=Tutte le cartelle offset=0).
+2025-10-16 15:08:54,057 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=1 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False offset=0 unread_only=True folder_ids=[] folder_paths=[]
+2025-10-16 15:08:54,073 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=1 termine=None.
+2025-10-16 15:08:54,445 | INFO | outlook_mcp_server | list_recent_emails: nessun messaggio (termine=None cartella=Posta in arrivo giorni=1).
+2025-10-16 15:11:33,082 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=2 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False offset=0 unread_only=True folder_ids=[] folder_paths=[]
+2025-10-16 15:11:33,105 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=2 termine=None.
+2025-10-16 15:11:34,080 | INFO | outlook_mcp_server | list_recent_emails: nessun messaggio (termine=None cartella=Posta in arrivo giorni=2).
+2025-10-16 15:12:02,338 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=7 calendario=None max_risultati=25 descrizione=False tutti_i_calendari=False
+2025-10-16 15:12:03,336 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
+2025-10-16 15:12:03,338 | INFO | outlook_mcp_server | list_upcoming_events: nessun evento trovato (calendario=Calendario giorni=7).
+2025-10-16 15:21:34,095 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=14 calendario=None max_risultati=25 descrizione=False tutti_i_calendari=False
+2025-10-16 15:21:35,047 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
+2025-10-16 15:21:35,050 | INFO | outlook_mcp_server | list_upcoming_events: nessun evento trovato (calendario=Calendario giorni=14).
+2025-10-16 15:22:44,496 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=2 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=False offset=0 unread_only=False folder_ids=[] folder_paths=[]
+2025-10-16 15:22:44,518 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=2 termine=None.
+2025-10-16 15:22:45,462 | INFO | outlook_mcp_server | list_recent_emails: restituiti 10 messaggi su 20 (termine=None cartella=Posta in arrivo offset=0).
+2025-10-16 15:22:50,574 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=2 id=None folder_id=None folder_path=None index=None corpo=True).
+2025-10-16 15:22:50,608 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=1 id=None folder_id=None folder_path=None index=None corpo=True).
+2025-10-16 15:22:50,627 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=3 id=None folder_id=None folder_path=None index=None corpo=True).
+2025-10-16 15:22:50,667 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=4 id=None folder_id=None folder_path=None index=None corpo=True).
+2025-10-16 15:22:50,702 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=6 id=None folder_id=None folder_path=None index=None corpo=True).
+2025-10-16 15:22:50,742 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=5 id=None folder_id=None folder_path=None index=None corpo=True).
+2025-10-16 15:22:50,815 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=7 id=None folder_id=None folder_path=None index=None corpo=True).
+2025-10-16 15:22:50,856 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=8 id=None folder_id=None folder_path=None index=None corpo=True).
+2025-10-16 15:22:50,887 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=9 id=None folder_id=None folder_path=None index=None corpo=True).
+2025-10-16 15:22:50,923 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=10 id=None folder_id=None folder_path=None index=None corpo=True).
+2025-10-16 15:25:16,142 | INFO | outlook_mcp_server | reply_to_email_by_number chiamato (numero=10 id=None reply_all=False invia=False allegati=[] html=False).

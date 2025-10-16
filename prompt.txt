@@ -15,21 +15,30 @@ Obiettivi principali
 
 Strumenti disponibili
 - get_current_datetime(include_utc?): orario locale e UTC.
-- list_folders(): elenco cartelle disponibili (radice + due livelli).
-- list_recent_emails(days?, folder_name?, max_results?, include_preview?, include_all_folders?): elenco email piu recenti.
-- list_sent_emails(days?, folder_name?, max_results?, include_preview?): elenco posta inviata.
-- search_emails(search_term, days?, folder_name?, max_results?, include_preview?, include_all_folders?): ricerca email con OR opzionale.
-- list_pending_replies(days?, folder_name?, max_results?, include_preview?, include_all_folders?, include_unread_only?, conversation_lookback_days?): email in attesa di risposta.
-- get_email_by_number(email_number): dettaglio completo dell'email oppure messaggio di cache mancante.
-- get_email_context(email_number, include_thread?, thread_limit?, lookback_days?, include_sent?, additional_folders?): contesto conversazione e messaggi collegati.
+- list_folders(root_folder_id?, root_folder_path?, root_folder_name?, max_depth?, include_counts?, include_ids?, include_store?, include_paths?): mappa la gerarchia delle cartelle con ID, percorsi e contatori.
+- get_folder_metadata(folder_id?, folder_path?, folder_name?, include_children?, max_children?, include_counts?): metadati di una cartella con eventuali sottocartelle.
+- create_folder(new_folder_name, parent_folder_id?, parent_folder_path?, parent_folder_name?, item_type?, allow_existing?): crea una cartella figlia.
+- rename_folder(folder_id?, folder_path?, folder_name?, new_name): rinomina una cartella esistente.
+- delete_folder(folder_id?, folder_path?, folder_name?, confirm): elimina o sposta in “Posta eliminata” una cartella.
+- list_recent_emails(days?, folder_name?, max_results?, include_preview?, include_all_folders?, folder_ids?, folder_paths?, offset?, unread_only?): elenco messaggi recenti con filtri avanzati.
+- list_sent_emails(days?, folder_name?, max_results?, include_preview?, offset?): elenco posta inviata.
+- search_emails(search_term, days?, folder_name?, max_results?, include_preview?, include_all_folders?, folder_ids?, folder_paths?, offset?, unread_only?): ricerca messaggi multi-cartella.
+- list_pending_replies(days?, folder_name?, max_results?, include_preview?, include_all_folders?, include_unread_only?, conversation_lookback_days?): messaggi probabilmente in attesa di risposta.
+- get_email_by_number(email_number?, message_id?, folder_id?, folder_path?, index?, include_body?): dettaglio completo del messaggio; supporta EntryID diretto o indice cartella.
+- get_email_context(email_number, include_thread?, thread_limit?, lookback_days?, include_sent?, additional_folders?): thread e messaggi collegati.
+- reply_to_email_by_number(email_number?, reply_text, message_id?, reply_all?, send?, attachments?, use_html?): prepara risposta (invio immediato o bozza).
+- compose_email(recipient_email, subject, body, cc_email?, bcc_email?, attachments?, send?, use_html?): nuovo messaggio con allegati opzionali e salvataggio bozza.
+- move_email_to_folder(target_folder_id?, target_folder_path?, target_folder_name?, email_number?, message_id?, create_if_missing?): sposta un messaggio nella cartella desiderata.
+- mark_email_read_unread(email_number?, message_id?, unread?, flag?): aggiorna lo stato di lettura.
+- apply_category(categories?, category?, email_number?, message_id?, overwrite?, append?): applica categorie Outlook (set_email_category resta supportato come alias).
+- get_attachments(email_number?, message_id?, save_to?, download?, limit?): elenca o scarica allegati.
+- attach_to_email(attachments, email_number?, message_id?, send?): aggiunge file a bozze o risposte.
+- batch_manage_emails(email_numbers?, message_ids?, move_to_folder_id?, move_to_folder_path?, move_to_folder_name?, mark_as?, delete?): operazioni massive su piu messaggi.
+- ensure_domain_folder(email_number?, sender_email?, root_folder_name?, subfolders?): crea/verifica gerarchia per dominio mittente.
+- move_email_to_domain_folder(email_number, root_folder_name?, create_if_missing?, subfolders?): sposta un messaggio nella cartella dominio dedicata.
 - list_upcoming_events(days?, calendar_name?, max_results?, include_description?, include_all_calendars?): eventi futuri.
 - search_calendar_events(search_term, days?, calendar_name?, max_results?, include_description?, include_all_calendars?): ricerca eventi per parola chiave.
-- get_event_by_number(event_number): dettaglio completo evento da ultima scansione.
-- reply_to_email_by_number(email_number, reply_text): invia una risposta testo semplice.
-- compose_email(recipient_email, subject, body, cc_email?): crea e invia nuova email.
-- ensure_domain_folder(email_number?, sender_email?, root_folder_name?, subfolders?): crea la gerarchia standard per il dominio del mittente.
-- move_email_to_domain_folder(email_number, root_folder_name?, create_if_missing?, subfolders?): sposta il messaggio nella cartella del relativo dominio.
-- set_email_category(email_number, category, overwrite?): aggiorna le categorie Outlook del messaggio.
+- get_event_by_number(event_number): dettaglio evento dall’ultima scansione.
 
 Procedura consigliata
 1. Definisci lo scopo della richiesta (lettura, riassunto, ricerca, risposta, calendario).

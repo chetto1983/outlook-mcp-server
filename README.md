@@ -1,4 +1,4 @@
-# Outlook MCP Server
+﻿# Outlook MCP Server
 
 Outlook MCP Server exposes Microsoft Outlook email and calendar data through Anthropic's Model Context Protocol (MCP). It enables MCP-aware assistants to browse folders, search and summarize conversations, monitor pending replies, inspect attachments, surface calendar events, and respond without leaving Outlook.
 
@@ -10,6 +10,8 @@ Outlook MCP Server exposes Microsoft Outlook email and calendar data through Ant
 - Deep thread expansion via cached list results and `get_email_context`, which can pull related messages from Sent Items and custom folders.
 - Calendar exploration across one or many calendars with recurrence-aware listings, keyword search, and detailed event retrieval.
 - Action helpers that let you reply inline (`reply_to_email_by_number`) or draft new outbound mail (`compose_email`) directly from MCP clients.
+- Folder administration utilities (`list_folders`, `get_folder_metadata`, `create_folder`, `rename_folder`, `delete_folder`) so you can inspect and curate the mailbox tree without leaving MCP.
+- Message maintenance shortcuts (`move_email_to_folder`, `mark_email_read_unread`, `apply_category`, `get_attachments`, `attach_to_email`, `batch_manage_emails`) that keep triage, tagging, and filing within the same workflow.
 - Built-in rotating logging (`logs/outlook_mcp_server.log`) and caches that keep long MCP sessions observable and responsive.
 
 ## Requirements
@@ -133,6 +135,16 @@ Each MCP tool accepts keyword arguments so clients can override defaults as need
 - Email previews are trimmed to 220 characters, and attachment previews contain at most five filenames for legibility.
 - Calendar scans include recurrences and cap out after 500 inspected appointments per folder to keep COM calls responsive.
 
+## Available MCP tools
+
+- **Cartelle**: `list_folders`, `get_folder_metadata`, `create_folder`, `rename_folder`, `delete_folder`, `ensure_domain_folder` per navigare, analizzare e modellare la struttura di Outlook (inclusi ID, percorsi e contatori).
+- **Elenco email**: `list_recent_emails`, `list_sent_emails`, `search_emails`, `list_pending_replies` offrono filtri su giorni, cartelle/percorsi, offset, stato lettura e preview opzionale.
+- **Dettagli e contesto**: `get_email_by_number`, `get_email_context` usano la cache dell’ultimo elenco per recuperare corpo completo, thread correlati e metadati chiave.
+- **Azioni sui messaggi**: `reply_to_email_by_number`, `compose_email`, `move_email_to_folder`, `mark_email_read_unread`, `apply_category`, `move_email_to_domain_folder` coprono risposta, bozza, spostamenti e categorie Outlook.
+- **Allegati**: `get_attachments` (solo metadata o download su disco) e `attach_to_email` per aggiungere file a bozze o risposte prima dell’invio.
+- **Operazioni batch**: `batch_manage_emails` consente movimenti, flag lettura e cancellazioni multiple usando numeri o EntryID.
+- **Calendario**: `list_upcoming_events`, `search_calendar_events`, `get_event_by_number` mantengono invariato l’accesso completo a riunioni e appuntamenti.
+
 ## Outlook automation roadmap
 
 The next Outlook-first enhancements (all executable directly through the MCP server) are grouped into five pillars:
@@ -202,3 +214,4 @@ compose_email("team@example.com", "Report settimanale", "Allego il riepilogo del
 - Replies and composed emails are sent as plain text; existing Outlook signatures are not injected automatically.
 - Attachments are not downloaded; only their names and counts are exposed.
 - MCP interactions operate against the Outlook profile of the Windows session running the server; shared mailboxes must already be visible in Outlook.
+
