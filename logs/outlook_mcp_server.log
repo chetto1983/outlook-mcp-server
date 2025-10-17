@@ -1,177 +1,147 @@
-2025-10-16 14:32:47,967 | INFO | outlook_mcp_server | create_folder chiamato (nome=Aurgente parent_id=None parent_path=None parent_name=None tipo=None allow_existing=False).
-2025-10-16 14:33:31,639 | INFO | outlook_mcp_server | create_folder chiamato (nome=Aurgente parent_id=None parent_path=None parent_name=None tipo=None allow_existing=False).
-2025-10-16 14:34:05,450 | INFO | outlook_mcp_server | create_folder chiamato (nome=Urgente parent_id=None parent_path=None parent_name=Posta in arrivo tipo=None allow_existing=False).
-2025-10-16 14:34:39,358 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=2 id=None target_id=None target_path=None target_nome=Urgente crea=False).
-2025-10-16 14:34:39,430 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=1 id=None target_id=None target_path=None target_nome=Urgente crea=False).
-2025-10-16 15:01:57,194 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=1 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=True offset=0 unread_only=True folder_ids=[] folder_paths=[]
-2025-10-16 15:01:57,795 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=1 termine=None.
-2025-10-16 15:01:58,179 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Urgente' con giorni=1 termine=None.
-2025-10-16 15:01:58,219 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'davide.marchetto@sacchi.it' con giorni=1 termine=None.
-2025-10-16 15:01:58,226 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta eliminata' con giorni=1 termine=None.
-2025-10-16 15:01:58,404 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'MCP_AUTOTEST_RENAMED' con giorni=1 termine=None.
-2025-10-16 15:01:58,410 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'MCP_AUTOTEST_MOVE' con giorni=1 termine=None.
-2025-10-16 15:01:58,417 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in uscita' con giorni=1 termine=None.
-2025-10-16 15:01:58,424 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=1 termine=None.
-2025-10-16 15:01:58,797 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta indesiderata' con giorni=1 termine=None.
-2025-10-16 15:01:58,804 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cronologia delle conversazioni' con giorni=1 termine=None.
-2025-10-16 15:01:58,810 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Chat del team' con giorni=1 termine=None.
-2025-10-16 15:01:58,822 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Bozze' con giorni=1 termine=None.
-2025-10-16 15:01:58,830 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Files' con giorni=1 termine=None.
-2025-10-16 15:01:58,837 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Social Activity Notifications' con giorni=1 termine=None.
-2025-10-16 15:01:58,843 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'EventCheckPoints' con giorni=1 termine=None.
-2025-10-16 15:01:58,849 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posposto' con giorni=1 termine=None.
-2025-10-16 15:01:58,858 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Marco Meldini' con giorni=1 termine=None.
-2025-10-16 15:01:58,868 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Problemi di sincronizzazione' con giorni=1 termine=None.
-2025-10-16 15:01:59,493 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori del server' con giorni=1 termine=None.
-2025-10-16 15:01:59,600 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conflitti' con giorni=1 termine=None.
-2025-10-16 15:01:59,608 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Errori in locale' con giorni=1 termine=None.
-2025-10-16 15:01:59,618 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feed RSS' con giorni=1 termine=None.
-2025-10-16 15:01:59,625 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Archivio' con giorni=1 termine=None.
-2025-10-16 15:01:59,631 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Cartella radice di Yammer' con giorni=1 termine=None.
-2025-10-16 15:01:59,637 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Feeds' con giorni=1 termine=None.
-2025-10-16 15:01:59,644 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Inbound' con giorni=1 termine=None.
-2025-10-16 15:01:59,650 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Outbound' con giorni=1 termine=None.
-2025-10-16 15:01:59,657 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Impostazioni azioni rapide' con giorni=1 termine=None.
-2025-10-16 15:01:59,665 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Conversation Action Settings' con giorni=1 termine=None.
-2025-10-16 15:01:59,672 | INFO | outlook_mcp_server | Raccolti 21 messaggi totali attraversando 47 cartelle (limite per cartella=5).
-2025-10-16 15:01:59,673 | INFO | outlook_mcp_server | list_recent_emails: restituiti 8 messaggi su 8 (termine=None cartella=Tutte le cartelle offset=0).
-2025-10-16 15:08:54,057 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=1 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False offset=0 unread_only=True folder_ids=[] folder_paths=[]
-2025-10-16 15:08:54,073 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=1 termine=None.
-2025-10-16 15:08:54,445 | INFO | outlook_mcp_server | list_recent_emails: nessun messaggio (termine=None cartella=Posta in arrivo giorni=1).
-2025-10-16 15:11:33,082 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=2 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False offset=0 unread_only=True folder_ids=[] folder_paths=[]
-2025-10-16 15:11:33,105 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=2 termine=None.
-2025-10-16 15:11:34,080 | INFO | outlook_mcp_server | list_recent_emails: nessun messaggio (termine=None cartella=Posta in arrivo giorni=2).
-2025-10-16 15:12:02,338 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=7 calendario=None max_risultati=25 descrizione=False tutti_i_calendari=False
-2025-10-16 15:12:03,336 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-16 15:12:03,338 | INFO | outlook_mcp_server | list_upcoming_events: nessun evento trovato (calendario=Calendario giorni=7).
-2025-10-16 15:21:34,095 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=14 calendario=None max_risultati=25 descrizione=False tutti_i_calendari=False
-2025-10-16 15:21:35,047 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-16 15:21:35,050 | INFO | outlook_mcp_server | list_upcoming_events: nessun evento trovato (calendario=Calendario giorni=14).
-2025-10-16 15:22:44,496 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=2 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=False offset=0 unread_only=False folder_ids=[] folder_paths=[]
-2025-10-16 15:22:44,518 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=2 termine=None.
-2025-10-16 15:22:45,462 | INFO | outlook_mcp_server | list_recent_emails: restituiti 10 messaggi su 20 (termine=None cartella=Posta in arrivo offset=0).
-2025-10-16 15:22:50,574 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=2 id=None folder_id=None folder_path=None index=None corpo=True).
-2025-10-16 15:22:50,608 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=1 id=None folder_id=None folder_path=None index=None corpo=True).
-2025-10-16 15:22:50,627 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=3 id=None folder_id=None folder_path=None index=None corpo=True).
-2025-10-16 15:22:50,667 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=4 id=None folder_id=None folder_path=None index=None corpo=True).
-2025-10-16 15:22:50,702 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=6 id=None folder_id=None folder_path=None index=None corpo=True).
-2025-10-16 15:22:50,742 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=5 id=None folder_id=None folder_path=None index=None corpo=True).
-2025-10-16 15:22:50,815 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=7 id=None folder_id=None folder_path=None index=None corpo=True).
-2025-10-16 15:22:50,856 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=8 id=None folder_id=None folder_path=None index=None corpo=True).
-2025-10-16 15:22:50,887 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=9 id=None folder_id=None folder_path=None index=None corpo=True).
-2025-10-16 15:22:50,923 | INFO | outlook_mcp_server | get_email_by_number chiamato (numero=10 id=None folder_id=None folder_path=None index=None corpo=True).
-2025-10-16 15:25:16,142 | INFO | outlook_mcp_server | reply_to_email_by_number chiamato (numero=10 id=None reply_all=False invia=False allegati=[] html=False).
-2025-10-17 09:33:13,737 | INFO | outlook_mcp_server | test_list: restituiti 2 messaggi su 3 (termine=None cartella=Posta in arrivo offset=1).
-2025-10-17 09:33:13,741 | INFO | outlook_mcp_server | mark_email_read_unread chiamato (numero=1 id=None unread=False).
-2025-10-17 09:33:13,752 | INFO | outlook_mcp_server | get_attachments chiamato (numero=None id=MSG1 download=True limit=None destinazione=C:\Users\Davide\AppData\Local\Temp\pytest-of-Davide\pytest-3\test_get_attachments_download0).
-2025-10-17 09:33:13,754 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=1 id=None target_id=FOLDER-ID target_path=None target_nome=None crea=False).
-2025-10-17 09:33:13,822 | INFO | outlook_mcp_server | create_folder chiamato (nome=Reports parent_id=PID parent_path=None parent_name=None tipo=None allow_existing=False).
-2025-10-17 09:33:13,825 | INFO | outlook_mcp_server | delete_folder chiamato (id=DEL-ID path=None nome=None).
-2025-10-17 09:33:13,826 | INFO | outlook_mcp_server | compose_email chiamato (destinatario=dest@example.com cc=None bcc=None oggetto='HTML Test' invia=True allegati=[] html=True).
-2025-10-17 09:33:13,828 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
-2025-10-17 09:33:13,828 | INFO | outlook_mcp_server | search_contacts chiamato (termine=Acme max_results=50).
-2025-10-17 09:33:13,829 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-17 09:33:13,829 | INFO | outlook_mcp_server | list_pending_replies ha trovato 2 messaggi da gestire su 2 analizzati.
-2025-10-17 09:33:13,830 | INFO | outlook_mcp_server | list_pending_replies: restituiti 2 messaggi su 2 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
-2025-10-17 09:33:38,058 | INFO | outlook_mcp_server | test_list: restituiti 2 messaggi su 3 (termine=None cartella=Posta in arrivo offset=1).
-2025-10-17 09:33:38,060 | INFO | outlook_mcp_server | mark_email_read_unread chiamato (numero=1 id=None unread=False).
-2025-10-17 09:33:38,078 | INFO | outlook_mcp_server | get_attachments chiamato (numero=None id=MSG1 download=True limit=None destinazione=C:\Users\Davide\AppData\Local\Temp\pytest-of-Davide\pytest-4\test_get_attachments_download0).
-2025-10-17 09:33:38,081 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=1 id=None target_id=FOLDER-ID target_path=None target_nome=None crea=False).
-2025-10-17 09:33:38,082 | INFO | outlook_mcp_server | create_folder chiamato (nome=Reports parent_id=PID parent_path=None parent_name=None tipo=None allow_existing=False).
-2025-10-17 09:33:38,084 | INFO | outlook_mcp_server | delete_folder chiamato (id=DEL-ID path=None nome=None).
-2025-10-17 09:33:38,086 | INFO | outlook_mcp_server | compose_email chiamato (destinatario=dest@example.com cc=None bcc=None oggetto='HTML Test' invia=True allegati=[] html=True).
-2025-10-17 09:33:38,088 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
-2025-10-17 09:33:38,089 | INFO | outlook_mcp_server | search_contacts chiamato (termine=Acme max_results=50).
-2025-10-17 09:33:38,091 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-17 09:33:38,091 | INFO | outlook_mcp_server | list_pending_replies ha trovato 2 messaggi da gestire su 2 analizzati.
-2025-10-17 09:33:38,092 | INFO | outlook_mcp_server | list_pending_replies: restituiti 2 messaggi su 2 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
-2025-10-17 09:40:47,438 | INFO | outlook_mcp_server | test_list: restituiti 2 messaggi su 3 (termine=None cartella=Posta in arrivo offset=1).
-2025-10-17 09:40:47,440 | INFO | outlook_mcp_server | mark_email_read_unread chiamato (numero=1 id=None unread=False).
-2025-10-17 09:40:47,460 | INFO | outlook_mcp_server | get_attachments chiamato (numero=None id=MSG1 download=True limit=None destinazione=C:\Users\Davide\AppData\Local\Temp\pytest-of-Davide\pytest-5\test_get_attachments_download0).
-2025-10-17 09:40:47,462 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=1 id=None target_id=FOLDER-ID target_path=None target_nome=None crea=False).
-2025-10-17 09:40:47,464 | INFO | outlook_mcp_server | create_folder chiamato (nome=Reports parent_id=PID parent_path=None parent_name=None tipo=None allow_existing=False).
-2025-10-17 09:40:47,465 | INFO | outlook_mcp_server | delete_folder chiamato (id=DEL-ID path=None nome=None).
-2025-10-17 09:40:47,466 | INFO | outlook_mcp_server | compose_email chiamato (destinatario=dest@example.com cc=None bcc=None oggetto='HTML Test' invia=True allegati=[] html=True).
-2025-10-17 09:40:47,468 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
-2025-10-17 09:40:47,468 | INFO | outlook_mcp_server | search_contacts chiamato (termine=Acme max_results=50).
-2025-10-17 09:40:47,470 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Riunione settimanale  start=2025-10-20 10:30 durata=90 luogo=Sala Riunioni partecipanti=['alice@example.com', 'bob@example.com'] all_day=False invia=True calendario=None).
-2025-10-17 09:40:47,501 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Evento start=2025-11-01 durata=60 luogo=None partecipanti=[] all_day=False invia=True calendario=Agenda condivisa).
-2025-10-17 09:40:47,503 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-17 09:40:47,503 | INFO | outlook_mcp_server | list_pending_replies ha trovato 2 messaggi da gestire su 2 analizzati.
-2025-10-17 09:40:47,504 | INFO | outlook_mcp_server | list_pending_replies: restituiti 2 messaggi su 2 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
-2025-10-17 09:50:03,715 | INFO | outlook_mcp_server | test_list: restituiti 2 messaggi su 3 (termine=None cartella=Posta in arrivo offset=1).
-2025-10-17 09:50:03,717 | INFO | outlook_mcp_server | mark_email_read_unread chiamato (numero=1 id=None unread=False).
-2025-10-17 09:50:03,724 | INFO | outlook_mcp_server | get_attachments chiamato (numero=None id=MSG1 download=True limit=None destinazione=C:\Users\Davide\AppData\Local\Temp\pytest-of-Davide\pytest-6\test_get_attachments_download0).
-2025-10-17 09:50:03,727 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=1 id=None target_id=FOLDER-ID target_path=None target_nome=None crea=False).
-2025-10-17 09:50:03,729 | INFO | outlook_mcp_server | create_folder chiamato (nome=Reports parent_id=PID parent_path=None parent_name=None tipo=None allow_existing=False).
-2025-10-17 09:50:03,730 | INFO | outlook_mcp_server | delete_folder chiamato (id=DEL-ID path=None nome=None).
-2025-10-17 09:50:03,731 | INFO | outlook_mcp_server | compose_email chiamato (destinatario=dest@example.com cc=None bcc=None oggetto='HTML Test' invia=True allegati=[] html=True).
-2025-10-17 09:50:03,733 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
-2025-10-17 09:50:03,733 | INFO | outlook_mcp_server | search_contacts chiamato (termine=Acme max_results=50).
-2025-10-17 09:50:03,734 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Riunione settimanale  start=2025-10-20 10:30 durata=90 luogo=Sala Riunioni partecipanti=['alice@example.com', 'bob@example.com'] all_day=False invia=True calendario=None).
-2025-10-17 09:50:03,744 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Evento start=2025-11-01 durata=60 luogo=None partecipanti=[] all_day=False invia=True calendario=Agenda condivisa).
-2025-10-17 09:50:03,747 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-17 09:50:03,747 | INFO | outlook_mcp_server | list_pending_replies ha trovato 2 messaggi da gestire su 2 analizzati.
-2025-10-17 09:50:03,747 | INFO | outlook_mcp_server | list_pending_replies: restituiti 2 messaggi su 2 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
-2025-10-17 09:52:22,331 | INFO | outlook_mcp_server | test_list: restituiti 2 messaggi su 3 (termine=None cartella=Posta in arrivo offset=1).
-2025-10-17 09:52:22,333 | INFO | outlook_mcp_server | mark_email_read_unread chiamato (numero=1 id=None unread=False).
-2025-10-17 09:52:22,351 | INFO | outlook_mcp_server | get_attachments chiamato (numero=None id=MSG1 download=True limit=None destinazione=C:\Users\Davide\AppData\Local\Temp\pytest-of-Davide\pytest-7\test_get_attachments_download0).
-2025-10-17 09:52:22,354 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=1 id=None target_id=FOLDER-ID target_path=None target_nome=None crea=False).
-2025-10-17 09:52:22,356 | INFO | outlook_mcp_server | create_folder chiamato (nome=Reports parent_id=PID parent_path=None parent_name=None tipo=None allow_existing=False).
-2025-10-17 09:52:22,357 | INFO | outlook_mcp_server | delete_folder chiamato (id=DEL-ID path=None nome=None).
-2025-10-17 09:52:22,358 | INFO | outlook_mcp_server | compose_email chiamato (destinatario=dest@example.com cc=None bcc=None oggetto='HTML Test' invia=True allegati=[] html=True).
-2025-10-17 09:52:22,359 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
-2025-10-17 09:52:22,360 | INFO | outlook_mcp_server | search_contacts chiamato (termine=Acme max_results=50).
-2025-10-17 09:52:22,361 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Riunione settimanale  start=2025-10-20 10:30 durata=90 luogo=Sala Riunioni partecipanti=['alice@example.com', 'bob@example.com'] all_day=False invia=True calendario=None).
-2025-10-17 09:52:22,374 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Evento start=2025-11-01 durata=60 luogo=None partecipanti=[] all_day=False invia=True calendario=Agenda condivisa).
-2025-10-17 09:52:22,376 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-17 09:52:22,376 | INFO | outlook_mcp_server | list_pending_replies ha trovato 2 messaggi da gestire su 2 analizzati.
-2025-10-17 09:52:22,376 | INFO | outlook_mcp_server | list_pending_replies: restituiti 2 messaggi su 2 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
-2025-10-17 10:09:00,956 | INFO | outlook_mcp_server | test_list: restituiti 2 messaggi su 3 (termine=None cartella=Posta in arrivo offset=1).
-2025-10-17 10:09:00,958 | INFO | outlook_mcp_server | mark_email_read_unread chiamato (numero=1 id=None unread=False).
-2025-10-17 10:09:00,976 | INFO | outlook_mcp_server | get_attachments chiamato (numero=None id=MSG1 download=True limit=None destinazione=C:\Users\Davide\AppData\Local\Temp\pytest-of-Davide\pytest-8\test_get_attachments_download0).
-2025-10-17 10:09:00,979 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=1 id=None target_id=FOLDER-ID target_path=None target_nome=None crea=False).
-2025-10-17 10:09:00,980 | INFO | outlook_mcp_server | create_folder chiamato (nome=Reports parent_id=PID parent_path=None parent_name=None tipo=None allow_existing=False).
-2025-10-17 10:09:00,981 | INFO | outlook_mcp_server | delete_folder chiamato (id=DEL-ID path=None nome=None).
-2025-10-17 10:09:00,982 | INFO | outlook_mcp_server | compose_email chiamato (destinatario=dest@example.com cc=None bcc=None oggetto='HTML Test' invia=True allegati=[] html=True).
-2025-10-17 10:09:00,983 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
-2025-10-17 10:09:00,983 | INFO | outlook_mcp_server | search_contacts chiamato (termine=Acme max_results=50).
-2025-10-17 10:09:00,984 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
-2025-10-17 10:09:00,985 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
-2025-10-17 10:09:00,986 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Riunione settimanale  start=2025-10-20 10:30 durata=90 luogo=Sala Riunioni partecipanti=['alice@example.com', 'bob@example.com'] all_day=False invia=True calendario=None).
-2025-10-17 10:09:00,987 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Giornata intera start=2025-12-24 15:30 durata=None luogo=None partecipanti=[] all_day=True invia=True calendario=None).
-2025-10-17 10:09:00,997 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Evento start=2025-11-01 durata=60 luogo=None partecipanti=[] all_day=False invia=True calendario=Agenda condivisa).
-2025-10-17 10:09:00,999 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-17 10:09:00,999 | INFO | outlook_mcp_server | list_pending_replies ha trovato 2 messaggi da gestire su 2 analizzati.
-2025-10-17 10:09:00,999 | INFO | outlook_mcp_server | list_pending_replies: restituiti 2 messaggi su 2 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
-2025-10-17 10:12:49,909 | INFO | outlook_mcp_server | create_folder chiamato (nome=MCPINT_20251017_101249_Base parent_id=0000000057ED66F88E5F0346B882295244EEE2EA0100B12F2EC9C1542243BEEFD9D2C078D1B200000000010C0000 parent_path=None parent_name=None tipo=None allow_existing=False).
-2025-10-17 10:12:49,960 | INFO | outlook_mcp_server | rename_folder chiamato (id=None path=None nome=MCPINT_20251017_101249_Base nuovo_nome=MCPINT_20251017_101249_Base_Renamed).
-2025-10-17 10:12:50,034 | INFO | outlook_mcp_server | create_folder chiamato (nome=MCPINT_20251017_101249_Move parent_id=0000000057ED66F88E5F0346B882295244EEE2EA0100B12F2EC9C1542243BEEFD9D2C078D1B200000000010C0000 parent_path=None parent_name=None tipo=None allow_existing=True).
-2025-10-17 10:12:50,131 | INFO | outlook_mcp_server | compose_email chiamato (destinatario=davide.marchetto@sacchi.it cc=None bcc=None oggetto='MCPINT_20251017_101249 Subject' invia=False allegati=[] html=True).
-2025-10-17 10:12:50,227 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=None id=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010F0000B12F2EC9C1542243BEEFD9D2C078D1B20000847DEBA30000 target_id=None target_path=\\davide.marchetto@sacchi.it\Posta in arrivo\MCPINT_20251017_101249_Move target_nome=None crea=False).
-2025-10-17 10:12:50,397 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=None id=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B20000847E628B0000B12F2EC9C1542243BEEFD9D2C078D1B20000847E6E030000 target_id=None target_path=\\davide.marchetto@sacchi.it\Bozze target_nome=None crea=False).
-2025-10-17 10:12:50,552 | INFO | outlook_mcp_server | attach_to_email chiamato (numero=None id=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010F0000B12F2EC9C1542243BEEFD9D2C078D1B20000847DEBA40000 allegati=['C:\\Users\\Davide\\AppData\\Local\\Temp\\pytest-of-Davide\\pytest-9\\test_real_outlook_end_to_end0\\mcp_integration_attachment.txt'] invia=False).
-2025-10-17 10:12:50,663 | INFO | outlook_mcp_server | get_attachments chiamato (numero=None id=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010F0000B12F2EC9C1542243BEEFD9D2C078D1B20000847DEBA40000 download=True limit=None destinazione=C:\Users\Davide\AppData\Local\Temp\pytest-of-Davide\pytest-9\test_real_outlook_end_to_end0\downloads).
-2025-10-17 10:12:50,764 | INFO | outlook_mcp_server | search_contacts chiamato (termine=MCPINT_20251017_101249 max_results=50).
-2025-10-17 10:12:53,656 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=MCPINT_20251017_101249 Meeting start=2025-10-17 11:00 durata=45 luogo=Sala Test MCP partecipanti=[] all_day=False invia=False calendario=None).
-2025-10-17 10:12:53,840 | INFO | outlook_mcp_server | batch_manage_emails chiamato (numeri=[] ids=['0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010F0000B12F2EC9C1542243BEEFD9D2C078D1B20000847DEBA40000'] move=False mark=None delete=True).
-2025-10-17 10:12:53,871 | INFO | outlook_mcp_server | delete_folder chiamato (id=None path=None nome=MCPINT_20251017_101249_Base_Renamed).
-2025-10-17 10:12:53,979 | INFO | outlook_mcp_server | delete_folder chiamato (id=None path=None nome=MCPINT_20251017_101249_Base).
-2025-10-17 10:12:54,250 | INFO | outlook_mcp_server | delete_folder chiamato (id=None path=None nome=MCPINT_20251017_101249_Move).
-2025-10-17 10:13:10,176 | INFO | outlook_mcp_server | test_list: restituiti 2 messaggi su 3 (termine=None cartella=Posta in arrivo offset=1).
-2025-10-17 10:13:10,178 | INFO | outlook_mcp_server | mark_email_read_unread chiamato (numero=1 id=None unread=False).
-2025-10-17 10:13:10,194 | INFO | outlook_mcp_server | get_attachments chiamato (numero=None id=MSG1 download=True limit=None destinazione=C:\Users\Davide\AppData\Local\Temp\pytest-of-Davide\pytest-10\test_get_attachments_download0).
-2025-10-17 10:13:10,198 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=1 id=None target_id=FOLDER-ID target_path=None target_nome=None crea=False).
-2025-10-17 10:13:10,200 | INFO | outlook_mcp_server | create_folder chiamato (nome=Reports parent_id=PID parent_path=None parent_name=None tipo=None allow_existing=False).
-2025-10-17 10:13:10,201 | INFO | outlook_mcp_server | delete_folder chiamato (id=DEL-ID path=None nome=None).
-2025-10-17 10:13:10,202 | INFO | outlook_mcp_server | compose_email chiamato (destinatario=dest@example.com cc=None bcc=None oggetto='HTML Test' invia=True allegati=[] html=True).
-2025-10-17 10:13:10,204 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
-2025-10-17 10:13:10,204 | INFO | outlook_mcp_server | search_contacts chiamato (termine=Acme max_results=50).
-2025-10-17 10:13:10,205 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
-2025-10-17 10:13:10,207 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
-2025-10-17 10:13:10,208 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Riunione settimanale  start=2025-10-20 10:30 durata=90 luogo=Sala Riunioni partecipanti=['alice@example.com', 'bob@example.com'] all_day=False invia=True calendario=None).
-2025-10-17 10:13:10,209 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Giornata intera start=2025-12-24 15:30 durata=None luogo=None partecipanti=[] all_day=True invia=True calendario=None).
-2025-10-17 10:13:10,221 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Evento start=2025-11-01 durata=60 luogo=None partecipanti=[] all_day=False invia=True calendario=Agenda condivisa).
-2025-10-17 10:13:10,222 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-17 10:13:10,223 | INFO | outlook_mcp_server | list_pending_replies ha trovato 2 messaggi da gestire su 2 analizzati.
-2025-10-17 10:13:10,223 | INFO | outlook_mcp_server | list_pending_replies: restituiti 2 messaggi su 2 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
+2025-10-17 15:39:13,785 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 15:39:56,267 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 15:45:12,238 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 15:46:30,925 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 15:55:55,292 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 15:56:12,129 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 15:58:05,445 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 15:58:05,588 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
+2025-10-17 15:58:05,600 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
+2025-10-17 15:58:07,307 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2101 elementi.
+2025-10-17 15:58:07,314 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
+2025-10-17 16:01:46,281 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 16:01:46,601 | INFO | outlook_mcp_server | test_list: restituiti 2 messaggi su 3 (termine=None cartella=Posta in arrivo offset=1).
+2025-10-17 16:01:46,605 | INFO | outlook_mcp_server | mark_email_read_unread chiamato (numero=1 id=None unread=False).
+2025-10-17 16:01:46,611 | INFO | outlook_mcp_server | get_attachments chiamato (numero=None id=MSG1 download=True limit=None destinazione=C:\Users\Davide\AppData\Local\Temp\pytest-of-Davide\pytest-11\test_get_attachments_download0).
+2025-10-17 16:01:46,613 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=1 id=None target_id=FOLDER-ID target_path=None target_nome=None crea=False).
+2025-10-17 16:01:46,615 | INFO | outlook_mcp_server | create_folder chiamato (nome=Reports parent_id=PID parent_path=None parent_name=None tipo=None allow_existing=False).
+2025-10-17 16:01:46,615 | INFO | outlook_mcp_server | delete_folder chiamato (id=DEL-ID path=None nome=None).
+2025-10-17 16:01:46,616 | ERROR | outlook_mcp_server | Errore durante delete_folder.
+Traceback (most recent call last):
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\folders.py", line 231, in delete_folder
+    _, namespace = connect_to_outlook()
+                   ^^^^^^^^^^^^^^^^^^
+NameError: name 'connect_to_outlook' is not defined
+2025-10-17 16:01:46,717 | INFO | outlook_mcp_server | compose_email chiamato (destinatario=dest@example.com cc=None bcc=None oggetto='HTML Test' invia=True allegati=[] html=True).
+2025-10-17 16:01:46,720 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
+2025-10-17 16:01:46,720 | INFO | outlook_mcp_server | search_contacts chiamato (termine=Acme max_results=50).
+2025-10-17 16:01:46,721 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
+2025-10-17 16:01:46,722 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
+2025-10-17 16:01:46,752 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
+2025-10-17 16:01:46,753 | ERROR | outlook_mcp_server | Errore durante list_pending_replies per la cartella 'Posta in arrivo'.
+Traceback (most recent call last):
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\email_list.py", line 376, in list_pending_replies
+    _, namespace = connect_to_outlook()
+                   ^^^^^^^^^^^^^^^^^^
+NameError: name 'connect_to_outlook' is not defined
+2025-10-17 16:04:21,962 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 16:05:48,188 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 16:06:05,225 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 16:06:05,539 | INFO | outlook_mcp_server | test_list: restituiti 2 messaggi su 3 (termine=None cartella=Posta in arrivo offset=1).
+2025-10-17 16:06:05,542 | INFO | outlook_mcp_server | mark_email_read_unread chiamato (numero=1 id=None unread=False).
+2025-10-17 16:06:05,550 | INFO | outlook_mcp_server | get_attachments chiamato (numero=None id=MSG1 download=True limit=None destinazione=C:\Users\Davide\AppData\Local\Temp\pytest-of-Davide\pytest-13\test_get_attachments_download0).
+2025-10-17 16:06:05,552 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=1 id=None target_id=FOLDER-ID target_path=None target_nome=None crea=False).
+2025-10-17 16:06:05,558 | INFO | outlook_mcp_server | create_folder chiamato (nome=Reports parent_id=PID parent_path=None parent_name=None tipo=None allow_existing=False).
+2025-10-17 16:06:05,558 | ERROR | outlook_mcp_server | Errore durante create_folder.
+Traceback (most recent call last):
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\folders.py", line 139, in create_folder
+    _, namespace = _connect()
+                   ~~~~~~~~^^
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\folders.py", line 16, in _connect
+    return _connect()
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\folders.py", line 16, in _connect
+    return _connect()
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\folders.py", line 16, in _connect
+    return _connect()
+  [Previous line repeated 961 more times]
+RecursionError: maximum recursion depth exceeded
+2025-10-17 16:06:05,653 | INFO | outlook_mcp_server | delete_folder chiamato (id=DEL-ID path=None nome=None).
+2025-10-17 16:06:05,654 | ERROR | outlook_mcp_server | Errore durante delete_folder.
+Traceback (most recent call last):
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\folders.py", line 231, in delete_folder
+    _, namespace = _connect()
+                   ~~~~~~~~^^
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\folders.py", line 16, in _connect
+    return _connect()
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\folders.py", line 16, in _connect
+    return _connect()
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\folders.py", line 16, in _connect
+    return _connect()
+  [Previous line repeated 961 more times]
+RecursionError: maximum recursion depth exceeded
+2025-10-17 16:06:05,691 | INFO | outlook_mcp_server | compose_email chiamato (destinatario=dest@example.com cc=None bcc=None oggetto='HTML Test' invia=True allegati=[] html=True).
+2025-10-17 16:06:05,694 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
+2025-10-17 16:06:05,694 | INFO | outlook_mcp_server | search_contacts chiamato (termine=Acme max_results=50).
+2025-10-17 16:06:05,695 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
+2025-10-17 16:06:05,696 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
+2025-10-17 16:06:05,732 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
+2025-10-17 16:06:05,734 | ERROR | outlook_mcp_server | Errore durante list_pending_replies per la cartella 'Posta in arrivo'.
+Traceback (most recent call last):
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\email_list.py", line 376, in list_pending_replies
+    _, namespace = _connect()
+                   ~~~~~~~~^^
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\email_list.py", line 34, in _connect
+    return _connect()
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\email_list.py", line 34, in _connect
+    return _connect()
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\tools\email_list.py", line 34, in _connect
+    return _connect()
+  [Previous line repeated 961 more times]
+RecursionError: maximum recursion depth exceeded
+2025-10-17 16:06:27,324 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 16:06:58,298 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 16:06:58,619 | INFO | outlook_mcp_server | test_list: restituiti 2 messaggi su 3 (termine=None cartella=Posta in arrivo offset=1).
+2025-10-17 16:06:58,622 | INFO | outlook_mcp_server | mark_email_read_unread chiamato (numero=1 id=None unread=False).
+2025-10-17 16:06:58,629 | INFO | outlook_mcp_server | get_attachments chiamato (numero=None id=MSG1 download=True limit=None destinazione=C:\Users\Davide\AppData\Local\Temp\pytest-of-Davide\pytest-14\test_get_attachments_download0).
+2025-10-17 16:06:58,632 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=1 id=None target_id=FOLDER-ID target_path=None target_nome=None crea=False).
+2025-10-17 16:06:58,639 | INFO | outlook_mcp_server | create_folder chiamato (nome=Reports parent_id=PID parent_path=None parent_name=None tipo=None allow_existing=False).
+2025-10-17 16:06:58,641 | INFO | outlook_mcp_server | delete_folder chiamato (id=DEL-ID path=None nome=None).
+2025-10-17 16:06:58,642 | INFO | outlook_mcp_server | compose_email chiamato (destinatario=dest@example.com cc=None bcc=None oggetto='HTML Test' invia=True allegati=[] html=True).
+2025-10-17 16:06:58,644 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
+2025-10-17 16:06:58,644 | INFO | outlook_mcp_server | search_contacts chiamato (termine=Acme max_results=50).
+2025-10-17 16:06:58,646 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
+2025-10-17 16:06:58,647 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
+2025-10-17 16:06:58,649 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Riunione settimanale  start=2025-10-20 10:30 durata=90 luogo=Sala Riunioni partecipanti=['alice@example.com', 'bob@example.com'] all_day=False invia=True calendario=None).
+2025-10-17 16:06:58,650 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Giornata intera start=2025-12-24 15:30 durata=None luogo=None partecipanti=[] all_day=True invia=True calendario=None).
+2025-10-17 16:06:58,675 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Evento start=2025-11-01 durata=60 luogo=None partecipanti=[] all_day=False invia=True calendario=Agenda condivisa).
+2025-10-17 16:06:58,684 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
+2025-10-17 16:06:58,684 | INFO | outlook_mcp_server | list_pending_replies ha trovato 2 messaggi da gestire su 2 analizzati.
+2025-10-17 16:06:58,684 | INFO | outlook_mcp_server | list_pending_replies: restituiti 2 messaggi su 2 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
+2025-10-17 16:08:33,247 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 16:08:33,452 | INFO | outlook_mcp_server | create_folder chiamato (nome=MCPINT_20251017_160833_Base parent_id=0000000057ED66F88E5F0346B882295244EEE2EA0100B12F2EC9C1542243BEEFD9D2C078D1B200000000010C0000 parent_path=None parent_name=None tipo=None allow_existing=False).
+2025-10-17 16:08:33,469 | INFO | outlook_mcp_server | rename_folder chiamato (id=None path=None nome=MCPINT_20251017_160833_Base nuovo_nome=MCPINT_20251017_160833_Base_Renamed).
+2025-10-17 16:08:33,486 | INFO | outlook_mcp_server | create_folder chiamato (nome=MCPINT_20251017_160833_Move parent_id=0000000057ED66F88E5F0346B882295244EEE2EA0100B12F2EC9C1542243BEEFD9D2C078D1B200000000010C0000 parent_path=None parent_name=None tipo=None allow_existing=True).
+2025-10-17 16:08:33,513 | INFO | outlook_mcp_server | compose_email chiamato (destinatario=davide.marchetto@sacchi.it cc=None bcc=None oggetto='MCPINT_20251017_160833 Subject' invia=False allegati=[] html=True).
+2025-10-17 16:08:33,536 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=None id=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010F0000B12F2EC9C1542243BEEFD9D2C078D1B20000847DEBA50000 target_id=None target_path=\\davide.marchetto@sacchi.it\Posta in arrivo\MCPINT_20251017_160833_Move target_nome=None crea=False).
+2025-10-17 16:08:33,579 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=None id=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B20000847E62920000B12F2EC9C1542243BEEFD9D2C078D1B20000847E70030000 target_id=None target_path=\\davide.marchetto@sacchi.it\Bozze target_nome=None crea=False).
+2025-10-17 16:08:33,618 | INFO | outlook_mcp_server | attach_to_email chiamato (numero=None id=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010F0000B12F2EC9C1542243BEEFD9D2C078D1B20000847DEBA60000 allegati=['C:\\Users\\Davide\\AppData\\Local\\Temp\\pytest-of-Davide\\pytest-15\\test_real_outlook_end_to_end0\\mcp_integration_attachment.txt'] invia=False).
+2025-10-17 16:08:33,703 | INFO | outlook_mcp_server | get_attachments chiamato (numero=None id=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010F0000B12F2EC9C1542243BEEFD9D2C078D1B20000847DEBA60000 download=True limit=None destinazione=C:\Users\Davide\AppData\Local\Temp\pytest-of-Davide\pytest-15\test_real_outlook_end_to_end0\downloads).
+2025-10-17 16:08:33,739 | INFO | outlook_mcp_server | search_contacts chiamato (termine=MCPINT_20251017_160833 max_results=50).
+2025-10-17 16:08:35,178 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=MCPINT_20251017_160833 Meeting start=2025-10-17 17:00 durata=45 luogo=Sala Test MCP partecipanti=[] all_day=False invia=False calendario=None).
+2025-10-17 16:08:35,368 | INFO | outlook_mcp_server | batch_manage_emails chiamato (numeri=[] ids=['0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010F0000B12F2EC9C1542243BEEFD9D2C078D1B20000847DEBA60000'] move=False mark=None delete=True).
+2025-10-17 16:08:35,409 | INFO | outlook_mcp_server | delete_folder chiamato (id=None path=None nome=MCPINT_20251017_160833_Base_Renamed).
+2025-10-17 16:08:35,424 | INFO | outlook_mcp_server | delete_folder chiamato (id=None path=None nome=MCPINT_20251017_160833_Base).
+2025-10-17 16:08:36,469 | INFO | outlook_mcp_server | delete_folder chiamato (id=None path=None nome=MCPINT_20251017_160833_Move).
+2025-10-17 16:10:10,157 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 16:10:10,304 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
+2025-10-17 16:10:10,308 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
+2025-10-17 16:10:10,324 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2098 elementi.
+2025-10-17 16:10:10,327 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
+2025-10-17 16:10:36,947 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-17 16:10:37,258 | INFO | outlook_mcp_server | test_list: restituiti 2 messaggi su 3 (termine=None cartella=Posta in arrivo offset=1).
+2025-10-17 16:10:37,261 | INFO | outlook_mcp_server | mark_email_read_unread chiamato (numero=1 id=None unread=False).
+2025-10-17 16:10:37,277 | INFO | outlook_mcp_server | get_attachments chiamato (numero=None id=MSG1 download=True limit=None destinazione=C:\Users\Davide\AppData\Local\Temp\pytest-of-Davide\pytest-16\test_get_attachments_download0).
+2025-10-17 16:10:37,280 | INFO | outlook_mcp_server | move_email_to_folder chiamato (numero=1 id=None target_id=FOLDER-ID target_path=None target_nome=None crea=False).
+2025-10-17 16:10:37,282 | INFO | outlook_mcp_server | create_folder chiamato (nome=Reports parent_id=PID parent_path=None parent_name=None tipo=None allow_existing=False).
+2025-10-17 16:10:37,283 | INFO | outlook_mcp_server | delete_folder chiamato (id=DEL-ID path=None nome=None).
+2025-10-17 16:10:37,284 | INFO | outlook_mcp_server | compose_email chiamato (destinatario=dest@example.com cc=None bcc=None oggetto='HTML Test' invia=True allegati=[] html=True).
+2025-10-17 16:10:37,285 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
+2025-10-17 16:10:37,286 | INFO | outlook_mcp_server | search_contacts chiamato (termine=Acme max_results=50).
+2025-10-17 16:10:37,287 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
+2025-10-17 16:10:37,288 | INFO | outlook_mcp_server | search_contacts chiamato (termine=None max_results=50).
+2025-10-17 16:10:37,290 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Riunione settimanale  start=2025-10-20 10:30 durata=90 luogo=Sala Riunioni partecipanti=['alice@example.com', 'bob@example.com'] all_day=False invia=True calendario=None).
+2025-10-17 16:10:37,291 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Giornata intera start=2025-12-24 15:30 durata=None luogo=None partecipanti=[] all_day=True invia=True calendario=None).
+2025-10-17 16:10:37,312 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Evento start=2025-11-01 durata=60 luogo=None partecipanti=[] all_day=False invia=True calendario=Agenda condivisa).
+2025-10-17 16:10:37,314 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=25 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
+2025-10-17 16:10:37,315 | INFO | outlook_mcp_server | list_pending_replies ha trovato 2 messaggi da gestire su 2 analizzati.
+2025-10-17 16:10:37,315 | INFO | outlook_mcp_server | list_pending_replies: restituiti 2 messaggi su 2 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).

@@ -1,225 +1,124 @@
-﻿# Outlook MCP Server
+Outlook MCP Server
+===================
 
-Outlook MCP Server exposes Microsoft Outlook email and calendar data through Anthropic's Model Context Protocol (MCP). It enables MCP-aware assistants to browse folders, search and summarize conversations, monitor pending replies, inspect attachments, surface calendar events, and respond without leaving Outlook.
+Outlook MCP Server espone email e calendario di Microsoft Outlook tramite il Model Context Protocol (MCP). Permette ad assistenti MCP di elencare e cercare messaggi, creare riassunti, individuare risposte mancanti, gestire allegati, consultare eventi e rispondere senza uscire da Outlook. Include anche un bridge HTTP opzionale per piattaforme di automazione (es. n8n).
 
-## Features
+Caratteristiche
+- Copertura unificata di posta e calendari (Inbox, Posta inviata, cartelle condivise gia' montate nel profilo).
+- Elenchi ricchi con mittente, stato lettura, categorie, ID conversazione, anteprima corpo e nomi allegati.
+- Consapevolezza della conversazione: controllo delle risposte gia' inviate e outline compatta del thread.
+- Calendario con occorrenze ricorrenti, ricerca per parole chiave e dettaglio evento.
+- Azioni: risposta inline (`reply_to_email_by_number`), composizione (`compose_email`), spostamenti, letti/non letti, categorie, allegati, batch.
+- Amministrazione cartelle: `list_folders`, `get_folder_metadata`, `create_folder`, `rename_folder`, `delete_folder`.
+- Rotating logging (`logs/outlook_mcp_server.log`) e cache per sessioni lunghe.
 
-- Unified coverage for Outlook mailboxes and calendars, including Inbox, Sent Items, shared mail folders, and additional calendars that are already available in your Outlook profile.
-- Rich email listings with sender metadata, read state, categories, conversation identifiers, attachment previews (up to five filenames), and optional cross-folder aggregation.
-- Sent-mail and conversation awareness, including pending-reply detection that inspects your sent items, Last Verb metadata, and historical conversation windows.
-- Deep thread expansion via cached list results and `get_email_context`, which can pull related messages from Sent Items and custom folders.
-- Calendar exploration across one or many calendars with recurrence-aware listings, keyword search, and detailed event retrieval.
-- Action helpers that let you reply inline (`reply_to_email_by_number`) or draft new outbound mail (`compose_email`) directly from MCP clients.
-- Folder administration utilities (`list_folders`, `get_folder_metadata`, `create_folder`, `rename_folder`, `delete_folder`) so you can inspect and curate the mailbox tree without leaving MCP.
-- Message maintenance shortcuts (`move_email_to_folder`, `mark_email_read_unread`, `apply_category`, `get_attachments`, `attach_to_email`, `batch_manage_emails`) that keep triage, tagging, and filing within the same workflow.
-- Contact lookup via `search_contacts`, with smart fallbacks for Outlook COM collections even when they do not expose a standard iterator.
-- Calendar authoring helper `create_calendar_event` to draft all-day or timed appointments (and optionally notify attendees) directly from MCP.
-- Built-in rotating logging (`logs/outlook_mcp_server.log`) and caches that keep long MCP sessions observable and responsive.
+Requisiti
+- Windows con Microsoft Outlook installato e configurato (profilo aperto/accessibile)
+- Python 3.10+
+- Dipendenze: `pip install -r requirements.txt` (core: `mcp`, `pywin32`; opzionali HTTP: `fastapi`, `uvicorn[standard]`)
+- Un client MCP compatibile (Claude Desktop o altro host MCP)
 
-## Requirements
+Installazione
+1. Clona o scarica questa repository.
+2. (Consigliato) Crea un virtualenv e attivalo.
+3. Installa le dipendenze: `pip install -r requirements.txt`.
+4. Assicurati che Outlook sia utilizzabile dall'utente che avvia il server.
 
-- Windows with Microsoft Outlook installed, configured, and signed in
-- Python 3.10 or newer
-- Python packages from `requirements.txt` (core: `mcp>=1.2.0`, `pywin32>=305`; HTTP bridge extras: `fastapi>=0.110`, `uvicorn[standard]>=0.27`)
-- An MCP-compatible client (Claude Desktop or another MCP host)
-
-## Installation
-
-1. Clone or download this repository.
-2. (Optional) Create and activate a virtual environment.
-3. Install dependencies: `pip install -r requirements.txt`.
-4. Ensure Outlook is open (or can be launched) under the Windows profile running the server.
-
-## Configuration
-
-### Claude Desktop configuration
-
-Add (or merge) the following block into your `MCP_client_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "outlook": {
-      "command": "python",
-      "args": ["C:\\\\path\\\\to\\\\outlook_mcp_server.py"],
-      "env": {}
-    }
-  }
-}
-```
-
-If you rely on a virtual environment, point `command` and `args` to the corresponding `python.exe`.
-
-### Prompt helper (optional)
-
-`prompt.txt` ships with an Italian primer that lists every tool and recommended workflow. Paste it into your MCP client if you want inline assistance.
-
-## Usage
-
-### Starting the server
-
+Avvio rapido (stdio MCP)
 ```bash
 python outlook_mcp_server.py
 ```
+All'avvio il server verifica la connessione COM verso Outlook e poi accetta richieste FastMCP su stdio.
 
-On startup the script validates the Outlook COM bridge, writes status information to stdout, and begins serving FastMCP requests.
+Trasporti MCP per automazioni
+- Streamable HTTP (consigliato per n8n):
+  ```bash
+  pip install uvicorn[standard]
+  python outlook_mcp_server.py --mode mcp --transport streamable-http --host 0.0.0.0 --port 8000 --stream-path /mcp
+  ```
+  Endpoints MCP: `http://HOST:8000/mcp`.
 
-### Streamable HTTP transport (n8n, Docker)
+- Server‑Sent Events (SSE):
+  ```bash
+  python outlook_mcp_server.py --mode mcp --transport sse --host 0.0.0.0 --port 8000 --sse-path /sse --mount-path /
+  ```
+  Endpoint SSE: `http://HOST:8000/sse`.
 
-The MCP specification defines a **streamable HTTP** transport that n8n supports out of the box. Run the server with this transport so the n8n MCP Client node can list and invoke tools directly.
-
-1. Install the optional runtime dependency if you have not already: `pip install uvicorn[standard]`.
-2. Start the server from the Windows host that can reach Outlook:
-
-   ```bash
-   python outlook_mcp_server.py --mode mcp --transport streamable-http --host 0.0.0.0 --port 8000 --stream-path /mcp
-   ```
-
-   The server checks the Outlook COM bridge, binds to `http://0.0.0.0:8000`, and exposes a streamable MCP endpoint at `/mcp`.
-
-3. In n8n (Docker) configure the **MCP Client Tool** node:
-   - `Endpoint`: `http://host.docker.internal:8000/mcp` (adjust if Docker cannot resolve `host.docker.internal`)
-   - `Transport`: **HTTP Streamable**
-   - Authentication: set according to your network needs (defaults to “None”)
-   - Select the Outlook tools you want to expose to your workflow
-
-If you prefer Server-Sent Events, start the server with `--transport sse --sse-path /sse --mount-path /` and point the n8n node’s SSE endpoint to `http://host.docker.internal:8000/sse`.
-
-### REST bridge mode (optional)
-
-For simple automations that only need to trigger specific tools over plain REST (without implementing the MCP protocol), you can launch the lightweight FastAPI shim:
-
-1. Install the optional dependencies: `pip install fastapi uvicorn[standard]`.
-2. Start the bridge:
-
-   ```bash
-   python outlook_mcp_server.py --mode http --host 0.0.0.0 --port 8000
-   ```
-
-3. Call the HTTP endpoints from your automation platform:
-   - `POST http://host.docker.internal:8000/tools/list_recent_emails` with body `{"arguments": {...}}`
-   - Alternatively `POST http://host.docker.internal:8000/` with `{"tool": "list_recent_emails", "arguments": {...}}`
-
-Available endpoints in REST mode:
-
-- `GET /health` – readiness probe
-- `GET /tools` – list tool metadata (names, schemas, descriptions)
-- `GET /` – quick-start message plus the currently registered tool names
-- `POST /tools/{tool_name}` – execute any MCP tool; supply arguments as JSON body
-- `POST /` – alternative execution form using a body like `{"tool": "list_recent_emails", "arguments": {...}}` (also accepts `{"list_recent_emails": {...}}`)
-
-> **Note:** Regardless of the transport, the server must run on the Windows host where Outlook is available. Docker containers cannot access the COM automation layer directly.
-
-### Tool reference
-
-Each MCP tool accepts keyword arguments so clients can override defaults as needed.
-
-- `params()` - Returns general metadata and HTTP endpoint pointers for automation handshakes (used by some n8n MCP nodes).
-- `get_current_datetime(include_utc=True)` - Returns local time plus UTC details (ISO stamps included when requested).
-- `list_folders()` - Enumerates top-level folders and two nested levels of subfolders for the current Outlook profile.
-- `list_recent_emails(days=7, folder_name=None, max_results=25, include_preview=True, include_all_folders=False)` - Lists newest messages with sender data, read state, attachment previews, categories, and optional multi-folder scans.
-- `list_sent_emails(days=7, folder_name=None, max_results=25, include_preview=True)` - Mirrors `list_recent_emails` for Sent Items (or a custom folder) and highlights recipient lists for historical context.
-- `search_emails(search_term, days=7, folder_name=None, max_results=25, include_preview=True, include_all_folders=False)` - Searches for keywords or names (supports `OR` separators) within Inbox or across all mail folders.
-- `list_pending_replies(days=14, folder_name=None, max_results=25, include_preview=True, include_all_folders=False, include_unread_only=False, conversation_lookback_days=None)` - Surfaces incoming mail that likely lacks an outgoing reply by checking conversation metadata, sent mail, and optional unread filters.
-- `get_email_by_number(email_number)` - Retrieves the full body, attachment list, conversation ID, and metadata for any message cached by the latest listing/search result.
-- `get_email_context(email_number, include_thread=True, thread_limit=5, lookback_days=30, include_sent=True, additional_folders=None)` - Expands a cached email with related conversation entries (including Sent Items), participants, and attachment summaries.
-- `list_upcoming_events(days=7, calendar_name=None, max_results=25, include_description=False, include_all_calendars=False)` - Lists appointments up to 90 days ahead, with optional aggregation across every accessible calendar.
-- `search_calendar_events(search_term, days=30, calendar_name=None, max_results=25, include_description=False, include_all_calendars=False)` - Keyword-searches Outlook calendars with the same aggregation and preview controls as the listing command.
-- `get_event_by_number(event_number)` - Returns full appointment metadata (attendees, recurrence flags, location, description preview) for events cached by the latest listing/search command.
-- `reply_to_email_by_number(email_number, reply_text)` - Prepares and sends a plain-text reply to a cached message.
-- `compose_email(recipient_email, subject, body, cc_email=None)` - Sends a new plain-text message with optional CC recipients.
-
-### Workflow tips
-
-- Listing/search tools refresh the caches that power `get_email_by_number`, `get_email_context`, `get_event_by_number`, `reply_to_email_by_number`, and `compose_email`. Call a listing command first if a cache warning appears.
-- Use `include_all_folders=True` (mail) or `include_all_calendars=True` (events) to scan shared folders when the message location is unknown.
-- `list_pending_replies` automatically increases its conversation lookback (up to 180 days) so it can confirm whether a response exists in Sent Items.
-- Email previews are trimmed to 220 characters, and attachment previews contain at most five filenames for legibility.
-- Calendar scans include recurrences and cap out after 500 inspected appointments per folder to keep COM calls responsive.
-
-## Available MCP tools
-
-- **Cartelle**: `list_folders`, `get_folder_metadata`, `create_folder`, `rename_folder`, `delete_folder`, `ensure_domain_folder` per navigare, analizzare e modellare la struttura di Outlook (inclusi ID, percorsi e contatori).
-- **Elenco email**: `list_recent_emails`, `list_sent_emails`, `search_emails`, `list_pending_replies` offrono filtri su giorni, cartelle/percorsi, offset, stato lettura e preview opzionale.
-- **Dettagli e contesto**: `get_email_by_number`, `get_email_context` usano la cache dell’ultimo elenco per recuperare corpo completo, thread correlati e metadati chiave.
-- **Azioni sui messaggi**: `reply_to_email_by_number`, `compose_email`, `move_email_to_folder`, `mark_email_read_unread`, `apply_category`, `move_email_to_domain_folder` coprono risposta, bozza, spostamenti e categorie Outlook.
-- **Allegati**: `get_attachments` (solo metadata o download su disco) e `attach_to_email` per aggiungere file a bozze o risposte prima dell'invio, confermando sempre il `message_id` coinvolto.
-- **Contatti**: `search_contacts` filtra la rubrica locale anche quando Outlook espone collezioni non indicizzabili.
-- **Operazioni batch**: `batch_manage_emails` consente movimenti, flag lettura e cancellazioni multiple usando numeri o EntryID.
-- **Calendario**: `list_upcoming_events`, `search_calendar_events`, `get_event_by_number` mantengono invariato l'accesso completo a riunioni e appuntamenti, mentre `create_calendar_event` permette di schedulare nuovi impegni (anche all-day) dal flusso MCP.
-
-## Outlook automation roadmap
-
-The next Outlook-first enhancements (all executable directly through the MCP server) are grouped into five pillars:
-
-1. **Dynamic domain folders**
-   - Rilevare il dominio del mittente quando arriva un nuovo messaggio (via hook COM o strumenti MCP) e creare automaticamente la gerarchia `Clienti/<dominio>/...`.
-   - Spostare subito il messaggio nella sottocartella adeguata, riutilizzando la struttura per tutte le email successive dello stesso dominio.
-2. **Priorità e promemoria interni**
-   - Applicare categorie/flag Outlook per messaggi “Azione/Critico”, così n8n o altri flussi possono reagire senza scansioni pesanti.
-   - Mantenere un log leggero delle azioni critiche per offrirle via MCP senza riesaminare tutte le cartelle.
-3. **Monitoraggio meeting e inviti**
-   - Agganciarsi agli eventi calendario per intercettare aggiornamenti/cancellazioni e leggere `responseStatus` degli invitati.
-   - Esporre strumenti MCP dedicati per inviare promemoria o riconfermare la partecipazione direttamente da Outlook.
-4. **Mailbox condivise e nuovo Outlook**
-   - Estendere regole e categorie a mailbox condivise già montate; valutare limiti del “New Outlook” e usare flag/stati quando le categorie non sono disponibili.
-5. **Bozze intelligenti e pianificazione**
-   - Aggiungere tool MCP per depositare bozze in Draft a partire dal contesto email (senza API esterne).
-   - Creare appuntamenti follow-up con COM `Appointments.Add`, così n8n deve solo orchestrare notifiche esterne.
-
-Ogni passo resta compatibile con n8n: il server MCP gestisce Outlook, mentre n8n si occupa delle automazioni cross-canale (Telegram, CRM, task manager).
-
-## Examples
-
-```text
-List unread-focused pending replies for the last 10 days:
-list_pending_replies(days=10, include_unread_only=True, max_results=15)
+Bridge REST (opzionale)
+Per chiamare i tool MCP via REST semplice (senza implementare MCP):
+```bash
+pip install fastapi uvicorn[standard]
+python outlook_mcp_server.py --mode http --host 0.0.0.0 --port 8000
 ```
+Endpoint utili:
+- `GET /health` – probe di readiness
+- `GET /tools` – lista tool (nome, schema, descrizione)
+- `GET /` – messaggio di benvenuto + tool disponibili
+- `POST /tools/{tool_name}` – esegue un tool con body `{ "arguments": { ... } }`
+- `POST /` – alternativa con `{ "tool": "list_recent_emails", "arguments": { ... } }`
 
-```text
-Search all folders for project updates with OR keywords:
-search_emails("project update OR rollout", include_all_folders=True)
+Nota: il server deve girare sullo stesso host Windows che ha accesso a Outlook (COM). Docker non puo' accedere a COM diretto.
+
+Configurazione: Feature Flags
+Abilita/disabilita gruppi o singoli tool senza modificare il codice. Di default tutto e' abilitato.
+- File `features.json` nella root del progetto o variabile `OUTLOOK_MCP_FEATURES_FILE` con path ad un JSON.
+- Variabili d'ambiente (separate da virgola o punto e virgola):
+  - `OUTLOOK_MCP_ENABLED_GROUPS`, `OUTLOOK_MCP_DISABLED_GROUPS`
+  - `OUTLOOK_MCP_ENABLED_TOOLS`, `OUTLOOK_MCP_DISABLED_TOOLS`
+
+Esempio di `features.json`:
+```json
+{
+  "enabled_groups": [],
+  "disabled_groups": [],
+  "enabled_tools": [],
+  "disabled_tools": []
+}
 ```
+Gruppi rilevanti: `system`, `general`, `folders`, `email.list`, `email.detail`, `email.actions`, `attachments`, `contacts`, `calendar.read`, `calendar.write`, `domain.rules`, `batch`.
 
-```text
-Expand an email thread before summarizing it:
-get_email_context(email_number=3, thread_limit=8, lookback_days=60)
-```
+Prompt (facoltativo)
+Il file `prompt.txt` contiene un primer in italiano con regole e workflow consigliato da incollare nel tuo client MCP.
 
-```text
-Inspect upcoming meetings across calendars and drill into one:
-list_upcoming_events(days=30, include_all_calendars=True, include_description=True)
-get_event_by_number(event_number=2)
-```
+Uso dei tool principali
+- `params()` – metadati generali e hint per trasporti HTTP.
+- `get_current_datetime(include_utc=True)` – orario locale/UTC.
+- `list_folders(...)` – navigazione gerarchia cartelle con contatori/ID/path.
+- `list_recent_emails(...)` / `list_sent_emails(...)` – elenchi di posta con anteprima allegati/corpo.
+- `search_emails("term OR altro", ...)` – ricerca per parole chiave con supporto OR.
+- `list_pending_replies(...)` – messaggi senza risposta incrociando Posta inviata e metadati conversazione.
+- `get_email_by_number(...)` / `get_email_context(...)` – dettaglio e outline conversazione dalla cache corrente.
+- `get_attachments(...)` / `attach_to_email(...)` – ispezione/allegato file.
+- `reply_to_email_by_number(...)` / `compose_email(...)` – risposte e nuove email (plain‑text) con invio opzionale.
+- `move_email_to_folder(...)`, `mark_email_read_unread(...)`, `apply_category(...)`, `batch_manage_emails(...)` – manutenzione messaggi.
+- `list_upcoming_events(...)` / `search_calendar_events(...)` / `get_event_by_number(...)` – calendario.
+- `create_calendar_event(...)` – creazione eventi (all‑day o a durata) con invito opzionale.
 
-```text
-Reply inline after reviewing a cached message:
-reply_to_email_by_number(email_number=1, reply_text="Grazie per l'aggiornamento, ti rispondo entro domani.")
-```
+Suggerimenti di workflow
+- Esegui sempre prima un elenco/ricerca: alimenta le cache usate dai tool di dettaglio/azione.
+- Usa `include_all_folders=True` (posta) o `include_all_calendars=True` (eventi) quando non conosci la collocazione.
+- `list_pending_replies` estende automaticamente il lookback di conversazione (fino a 180 giorni) per garantire accuratezza.
+- Le anteprime email sono tagliate a ~220 caratteri; i nomi allegati max 5.
+- Le scansioni calendario includono ricorrenze e limitano a ~500 elementi per cartella.
 
-```text
-Compose a new outbound message with CC:
-compose_email("team@example.com", "Report settimanale", "Allego il riepilogo delle attivita...", cc_email="manager@example.com")
-```
+Logging e troubleshooting
+- Log a rotazione in `logs/outlook_mcp_server.log` (5MB x 3 file).
+- Se Outlook e' chiuso o chiede credenziali, aprilo e riprova.
+- Gli avvisi di sicurezza `pywin32` possono comparire al primo avvio: consenti l'accesso.
+- Errori di cache indicano che non hai ancora eseguito un elenco/ricerca nella sessione corrente.
 
-## Logging and troubleshooting
+Test
+- Unita': `python -m pytest`
+- Integrazione reale (richiede Outlook aperto): `OUTLOOK_MCP_REAL=1 python -m pytest tests/test_outlook_real_integration.py`
 
-- Detailed logs rotate in `logs/outlook_mcp_server.log` (5 MB per file, three retained backups).
-- If Outlook is closed or prompts for credentials, reopen it (or accept the prompt) before restarting the MCP server.
-- Cache errors normally mean a list/search command was not run during the current session; repeat the listing and retry.
-- `pywin32` security prompts may appear the first time the script automates Outlook; allow access and (optionally) whitelist the automation in the Outlook Trust Center.
+Struttura del codice
+- `outlook_mcp_server.py`: server MCP/HTTP, CLI, helper condivisi.
+- `outlook_mcp/`: pacchetto con costanti, logger, connessione, util, cache, feature flags.
+- `outlook_mcp/tools/`: definizione dei tool per cartelle, email (liste/dettaglio/azioni), allegati, contatti, calendario, regole per dominio, batch.
 
-## Testing
-
-- **Unit tests**: `python -m pytest`
-- **Integrazione reale**: `OUTLOOK_MCP_REAL=1 python -m pytest tests/test_outlook_real_integration.py` richiede Outlook aperto con l'account desiderato. Il test crea cartelle temporanee, un contatto, un evento ed invia una bozza a se stessi, ripulendo tutto al termine.
-
-## Limitations
-
-- Email listings cap their window at 30 days (`MAX_DAYS`); calendar listings cap at 90 days (`MAX_EVENT_LOOKAHEAD_DAYS`).
-- Event scans stop after 500 appointments per folder; if your calendar is very busy, narrow `days` for better coverage.
-- `get_email_by_number` and `get_email_context` truncate bodies beyond ~4000 characters for readability.
-- Replies and composed emails are sent as plain text; existing Outlook signatures are not injected automatically.
-- Attachments are not downloaded; only their names and counts are exposed.
-- MCP interactions operate against the Outlook profile of the Windows session running the server; shared mailboxes must already be visible in Outlook.
+Limitazioni
+- Gli elenchi email coprono fino a 30 giorni (`MAX_DAYS`), il calendario fino a 90 (`MAX_EVENT_LOOKAHEAD_DAYS`).
+- I corpi molto lunghi possono essere troncati in output.
+- Le email sono inviate in plain‑text; le firme di Outlook non sono aggiunte automaticamente.
+- Le interazioni MCP operano sul profilo Outlook dell'utente Windows che esegue il server.
 

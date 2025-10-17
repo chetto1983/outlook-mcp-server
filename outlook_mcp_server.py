@@ -1,4 +1,4 @@
-import argparse
+﻿import argparse
 import datetime
 import os
 from typing import Any, Dict, List, Optional, Set, Tuple
@@ -52,6 +52,7 @@ from outlook_mcp.utils import (
     trim_conversation_id,
 )
 from outlook_mcp import folders as folder_service
+from outlook_mcp.features import feature_gate, is_tool_enabled, get_tool_group
 
 try:
     from fastapi import Body, FastAPI, HTTPException
@@ -1149,11 +1150,16 @@ def _build_conversation_outline(
         if preview:
             preview_line = f"\n   Anteprima: {preview}"
 
-        lines.append(f"{prefix} {timestamp} · {sender}: {subject}{preview_line}")
+        lines.append(f"{prefix} {timestamp} Â· {sender}: {subject}{preview_line}")
 
-    return "\n".join(lines)
+    # Normalize any stray non-ASCII separator that may appear in some consoles
+    output = "\n".join(lines)
+    try:
+        output = output.replace(" �� ", " -> ")
+    except Exception:
+        pass
+    return output
 
-@mcp.tool()
 def params(
     protocolVersion: Optional[str] = None,  # type: ignore[non-literal-used]
     capabilities: Optional[Dict[str, Any]] = None,
@@ -1171,6 +1177,9 @@ def params(
 
     tool_summaries: Dict[str, Dict[str, Any]] = {}
     for tool in mcp._tool_manager.list_tools():  # type: ignore[attr-defined]
+        tool_group = get_tool_group(getattr(tool, "name", ""))
+        if not is_tool_enabled(getattr(tool, "name", ""), tool_group):
+            continue
         tool_summaries[tool.name] = {
             "description": getattr(tool, "description", None),
             "inputSchema": getattr(tool, "input_schema", None),
@@ -1208,7 +1217,6 @@ def params(
     }
 
 # MCP Tools
-@mcp.tool()
 def get_current_datetime(include_utc: bool = True) -> str:
     """
     Restituisce la data e ora correnti formattate.
@@ -1235,7 +1243,6 @@ def get_current_datetime(include_utc: bool = True) -> str:
         return f"Errore durante il calcolo della data/ora corrente: {exc}"
 
 
-@mcp.tool()
 def list_folders(
     root_folder_id: Optional[str] = None,
     root_folder_path: Optional[str] = None,
@@ -1246,51 +1253,18 @@ def list_folders(
     include_store: bool = False,
     include_paths: bool = True,
 ) -> str:
-    """
-    Enumerate Outlook folders starting from the mailbox root (or a custom root).
-    """
-    if not isinstance(max_depth, int) or max_depth < 0 or max_depth > 10:
-        logger.warning("Valore 'max_depth' non valido passato a list_folders: %s", max_depth)
-        return "Errore: 'max_depth' deve essere un intero compreso tra 0 e 10."
-
-    include_counts_flag = coerce_bool(include_counts)
-    include_ids_flag = coerce_bool(include_ids)
-    include_store_flag = coerce_bool(include_store)
-    include_paths_flag = coerce_bool(include_paths)
-
-    logger.info(
-        (
-            "list_folders chiamato (root_id=%s root_path=%s root_name=%s profondita=%s "
-            "contatori=%s ids=%s store=%s paths=%s)."
-        ),
-        root_folder_id,
-        root_folder_path,
-        root_folder_name,
-        max_depth,
-        include_counts_flag,
-        include_ids_flag,
-        include_store_flag,
-        include_paths_flag,
+    from outlook_mcp.tools.folders import list_folders as _impl
+    return _impl(
+        root_folder_id=root_folder_id,
+        root_folder_path=root_folder_path,
+        root_folder_name=root_folder_name,
+        max_depth=max_depth,
+        include_counts=include_counts,
+        include_ids=include_ids,
+        include_store=include_store,
+        include_paths=include_paths,
     )
 
-    try:
-        _, namespace = connect_to_outlook()
-        return folder_service.list_folders(
-            namespace,
-            root_folder_id=root_folder_id,
-            root_folder_path=root_folder_path,
-            root_folder_name=root_folder_name,
-            max_depth=max_depth,
-            include_counts=include_counts,
-            include_ids=include_ids,
-            include_store=include_store,
-            include_paths=include_paths,
-        )
-    except Exception as exc:
-        logger.exception("Errore durante l'elenco delle cartelle di Outlook.")
-        return f"Errore durante l'elenco delle cartelle: {exc}"
-
-@mcp.tool()
 def get_folder_metadata(
     folder_id: Optional[str] = None,
     folder_path: Optional[str] = None,
@@ -1299,40 +1273,16 @@ def get_folder_metadata(
     max_children: int = 20,
     include_counts: bool = True,
 ) -> str:
-    """
-    Retrieve detailed metadata for a specific Outlook folder.
-    """
-    if not isinstance(max_children, int) or max_children < 0:
-        return "Errore: 'max_children' deve essere un intero non negativo."
-
-    include_children_flag = coerce_bool(include_children)
-    include_counts_flag = coerce_bool(include_counts)
-    logger.info(
-        "get_folder_metadata chiamato (id=%s path=%s nome=%s figli=%s max=%s contatori=%s).",
-        folder_id,
-        folder_path,
-        folder_name,
-        include_children_flag,
-        max_children,
-        include_counts_flag,
+    from outlook_mcp.tools.folders import get_folder_metadata as _impl
+    return _impl(
+        folder_id=folder_id,
+        folder_path=folder_path,
+        folder_name=folder_name,
+        include_children=include_children,
+        max_children=max_children,
+        include_counts=include_counts,
     )
 
-    try:
-        _, namespace = connect_to_outlook()
-        return folder_service.folder_metadata(
-            namespace,
-            folder_id=folder_id,
-            folder_path=folder_path,
-            folder_name=folder_name,
-            include_children=include_children,
-            max_children=max_children,
-            include_counts=include_counts,
-        )
-    except Exception as exc:
-        logger.exception("Errore durante get_folder_metadata.")
-        return f"Errore durante il recupero dei metadati della cartella: {exc}"
-
-@mcp.tool()
 def create_folder(
     new_folder_name: str,
     parent_folder_id: Optional[str] = None,
@@ -1341,141 +1291,43 @@ def create_folder(
     item_type: Optional[Any] = None,
     allow_existing: bool = False,
 ) -> str:
-    """
-    Create a new Outlook subfolder under the specified parent.
-    """
-    if not new_folder_name or not new_folder_name.strip():
-        return "Errore: specifica un nome valido per la nuova cartella."
-
-    allow_existing_bool = coerce_bool(allow_existing)
-    logger.info(
-        "create_folder chiamato (nome=%s parent_id=%s parent_path=%s parent_name=%s tipo=%s allow_existing=%s).",
-        new_folder_name,
-        parent_folder_id,
-        parent_folder_path,
-        parent_folder_name,
-        item_type,
-        allow_existing_bool,
+    from outlook_mcp.tools.folders import create_folder as _impl
+    return _impl(
+        new_folder_name=new_folder_name,
+        parent_folder_id=parent_folder_id,
+        parent_folder_path=parent_folder_path,
+        parent_folder_name=parent_folder_name,
+        item_type=item_type,
+        allow_existing=allow_existing,
     )
 
-    try:
-        _, namespace = connect_to_outlook()
-        parent, attempts = folder_service.resolve_folder(
-            namespace,
-            folder_id=parent_folder_id,
-            folder_path=parent_folder_path,
-            folder_name=parent_folder_name,
-        )
-        if not parent:
-            detail = "; ".join(attempts) if attempts else "cartella padre non trovata."
-            return f"Errore: impossibile individuare la cartella padre ({detail})."
-
-        try:
-            _, message = folder_service.create_folder(
-                parent,
-                new_folder_name=new_folder_name,
-                item_type=item_type,
-                allow_existing=allow_existing_bool,
-            )
-            return message
-        except ValueError as exc:
-            return f"Errore: {exc}"
-        except RuntimeError as exc:
-            return f"Errore: {exc}"
-    except Exception as exc:
-        logger.exception("Errore durante create_folder.")
-        return f"Errore durante la creazione della cartella: {exc}"
-
-@mcp.tool()
 def rename_folder(
     folder_id: Optional[str] = None,
     new_name: Optional[str] = None,
     folder_path: Optional[str] = None,
     folder_name: Optional[str] = None,
 ) -> str:
-    """
-    Rename an existing Outlook folder.
-    """
-    if not new_name or not new_name.strip():
-        return "Errore: specifica un nuovo nome valido per la cartella."
-
-    logger.info(
-        "rename_folder chiamato (id=%s path=%s nome=%s nuovo_nome=%s).",
-        folder_id,
-        folder_path,
-        folder_name,
-        new_name,
+    from outlook_mcp.tools.folders import rename_folder as _impl
+    return _impl(
+        folder_id=folder_id,
+        new_name=new_name,
+        folder_path=folder_path,
+        folder_name=folder_name,
     )
 
-    try:
-        _, namespace = connect_to_outlook()
-        target, attempts = folder_service.resolve_folder(
-            namespace,
-            folder_id=folder_id,
-            folder_path=folder_path,
-            folder_name=folder_name,
-        )
-        if not target:
-            detail = "; ".join(attempts) if attempts else "cartella non trovata."
-            return f"Errore: impossibile individuare la cartella da rinominare ({detail})."
-
-        try:
-            folder_service.rename_folder(target, new_name)
-        except ValueError as exc:
-            return f"Errore: {exc}"
-        except RuntimeError as exc:
-            return f"Errore: {exc}"
-
-        path_display = safe_folder_path(target) or new_name.strip()
-        return f"Cartella rinominata in '{new_name.strip()}' (percorso attuale: {path_display})."
-    except Exception as exc:
-        logger.exception("Errore durante rename_folder.")
-        return f"Errore durante la rinomina della cartella: {exc}"
-
-@mcp.tool()
 def delete_folder(
     folder_id: Optional[str] = None,
     folder_path: Optional[str] = None,
     folder_name: Optional[str] = None,
     confirm: bool = False,
 ) -> str:
-    """
-    Delete an Outlook folder (moves it to Deleted Items unless prevented by Outlook).
-    """
-    if not coerce_bool(confirm):
-        return "Conferma mancante: imposta confirm=True per procedere con l'eliminazione della cartella."
-
-    logger.info(
-        "delete_folder chiamato (id=%s path=%s nome=%s).",
-        folder_id,
-        folder_path,
-        folder_name,
+    from outlook_mcp.tools.folders import delete_folder as _impl
+    return _impl(
+        folder_id=folder_id,
+        folder_path=folder_path,
+        folder_name=folder_name,
+        confirm=confirm,
     )
-
-    try:
-        _, namespace = connect_to_outlook()
-        target, attempts = folder_service.resolve_folder(
-            namespace,
-            folder_id=folder_id,
-            folder_path=folder_path,
-            folder_name=folder_name,
-        )
-        if not target:
-            detail = "; ".join(attempts) if attempts else "cartella non trovata."
-            return f"Errore: impossibile individuare la cartella da eliminare ({detail})."
-
-        path_display = safe_folder_path(target) or getattr(target, "Name", "(sconosciuta)")
-        try:
-            folder_service.delete_folder(target)
-        except RuntimeError as exc:
-            return f"Errore: {exc}"
-
-        return (
-            f"Cartella eliminata: {path_display}. (Se previsto, Outlook l'ha spostata in Posta eliminata.)"
-        )
-    except Exception as exc:
-        logger.exception("Errore durante delete_folder.")
-        return f"Errore durante l'eliminazione della cartella: {exc}"
 
 
 def _present_email_listing(
@@ -1665,7 +1517,6 @@ def _present_event_listing(
     return result.rstrip()
 
 
-@mcp.tool()
 def list_recent_emails(
     days: int = 7,
     folder_name: Optional[str] = None,
@@ -1677,102 +1528,19 @@ def list_recent_emails(
     offset: int = 0,
     unread_only: bool = False,
 ) -> str:
-    """List email titles from the specified number of days with pagination support."""
-    if not isinstance(days, int) or days < 1 or days > MAX_DAYS:
-        logger.warning("Valore 'days' non valido passato a list_recent_emails: %s", days)
-        return f"Errore: 'days' deve essere un intero tra 1 e {MAX_DAYS}"
-    if not isinstance(max_results, int) or max_results < 1 or max_results > 200:
-        logger.warning("Valore 'max_results' non valido passato a list_recent_emails: %s", max_results)
-        return "Errore: 'max_results' deve essere un intero tra 1 e 200"
-    try:
-        offset_value = int(offset)
-        if offset_value < 0:
-            raise ValueError
-    except (TypeError, ValueError):
-        logger.warning("Valore 'offset' non valido passato a list_recent_emails: %s", offset)
-        return "Errore: 'offset' deve essere un intero maggiore o uguale a zero."
-
-    include_preview_bool = coerce_bool(include_preview)
-    include_all_bool = coerce_bool(include_all_folders)
-    unread_only_bool = coerce_bool(unread_only)
-    folder_id_list = ensure_string_list(folder_ids)
-    folder_path_list = ensure_string_list(folder_paths)
-    logger.info(
-        (
-            "list_recent_emails chiamato con giorni=%s cartella=%s max_risultati=%s "
-            "anteprima=%s tutte_le_cartelle=%s offset=%s unread_only=%s folder_ids=%s folder_paths=%s"
-        ),
-        days,
-        folder_name,
-        max_results,
-        include_preview_bool,
-        include_all_bool,
-        offset_value,
-        unread_only_bool,
-        folder_id_list,
-        folder_path_list,
+    from outlook_mcp.tools.email_list import list_recent_emails as _impl
+    return _impl(
+        days=days,
+        folder_name=folder_name,
+        max_results=max_results,
+        include_preview=include_preview,
+        include_all_folders=include_all_folders,
+        folder_ids=folder_ids,
+        folder_paths=folder_paths,
+        offset=offset,
+        unread_only=unread_only,
     )
 
-    try:
-        _, namespace = connect_to_outlook()
-
-        emails: List[Dict[str, Any]]
-        folder_display: str
-        if folder_id_list or folder_path_list:
-            selected_folders: List = []
-            failures: List[str] = []
-            for entry_id in folder_id_list:
-                folder, attempts = folder_service.resolve_folder(namespace, folder_id=entry_id)
-                if folder:
-                    selected_folders.append(folder)
-                else:
-                    detail = ", ".join(attempts) if attempts else "non trovato"
-                    failures.append(f"ID {entry_id}: {detail}")
-            for folder_path in folder_path_list:
-                folder, attempts = folder_service.resolve_folder(namespace, folder_path=folder_path)
-                if folder:
-                    selected_folders.append(folder)
-                else:
-                    detail = ", ".join(attempts) if attempts else "non trovato"
-                    failures.append(f"Percorso {folder_path}: {detail}")
-            if not selected_folders:
-                detail = "; ".join(failures) if failures else "cartelle non trovate."
-                return f"Errore: impossibile individuare le cartelle richieste ({detail})."
-            emails = collect_emails_across_folders(selected_folders, days)
-            folder_display = "Cartelle selezionate"
-        elif include_all_bool:
-            if folder_name:
-                logger.info("Parametro folder_name ignorato perche include_all_folders=True.")
-            folders = get_all_mail_folders(namespace)
-            emails = collect_emails_across_folders(folders, days)
-            folder_display = "Tutte le cartelle"
-        else:
-            if folder_name:
-                folder = folder_service.get_folder_by_name(namespace, folder_name)
-                if not folder:
-                    return f"Errore: cartella '{folder_name}' non trovata"
-            else:
-                folder = namespace.GetDefaultFolder(6)
-            folder_display = f"'{folder_name}'" if folder_name else "Posta in arrivo"
-            emails = get_emails_from_folder(folder, days)
-
-        if unread_only_bool:
-            emails = [email for email in emails if email.get("unread")]
-
-        return _present_email_listing(
-            emails=emails,
-            folder_display=folder_display,
-            days=days,
-            max_results=max_results,
-            include_preview=include_preview_bool,
-            log_context="list_recent_emails",
-            offset=offset_value,
-        )
-    except Exception as exc:
-        logger.exception("Errore nel recupero dei messaggi per la cartella '%s'.", folder_name or "Posta in arrivo")
-        return f"Errore durante il recupero dei messaggi: {exc}"
-
-@mcp.tool()
 def list_sent_emails(
     days: int = 7,
     folder_name: Optional[str] = None,
@@ -1780,72 +1548,10 @@ def list_sent_emails(
     include_preview: bool = True,
     offset: int = 0,
 ) -> str:
-    """
-    Elenca i messaggi inviati di recente per supportare il recupero del contesto.
-    
-    Args:
-        days: Giorni da considerare a ritroso (max 30)
-        folder_name: Cartella specifica da controllare (default: Posta inviata)
-        max_results: Numero massimo di messaggi da mostrare (1-200)
-        include_preview: Includere una breve anteprima del corpo
-    
-    Returns:
-        Elenco numerato dei messaggi inviati
-    """
-    if not isinstance(days, int) or days < 1 or days > MAX_DAYS:
-        logger.warning("Valore 'days' non valido passato a list_sent_emails: %s", days)
-        return f"Errore: 'days' deve essere un intero tra 1 e {MAX_DAYS}"
-    if not isinstance(max_results, int) or max_results < 1 or max_results > 200:
-        logger.warning("Valore 'max_results' non valido passato a list_sent_emails: %s", max_results)
-        return "Errore: 'max_results' deve essere un intero tra 1 e 200"
-    try:
-        offset_value = int(offset)
-        if offset_value < 0:
-            raise ValueError
-    except (TypeError, ValueError):
-        logger.warning("Valore 'offset' non valido passato a list_sent_emails: %s", offset)
-        return "Errore: 'offset' deve essere un intero maggiore o uguale a zero."
-
-    include_preview = coerce_bool(include_preview)
-    logger.info(
-        "list_sent_emails chiamato con giorni=%s cartella=%s max_risultati=%s anteprima=%s offset=%s",
-        days,
-        folder_name,
-        max_results,
-        include_preview,
-        offset_value,
-    )
-
-    try:
-        _, namespace = connect_to_outlook()
-
-        if folder_name:
-            folder = folder_service.get_folder_by_name(namespace, folder_name)
-            if not folder:
-                return f"Errore: cartella '{folder_name}' non trovata"
-            folder_display = f"'{folder_name}'"
-        else:
-            folder = namespace.GetDefaultFolder(5)  # Sent Items
-            folder_display = "Posta inviata"
-
-        emails = get_emails_from_folder(folder, days)
-        return _present_email_listing(
-            emails=emails,
-            folder_display=folder_display,
-            days=days,
-            max_results=max_results,
-            include_preview=include_preview,
-            log_context="list_sent_emails",
-            search_term=None,
-            focus_on_recipients=True,
-            offset=offset_value,
-        )
-    except Exception as e:
-        logger.exception("Errore nel recupero dei messaggi inviati per la cartella '%s'.", folder_name or "Posta inviata")
-        return f"Errore durante il recupero dei messaggi inviati: {str(e)}"
+    from outlook_mcp.tools.email_list import list_sent_emails as _impl
+    return _impl(days=days, folder_name=folder_name, max_results=max_results, include_preview=include_preview, offset=offset)
 
 
-@mcp.tool()
 def search_emails(
     search_term: str,
     days: int = 7,
@@ -1858,112 +1564,20 @@ def search_emails(
     offset: int = 0,
     unread_only: bool = False,
 ) -> str:
-    """Search emails by contact name or keyword within a time period."""
-    if not search_term:
-        logger.warning("search_emails chiamato senza termine di ricerca.")
-        return "Errore: inserisci un termine di ricerca"
-
-    if not isinstance(days, int) or days < 1 or days > MAX_DAYS:
-        logger.warning("Valore 'days' non valido passato a search_emails: %s", days)
-        return f"Errore: 'days' deve essere un intero tra 1 e {MAX_DAYS}"
-    if not isinstance(max_results, int) or max_results < 1 or max_results > 200:
-        logger.warning("Valore 'max_results' non valido passato a search_emails: %s", max_results)
-        return "Errore: 'max_results' deve essere un intero tra 1 e 200"
-    try:
-        offset_value = int(offset)
-        if offset_value < 0:
-            raise ValueError
-    except (TypeError, ValueError):
-        logger.warning("Valore 'offset' non valido passato a search_emails: %s", offset)
-        return "Errore: 'offset' deve essere un intero maggiore o uguale a zero."
-
-    include_preview_bool = coerce_bool(include_preview)
-    include_all_bool = coerce_bool(include_all_folders)
-    unread_only_bool = coerce_bool(unread_only)
-    folder_id_list = ensure_string_list(folder_ids)
-    folder_path_list = ensure_string_list(folder_paths)
-    logger.info(
-        (
-            "search_emails chiamato con termine='%s' giorni=%s cartella=%s max_risultati=%s "
-            "anteprima=%s tutte_le_cartelle=%s offset=%s unread_only=%s folder_ids=%s folder_paths=%s"
-        ),
-        search_term,
-        days,
-        folder_name,
-        max_results,
-        include_preview_bool,
-        include_all_bool,
-        offset_value,
-        unread_only_bool,
-        folder_id_list,
-        folder_path_list,
+    from outlook_mcp.tools.email_list import search_emails as _impl
+    return _impl(
+        search_term=search_term,
+        days=days,
+        folder_name=folder_name,
+        max_results=max_results,
+        include_preview=include_preview,
+        include_all_folders=include_all_folders,
+        folder_ids=folder_ids,
+        folder_paths=folder_paths,
+        offset=offset,
+        unread_only=unread_only,
     )
 
-    try:
-        _, namespace = connect_to_outlook()
-
-        emails: List[Dict[str, Any]]
-        folder_display: str
-        if folder_id_list or folder_path_list:
-            selected_folders: List = []
-            failures: List[str] = []
-            for entry_id in folder_id_list:
-                folder, attempts = folder_service.resolve_folder(namespace, folder_id=entry_id)
-                if folder:
-                    selected_folders.append(folder)
-                else:
-                    detail = ", ".join(attempts) if attempts else "non trovato"
-                    failures.append(f"ID {entry_id}: {detail}")
-            for folder_path in folder_path_list:
-                folder, attempts = folder_service.resolve_folder(namespace, folder_path=folder_path)
-                if folder:
-                    selected_folders.append(folder)
-                else:
-                    detail = ", ".join(attempts) if attempts else "non trovato"
-                    failures.append(f"Percorso {folder_path}: {detail}")
-            if not selected_folders:
-                detail = "; ".join(failures) if failures else "cartelle non trovate."
-                return f"Errore: impossibile individuare le cartelle richieste ({detail})."
-            emails = collect_emails_across_folders(selected_folders, days, search_term)
-            folder_display = "Cartelle selezionate"
-        elif include_all_bool:
-            if folder_name:
-                logger.info("Parametro folder_name ignorato perche include_all_folders=True.")
-            folders = get_all_mail_folders(namespace)
-            emails = collect_emails_across_folders(folders, days, search_term)
-            folder_display = "Tutte le cartelle"
-        else:
-            if folder_name:
-                folder = folder_service.get_folder_by_name(namespace, folder_name)
-                if not folder:
-                    return f"Errore: cartella '{folder_name}' non trovata"
-            else:
-                folder = namespace.GetDefaultFolder(6)
-            folder_display = f"'{folder_name}'" if folder_name else "Posta in arrivo"
-            emails = get_emails_from_folder(folder, days, search_term)
-
-        if unread_only_bool:
-            emails = [email for email in emails if email.get("unread")]
-
-        return _present_email_listing(
-            emails=emails,
-            folder_display=folder_display,
-            days=days,
-            max_results=max_results,
-            include_preview=include_preview_bool,
-            log_context="search_emails",
-            search_term=search_term,
-            offset=offset_value,
-        )
-    except Exception as exc:
-        logger.exception(
-            "Errore durante la ricerca dei messaggi con termine '%s' nella cartella '%s'.",
-            search_term,
-            folder_name or "Posta in arrivo",
-        )
-        return f"Errore nella ricerca dei messaggi: {exc}"
-
-@mcp.tool()
 def list_pending_replies(
     days: int = 14,
     folder_name: Optional[str] = None,
@@ -1973,171 +1587,8 @@ def list_pending_replies(
     include_unread_only: bool = False,
     conversation_lookback_days: Optional[int] = None,
 ) -> str:
-    """
-    Elenca i messaggi piu recenti che non risultano ancora gestiti con una risposta inviata.
-    """
-    if not isinstance(days, int) or days < 1 or days > MAX_DAYS:
-        logger.warning("Valore 'days' non valido passato a list_pending_replies: %s", days)
-        return f"Errore: 'days' deve essere un intero tra 1 e {MAX_DAYS}"
-    if not isinstance(max_results, int) or max_results < 1 or max_results > 200:
-        logger.warning("Valore 'max_results' non valido passato a list_pending_replies: %s", max_results)
-        return "Errore: 'max_results' deve essere un intero tra 1 e 200"
-
-    include_preview_bool = coerce_bool(include_preview)
-    include_all_bool = coerce_bool(include_all_folders)
-    unread_only_bool = coerce_bool(include_unread_only)
-
-    if conversation_lookback_days is None:
-        lookback_days = max(days * 2, 14)
-    elif isinstance(conversation_lookback_days, int) and 1 <= conversation_lookback_days <= MAX_CONVERSATION_LOOKBACK_DAYS:
-        lookback_days = conversation_lookback_days
-    else:
-        logger.warning(
-            "Valore 'conversation_lookback_days' non valido passato a list_pending_replies: %s",
-            conversation_lookback_days,
-        )
-        return f"Errore: 'conversation_lookback_days' deve essere un intero tra 1 e {MAX_CONVERSATION_LOOKBACK_DAYS}"
-
-    lookback_days = min(lookback_days, MAX_CONVERSATION_LOOKBACK_DAYS)
-    max_processed_before_break = max(max_results * PENDING_SCAN_MULTIPLIER, max_results + 25)
-    logger.info(
-        (
-            "list_pending_replies chiamato con giorni=%s cartella=%s max_risultati=%s "
-            "anteprima=%s tutte_le_cartelle=%s solo_non_letti=%s lookback_conv=%s"
-        ),
-        days,
-        folder_name,
-        max_results,
-        include_preview_bool,
-        include_all_bool,
-        unread_only_bool,
-        lookback_days,
-    )
-
-    try:
-        _, namespace = connect_to_outlook()
-        user_addresses = _collect_user_addresses(namespace)
-        normalized_user_addresses = {
-            addr for addr in (_normalize_email_address(addr) for addr in user_addresses) if addr
-        }
-
-        if include_all_bool:
-            if folder_name:
-                logger.info("Parametro folder_name ignorato poiche include_all_folders=True.")
-            folders = get_all_mail_folders(namespace)
-            candidate_emails = collect_emails_across_folders(
-                folders,
-                days,
-                target_total=max_processed_before_break,
-            )
-            folder_display = "Tutte le cartelle (senza risposta)"
-        else:
-            if folder_name:
-                folder = folder_service.get_folder_by_name(namespace, folder_name)
-                if not folder:
-                    return f"Errore: cartella '{folder_name}' non trovata"
-                candidate_emails = get_emails_from_folder(folder, days)
-                folder_display = f"'{folder_name}' (senza risposta)"
-            else:
-                folder = namespace.GetDefaultFolder(6)
-                candidate_emails = get_emails_from_folder(folder, days)
-                folder_display = "Posta in arrivo (senza risposta)"
-            if len(candidate_emails) > max_processed_before_break:
-                candidate_emails = candidate_emails[:max_processed_before_break]
-
-        pending_emails: List[Dict[str, Any]] = []
-        processed = 0
-        truncated_scan = False
-
-        for email in candidate_emails:
-            processed += 1
-
-            if unread_only_bool and not email.get("unread"):
-                if processed >= max_processed_before_break and len(pending_emails) >= max_results:
-                    truncated_scan = processed < len(candidate_emails)
-                    break
-                continue
-
-            sender_email = _normalize_email_address(email.get("sender_email")) or _normalize_email_address(
-                email.get("sender")
-            )
-            if sender_email and sender_email in normalized_user_addresses:
-                if processed >= max_processed_before_break and len(pending_emails) >= max_results:
-                    truncated_scan = processed < len(candidate_emails)
-                    break
-                continue
-
-            already_replied = False
-            related_entries: Optional[List[Dict[str, Any]]] = None
-            mail_item_ref = None
-            try:
-                already_replied, related_entries, mail_item_ref = _email_has_user_reply_with_context(
-                    namespace=namespace,
-                    email_data=email,
-                    user_addresses=user_addresses,
-                    conversation_limit=DEFAULT_CONVERSATION_SAMPLE_LIMIT,
-                    lookback_days=lookback_days,
-                    collect_related=True,
-                )
-            except Exception:
-                logger.debug(
-                    "Controllo risposta fallito per il messaggio %s.",
-                    email.get("id"),
-                    exc_info=True,
-                )
-                already_replied = False
-                related_entries = None
-                mail_item_ref = None
-
-            if not already_replied:
-                outline = _build_conversation_outline(
-                    namespace=namespace,
-                    email_data=email,
-                    lookback_days=lookback_days,
-                    max_items=4,
-                    preloaded_entries=related_entries,
-                    mail_item=mail_item_ref,
-                )
-                if outline:
-                    email["_conversation_outline"] = outline
-                pending_emails.append(email)
-
-            if len(pending_emails) >= max_results:
-                truncated_scan = processed < len(candidate_emails)
-                break
-
-        logger.info(
-            "list_pending_replies ha trovato %s messaggi da gestire su %s analizzati.",
-            len(pending_emails),
-            processed,
-        )
-
-        presentation = _present_email_listing(
-            emails=pending_emails,
-            folder_display=folder_display,
-            days=days,
-            max_results=max_results,
-            include_preview=include_preview_bool,
-            log_context="list_pending_replies",
-        )
-
-        if truncated_scan:
-            presentation += (
-                "\nNota: per limitare i tempi di ricerca sono stati esaminati i messaggi piu recenti. "
-                "Aumenta 'days' o 'max_results' per ampliare il controllo."
-            )
-        elif not user_addresses:
-            presentation += (
-                "\nAvvertenza: impossibile determinare l'indirizzo dell'account Outlook, i risultati potrebbero essere incompleti."
-            )
-
-        return presentation
-
-    except Exception as exc:
-        logger.exception("Errore durante list_pending_replies per la cartella '%s'.", folder_name or "Posta in arrivo")
-        return f"Errore durante il calcolo delle risposte mancanti: {str(exc)}"
-
-@mcp.tool()
+    from outlook_mcp.tools.email_list import list_pending_replies as _impl
+    return _impl(days=days, folder_name=folder_name, max_results=max_results, include_preview=include_preview, include_all_folders=include_all_folders, include_unread_only=include_unread_only, conversation_lookback_days=conversation_lookback_days)
 def list_upcoming_events(
     days: int = 7,
     calendar_name: Optional[str] = None,
@@ -2145,61 +1596,8 @@ def list_upcoming_events(
     include_description: bool = False,
     include_all_calendars: bool = False,
 ) -> str:
-    """
-    Elenca gli eventi in arrivo dal calendario selezionato.
-    
-    Args:
-        days: Orizzonte temporale in giorni (max 90)
-        calendar_name: Nome del calendario da esaminare (facoltativo)
-        max_results: Numero massimo di eventi da mostrare (1-200)
-        include_description: Includere un'anteprima della descrizione dell'evento
-        include_all_calendars: Ignora calendar_name e scansiona tutti i calendari disponibili
-    """
-    if not isinstance(days, int) or days < 1 or days > MAX_EVENT_LOOKAHEAD_DAYS:
-        logger.warning("Valore 'days' non valido passato a list_upcoming_events: %s", days)
-        return f"Errore: 'days' deve essere un intero tra 1 e {MAX_EVENT_LOOKAHEAD_DAYS}"
-    if not isinstance(max_results, int) or max_results < 1 or max_results > 200:
-        logger.warning("Valore 'max_results' non valido passato a list_upcoming_events: %s", max_results)
-        return "Errore: 'max_results' deve essere un intero tra 1 e 200"
-
-    include_desc = coerce_bool(include_description)
-    include_all = coerce_bool(include_all_calendars)
-    logger.info(
-        "list_upcoming_events chiamato con giorni=%s calendario=%s max_risultati=%s descrizione=%s tutti_i_calendari=%s",
-        days,
-        calendar_name,
-        max_results,
-        include_desc,
-        include_all,
-    )
-
-    try:
-        _, namespace = connect_to_outlook()
-
-        if include_all:
-            calendars = get_all_calendar_folders(namespace)
-            events = collect_events_across_calendars(calendars, days)
-            calendar_display = "Tutti i calendari"
-        else:
-            calendar_folder = get_calendar_folder_by_name(namespace, calendar_name) if calendar_name else namespace.GetDefaultFolder(9)
-            if not calendar_folder:
-                return f"Errore: calendario '{calendar_name}' non trovato"
-            calendar_display = calendar_folder.Name if calendar_name else "Calendario"
-            events = get_events_from_folder(calendar_folder, days)
-
-        return _present_event_listing(
-            events=events,
-            calendar_display=calendar_display,
-            days=days,
-            max_results=max_results,
-            include_description=include_desc,
-            log_context="list_upcoming_events",
-        )
-    except Exception as e:
-        logger.exception("Errore durante il recupero degli eventi per il calendario '%s'.", calendar_name or "Calendario")
-        return f"Errore durante il recupero degli eventi: {str(e)}"
-
-@mcp.tool()
+    from outlook_mcp.tools.calendar_read import list_upcoming_events as _impl
+    return _impl(days=days, calendar_name=calendar_name, max_results=max_results, include_description=include_description, include_all_calendars=include_all_calendars)
 def search_calendar_events(
     search_term: str,
     days: int = 30,
@@ -2208,64 +1606,14 @@ def search_calendar_events(
     include_description: bool = False,
     include_all_calendars: bool = False,
 ) -> str:
-    """
-    Cerca eventi nel calendario in base a una parola chiave.
-    """
-    if not search_term:
-        logger.warning("search_calendar_events chiamato senza termine di ricerca.")
-        return "Errore: inserisci un termine di ricerca per il calendario"
-
-    if not isinstance(days, int) or days < 1 or days > MAX_EVENT_LOOKAHEAD_DAYS:
-        logger.warning("Valore 'days' non valido passato a search_calendar_events: %s", days)
-        return f"Errore: 'days' deve essere un intero tra 1 e {MAX_EVENT_LOOKAHEAD_DAYS}"
-    if not isinstance(max_results, int) or max_results < 1 or max_results > 200:
-        logger.warning("Valore 'max_results' non valido passato a search_calendar_events: %s", max_results)
-        return "Errore: 'max_results' deve essere un intero tra 1 e 200"
-
-    include_desc = coerce_bool(include_description)
-    include_all = coerce_bool(include_all_calendars)
-    logger.info(
-        "search_calendar_events chiamato con termine='%s' giorni=%s calendario=%s max_risultati=%s descrizione=%s tutti_i_calendari=%s",
-        search_term,
-        days,
-        calendar_name,
-        max_results,
-        include_desc,
-        include_all,
-    )
-
-    try:
-        _, namespace = connect_to_outlook()
-
-        if include_all:
-            calendars = get_all_calendar_folders(namespace)
-            events = collect_events_across_calendars(calendars, days, search_term)
-            calendar_display = "Tutti i calendari"
-        else:
-            calendar_folder = get_calendar_folder_by_name(namespace, calendar_name) if calendar_name else namespace.GetDefaultFolder(9)
-            if not calendar_folder:
-                return f"Errore: calendario '{calendar_name}' non trovato"
-            calendar_display = calendar_folder.Name if calendar_name else "Calendario"
-            events = get_events_from_folder(calendar_folder, days, search_term)
-
-        return _present_event_listing(
-            events=events,
-            calendar_display=calendar_display,
-            days=days,
-            max_results=max_results,
-            include_description=include_desc,
-            log_context="search_calendar_events",
-        )
-    except Exception as e:
-        logger.exception(
-            "Errore durante la ricerca di eventi con termine '%s' nel calendario '%s'.",
-            search_term,
-            calendar_name or "Calendario",
-        )
-        return f"Errore durante la ricerca degli eventi: {str(e)}"
+    from outlook_mcp.tools.calendar_read import search_calendar_events as _impl
+    return _impl(search_term=search_term, days=days, calendar_name=calendar_name, max_results=max_results, include_description=include_description, include_all_calendars=include_all_calendars)
+def get_event_by_number(event_number: int) -> str:
+    from outlook_mcp.tools.calendar_read import get_event_by_number as _impl
+    return _impl(event_number)
 
 
-@mcp.tool()
+
 def create_calendar_event(
     subject: str,
     start_time: str,
@@ -2278,496 +1626,44 @@ def create_calendar_event(
     all_day: bool = False,
     send_invitations: bool = True,
 ) -> str:
-    """Create a new Outlook calendar event (meeting or appointment)."""
-    if not subject or not subject.strip():
-        return "Errore: specifica un oggetto ('subject') per l'evento."
-
-    start_dt = _parse_datetime_string(start_time)
-    if not start_dt:
-        return "Errore: 'start_time' deve essere una data valida (es. '2025-10-20 10:30')."
-
-    all_day_bool = coerce_bool(all_day)
-    send_bool = coerce_bool(send_invitations)
-
-    if not all_day_bool:
-        if duration_minutes is None:
-            duration_value = 60
-        else:
-            try:
-                duration_value = int(duration_minutes)
-            except (TypeError, ValueError):
-                return "Errore: 'duration_minutes' deve essere un intero positivo."
-            if duration_value <= 0:
-                return "Errore: 'duration_minutes' deve essere un intero positivo."
-    else:
-        duration_value = None
-
-    attendee_list = ensure_string_list(attendees)
-
-    reminder_set = False
-    reminder_value: Optional[int] = None
-    if reminder_minutes is not None:
-        try:
-            reminder_value = int(reminder_minutes)
-        except (TypeError, ValueError):
-            return "Errore: 'reminder_minutes' deve essere un intero (minuti)."
-        if reminder_value >= 0:
-            reminder_set = True
-        else:
-            reminder_value = None
-
-    logger.info(
-        "create_calendar_event chiamato (subject=%s start=%s durata=%s luogo=%s partecipanti=%s all_day=%s invia=%s calendario=%s).",
-        subject,
-        start_time,
-        duration_value,
-        location,
-        attendee_list,
-        all_day_bool,
-        send_bool,
-        calendar_name,
+    from outlook_mcp.tools.calendar_write import create_calendar_event as _impl
+    return _impl(
+        subject=subject,
+        start_time=start_time,
+        duration_minutes=duration_minutes,
+        location=location,
+        body=body,
+        attendees=attendees,
+        reminder_minutes=reminder_minutes,
+        calendar_name=calendar_name,
+        all_day=all_day,
+        send_invitations=send_invitations,
     )
-
-    try:
-        outlook, namespace = connect_to_outlook()
-        if calendar_name:
-            target_calendar = get_calendar_folder_by_name(namespace, calendar_name)
-            if not target_calendar:
-                return f"Errore: calendario '{calendar_name}' non trovato."
-        else:
-            target_calendar = namespace.GetDefaultFolder(9)  # olFolderCalendar
-
-        calendar_display = getattr(target_calendar, "Name", "Calendario")
-        appointment = outlook.CreateItem(1)  # olAppointmentItem
-
-        subject_clean = subject.strip()
-        appointment.Subject = subject_clean
-
-        if all_day_bool:
-            normalized_start = start_dt.replace(hour=0, minute=0, second=0, microsecond=0)
-            appointment.Start = normalized_start
-            appointment.End = normalized_start + datetime.timedelta(days=1)
-            appointment.AllDayEvent = True
-        else:
-            appointment.Start = start_dt
-            appointment.AllDayEvent = False
-            appointment.Duration = duration_value or 60
-            appointment.End = start_dt + datetime.timedelta(minutes=appointment.Duration)
-
-        if location:
-            appointment.Location = location
-        if body:
-            appointment.Body = body
-
-        if attendee_list:
-            appointment.MeetingStatus = 1  # olMeeting
-            for email in attendee_list:
-                if not email:
-                    continue
-                try:
-                    recipient = appointment.Recipients.Add(email)
-                    if hasattr(recipient, "Type"):
-                        recipient.Type = 1  # Required attendee
-                except Exception as exc:
-                    logger.warning("Impossibile aggiungere il destinatario '%s': %s", email, exc)
-
-        appointment.ReminderSet = reminder_set
-        if reminder_set and reminder_value is not None:
-            appointment.ReminderMinutesBeforeStart = reminder_value
-
-        try:
-            appointment.Save()
-        except Exception as exc:
-            logger.exception("Salvataggio dell'appuntamento fallito.")
-            return f"Errore: impossibile salvare l'evento ({exc})."
-
-        if calendar_name:
-            try:
-                moved = appointment.Move(target_calendar)
-                if moved:
-                    appointment = moved
-            except Exception as exc:
-                logger.exception("Impossibile spostare l'evento nel calendario '%s'.", calendar_display)
-                return (
-                    "Errore: salvataggio completato ma non è stato possibile spostare l'evento nel "
-                    f"calendario '{calendar_display}' ({exc})."
-                )
-
-        if send_bool and attendee_list:
-            try:
-                appointment.Send()
-            except Exception as exc:
-                logger.exception("Invio degli inviti fallito.")
-                return f"Errore: evento creato ma invio degli inviti fallito ({exc})."
-
-        clear_calendar_cache()
-
-        entry_id = safe_entry_id(appointment) or "N/D"
-        start_display = start_dt.strftime("%Y-%m-%d") if all_day_bool else start_dt.strftime("%Y-%m-%d %H:%M")
-
-        lines = [
-            f"Evento '{subject_clean}' creato per {start_display} nel calendario '{calendar_display}'.",
-            f"Message ID: {entry_id}",
-        ]
-        if attendee_list:
-            lines.append(f"Partecipanti: {', '.join(attendee_list)}")
-        if send_bool and attendee_list:
-            lines.append("Inviti inviati ai partecipanti.")
-        elif attendee_list:
-            lines.append("Inviti non inviati (send_invitations impostato a False).")
-
-        return "\n".join(lines)
-    except Exception as exc:
-        logger.exception("Errore durante create_calendar_event.")
-        return f"Errore durante la creazione dell'evento: {exc}"
-
-@mcp.tool()
-def get_email_by_number(
-    email_number: Optional[int] = None,
-    message_id: Optional[str] = None,
-    folder_id: Optional[str] = None,
-    folder_path: Optional[str] = None,
-    index: Optional[int] = None,
-    include_body: bool = True,
-) -> str:
-    """
-    Retrieve the detailed content of a specific email.
-    
-    Args:
-        email_number: Number previously assigned during an email listing.
-        message_id: Outlook EntryID of the message (alternative to email_number).
-        folder_id: EntryID of the folder that contains the message (used with index).
-        folder_path: FolderPath string used to locate the folder (used with index).
-        index: 1-based position inside the folder (sorted by ReceivedTime desc).
-        include_body: Include the full message body in the textual response.
-    """
-    try:
-        include_body_bool = coerce_bool(include_body)
-        logger.info(
-            "get_email_by_number chiamato (numero=%s id=%s folder_id=%s folder_path=%s index=%s corpo=%s).",
-            email_number,
-            message_id,
-            folder_id,
-            folder_path,
-            index,
-            include_body_bool,
-        )
-
-        _, namespace = connect_to_outlook()
-
-        email_data: Optional[Dict[str, Any]] = None
-        mail_item = None
-        number_ref = email_number
-
-        if email_number is not None:
-            if not email_cache:
-                return "Errore: nessun elenco messaggi attivo. Mostra prima le email e poi ripeti la richiesta."
-            if email_number not in email_cache:
-                return f"Errore: il messaggio #{email_number} non e presente nell'elenco corrente."
-            email_data = dict(email_cache[email_number])
-            message_id = message_id or email_data.get("id")
-
-        if message_id and not mail_item:
-            try:
-                mail_item = namespace.GetItemFromID(message_id)
-            except Exception:
-                mail_item = None
-
-        if mail_item is None and (folder_id or folder_path):
-            if index is None:
-                return "Errore: specifica 'index' (posizione 1-based) quando usi folder_id o folder_path."
-            if not isinstance(index, int) or index < 1:
-                return "Errore: 'index' deve essere un intero positivo (1-based)."
-            folder, attempts = folder_service.resolve_folder(
-                namespace,
-                folder_id=folder_id,
-                folder_path=folder_path,
-                folder_name=None,
-            )
-            if not folder:
-                detail = "; ".join(attempts) if attempts else "cartella non trovata."
-                return f"Errore: impossibile individuare la cartella specificata ({detail})."
-            try:
-                items = folder.Items
-                items.Sort("[ReceivedTime]", True)
-                if index > items.Count:
-                    return f"Errore: la cartella contiene solo {items.Count} elementi."
-                mail_item = items(index)
-                message_id = message_id or safe_entry_id(mail_item)
-            except Exception as exc:
-                logger.exception("Impossibile recuperare il messaggio %s dalla cartella.", index)
-                return f"Errore: impossibile recuperare il messaggio in posizione {index} ({exc})."
-
-        if mail_item and email_data is None:
-            try:
-                email_data = format_email(mail_item)
-            except Exception as exc:
-                logger.warning("Impossibile formattare il messaggio recuperato: %s", exc)
-                email_data = None
-
-        if email_data is None:
-            return "Errore: impossibile recuperare i dettagli del messaggio richiesto."
-
-        trimmed_conv = trim_conversation_id(email_data.get("conversation_id"), max_chars=32)
-        importance_label = email_data.get("importance_label") or _describe_importance(email_data.get("importance"))
-        attachment_names_preview = email_data.get("attachment_names") or []
-        to_line = ", ".join(email_data.get("to_recipients", []))
-        cc_line = ", ".join(email_data.get("cc_recipients", []))
-        bcc_line = ", ".join(email_data.get("bcc_recipients", []))
-
-        identifier_line = (
-            f"Dettagli del messaggio #{number_ref}:" if number_ref is not None else "Dettagli del messaggio richiesto:"
-        )
-        result_lines = [
-            identifier_line,
-            "",
-            f"Oggetto: {email_data.get('subject', '(Senza oggetto)')}",
-            f"Da: {email_data.get('sender', 'Sconosciuto')} <{email_data.get('sender_email', '')}>",
-        ]
-
-        if to_line:
-            result_lines.append(f"A: {to_line}")
-        if cc_line:
-            result_lines.append(f"Cc: {cc_line}")
-        if bcc_line:
-            result_lines.append(f"Ccn: {bcc_line}")
-
-        folder_display = email_data.get("folder_path") or ""
-        if not folder_display and mail_item:
-            folder_display = safe_folder_path(getattr(mail_item, "Parent", None))
-
-        result_lines.extend(
-            [
-                f"Ricevuto: {email_data.get('received_time', 'Sconosciuto')}",
-                f"Cartella: {folder_display or 'Cartella sconosciuta'}",
-                f"Importanza: {importance_label}",
-                f"Stato lettura: {_read_status(email_data.get('unread'))}",
-            ]
-        )
-
-        if email_data.get("categories"):
-            result_lines.append(f"Categorie: {email_data['categories']}")
-        if trimmed_conv:
-            result_lines.append(f"ID conversazione: {trimmed_conv}")
-        if email_data.get("preview"):
-            result_lines.append(f"Anteprima corpo: {email_data['preview']}")
-
-        if message_id:
-            result_lines.append(f"MessageID: {message_id}")
-
-        result_lines.append(f"Allegati: {_yes_no(email_data.get('has_attachments'))}")
-        if attachment_names_preview:
-            result_lines.append(f"Nomi allegati: {', '.join(attachment_names_preview)}")
-
-        attachment_lines = []
-        if mail_item and email_data.get("has_attachments") and hasattr(mail_item, "Attachments"):
-            try:
-                for i in range(1, mail_item.Attachments.Count + 1):
-                    attachment = mail_item.Attachments(i)
-                    attachment_lines.append(f"  - {attachment.FileName}")
-            except Exception:
-                attachment_lines = []
-
-        if attachment_lines:
-            result_lines.append("")
-            result_lines.append("Allegati dettagliati:")
-            result_lines.extend(attachment_lines)
-
-        if include_body_bool:
-            body_content = email_data.get("body")
-            if not body_content and mail_item:
-                try:
-                    body_content = getattr(mail_item, "Body", "")
-                except Exception:
-                    body_content = ""
-            result_lines.append("")
-            result_lines.append("Corpo:")
-            result_lines.append(body_content or "(Nessun contenuto)")
-
-        result_lines.append("")
-        result_lines.append(
-            "Puoi chiedermi di rispondere o inoltrare questo messaggio indicando il numero o il message_id."
-        )
-
-        return "\n".join(result_lines)
-
-    except Exception as exc:
-        logger.exception("Errore nel recupero dei dettagli del messaggio (numero=%s id=%s).", email_number, message_id)
-        return f"Errore durante il recupero dei dettagli del messaggio: {exc}"
-
-@mcp.tool()
-def get_event_by_number(event_number: int) -> str:
-    """
-    Recupera i dettagli completi di un evento dall'ultimo elenco.
-    """
-    try:
-        if not calendar_cache:
-            logger.warning("get_event_by_number chiamato ma la cache eventi e vuota.")
-            return "Errore: nessun elenco eventi attivo. Chiedimi di aggiornare gli eventi e poi ripeti la richiesta."
-
-        if event_number not in calendar_cache:
-            logger.warning("Evento numero %s non presente in cache per get_event_by_number.", event_number)
-            return f"Errore: l'evento #{event_number} non e presente nell'elenco corrente."
-
-        event = calendar_cache[event_number]
-        logger.info("Recupero dettagli completi per l'evento #%s.", event_number)
-
-        lines = [
-            f"Dettagli evento #{event_number}:",
-            "",
-            f"Oggetto: {event.get('subject', '(Senza oggetto)')}",
-            f"Inizio: {event.get('start_time', 'Sconosciuto')}",
-            f"Fine: {event.get('end_time', 'Sconosciuto')}",
-            f"Calendario: {event.get('folder_path', 'Non disponibile')}",
-            f"Luogo: {event.get('location', '') or 'Non specificato'}",
-            f"Organizzatore: {event.get('organizer', 'Non disponibile')}",
-            f"Giornata intera: {_yes_no(event.get('all_day'))}",
-            f"Evento ricorrente: {_yes_no(event.get('is_recurring'))}",
-        ]
-
-        if event.get("duration_minutes"):
-            lines.append(f"Durata (minuti): {event['duration_minutes']}")
-        if event.get("required_attendees"):
-            lines.append(f"Partecipanti obbligatori: {event['required_attendees']}")
-        if event.get("optional_attendees"):
-            lines.append(f"Partecipanti facoltativi: {event['optional_attendees']}")
-        if event.get("categories"):
-            lines.append(f"Categorie: {event['categories']}")
-        if event.get("preview"):
-            lines.append(f"Anteprima descrizione: {event['preview']}")
-
-        body_content = event.get("body", "")
-        if body_content and len(body_content) > 4000:
-            body_content = body_content[:4000].rstrip() + "\n[Descrizione troncata per brevita]"
-
-        lines.append("")
-        lines.append("Descrizione completa:")
-        lines.append(body_content or "(Nessuna descrizione)")
-
-        return "\n".join(lines)
-    except Exception as e:
-        logger.exception("Errore nel recupero dei dettagli per l'evento #%s.", event_number)
-        return f"Errore durante il recupero dei dettagli dell'evento: {str(e)}"
-
-
-@mcp.tool()
 def ensure_domain_folder(
     email_number: Optional[int] = None,
     sender_email: Optional[str] = None,
     root_folder_name: Optional[str] = None,
     subfolders: Optional[str] = None,
 ) -> str:
-    """Crea (se manca) la struttura di cartelle per il dominio del mittente."""
-    try:
-        target_email = sender_email
-        email_entry: Optional[Dict[str, Any]] = None
-        if email_number:
-            if not email_cache:
-                return "Errore: nessun elenco messaggi attivo. Mostra prima le email e riprova."
-            email_entry = email_cache.get(email_number)
-            if not email_entry:
-                return f"Errore: il messaggio #{email_number} non e presente nella cache corrente."
-            target_email = target_email or _derive_sender_email(email_entry)
-        if not target_email:
-            return "Errore: specifica un mittente (sender_email) oppure il numero di un messaggio gia elencato."
-
-        domain = _extract_email_domain(target_email)
-        if not domain:
-            return f"Errore: impossibile determinare il dominio dal mittente '{target_email}'."
-
-        custom_subfolders: Optional[List[str]] = None
-        if subfolders:
-            custom_subfolders = [folder.strip() for folder in subfolders.split("|") if folder.strip()]
-
-        _, namespace = connect_to_outlook()
-        domain_folder, domain_created, created_subfolders = _ensure_domain_folder_structure(
-            namespace=namespace,
-            domain=domain,
-            root_folder_name=root_folder_name or DEFAULT_DOMAIN_ROOT_NAME,
-            subfolders=custom_subfolders or DEFAULT_DOMAIN_SUBFOLDERS,
-        )
-        folder_path = getattr(domain_folder, "FolderPath", f"{domain_folder}")
-        summary_parts = [f"Cartella dominio '{domain}' pronta: {folder_path}"]
-        if domain_created:
-            summary_parts.append("Cartella dominio creata ex novo.")
-        if created_subfolders:
-            summary_parts.append(
-                "Sottocartelle create: " + ", ".join(created_subfolders)
-            )
-        return " ".join(summary_parts)
-    except Exception as exc:
-        logger.exception("Errore durante ensure_domain_folder (email_number=%s).", email_number)
-        return f"Errore durante la verifica/creazione della cartella dominio: {exc}"
+    from outlook_mcp.tools.domain_rules import ensure_domain_folder as _impl
+    return _impl(email_number=email_number, sender_email=sender_email, root_folder_name=root_folder_name, subfolders=subfolders)
 
 
-@mcp.tool()
 def move_email_to_domain_folder(
     email_number: int,
     root_folder_name: Optional[str] = None,
     create_if_missing: bool = True,
     subfolders: Optional[str] = None,
 ) -> str:
-    """Sposta un messaggio nella cartella del dominio mittente creando la struttura se necessario."""
-    try:
-        if not email_cache or email_number not in email_cache:
-            return "Errore: nessun elenco messaggi attivo o numero non valido."
-
-        email_entry = email_cache[email_number]
-        sender = _derive_sender_email(email_entry)
-        if not sender:
-            return "Errore: il messaggio non contiene un mittente valido."
-        domain = _extract_email_domain(sender)
-        if not domain:
-            return f"Errore: impossibile determinare il dominio dal mittente '{sender}'."
-
-        _, namespace = connect_to_outlook()
-
-        if create_if_missing:
-            custom_subfolders = [seg.strip() for seg in subfolders.split("|") if seg.strip()] if subfolders else None
-            domain_folder, _, _ = _ensure_domain_folder_structure(
-                namespace=namespace,
-                domain=domain,
-                root_folder_name=root_folder_name or DEFAULT_DOMAIN_ROOT_NAME,
-                subfolders=custom_subfolders or DEFAULT_DOMAIN_SUBFOLDERS,
-            )
-        else:
-            inbox = namespace.GetDefaultFolder(6)
-            root_folder = None
-            try:
-                for sub in inbox.Folders:
-                    if sub.Name.lower() == (root_folder_name or DEFAULT_DOMAIN_ROOT_NAME).lower():
-                        root_folder = sub
-                        break
-            except Exception:
-                root_folder = None
-            domain_folder = None
-            if root_folder:
-                try:
-                    for sub in root_folder.Folders:
-                        if sub.Name.lower() == domain.lower():
-                            domain_folder = sub
-                            break
-                except Exception:
-                    domain_folder = None
-            if not domain_folder:
-                return "Cartella dominio non trovata e creazione disabilitata."
-
-        mail_item = namespace.GetItemFromID(email_entry["id"])
-        if not mail_item:
-            return f"Errore: impossibile recuperare il messaggio #{email_number} da Outlook."
-
-        mail_item.Move(domain_folder)
-        folder_path = getattr(domain_folder, "FolderPath", f"{domain_folder}")
-        return (
-            f"Messaggio #{email_number} spostato nella cartella dominio '{domain}' "
-            f"({folder_path})."
-        )
-    except Exception as exc:
-        logger.exception("Errore durante move_email_to_domain_folder per messaggio #%s.", email_number)
-        return f"Errore durante lo spostamento nella cartella dominio: {exc}"
+    from outlook_mcp.tools.domain_rules import move_email_to_domain_folder as _impl
+    return _impl(
+        email_number=email_number,
+        root_folder_name=root_folder_name,
+        create_if_missing=create_if_missing,
+        subfolders=subfolders,
+    )
 
 
-@mcp.tool()
 def set_email_category(
     email_number: int,
     category: str,
@@ -2783,7 +1679,6 @@ def set_email_category(
         append=append_flag,
     )
 
-@mcp.tool()
 def get_email_context(
     email_number: int,
     include_thread: bool = True,
@@ -2972,7 +1867,6 @@ def get_email_context(
         logger.exception("Errore nel recupero del contesto per il messaggio #%s.", email_number)
         return f"Errore durante il recupero del contesto del messaggio: {str(e)}"
 
-@mcp.tool()
 def move_email_to_folder(
     target_folder_id: Optional[str] = None,
     target_folder_path: Optional[str] = None,
@@ -2981,160 +1875,16 @@ def move_email_to_folder(
     message_id: Optional[str] = None,
     create_if_missing: bool = False,
 ) -> str:
-    """Move a message to a specific Outlook folder."""
-    try:
-        if not (target_folder_id or target_folder_path or target_folder_name):
-            return "Errore: specifica una cartella di destinazione tramite id, path o nome."
-
-        create_if_missing_bool = coerce_bool(create_if_missing)
-        logger.info(
-            "move_email_to_folder chiamato (numero=%s id=%s target_id=%s target_path=%s target_nome=%s crea=%s).",
-            email_number,
-            message_id,
-            target_folder_id,
-            target_folder_path,
-            target_folder_name,
-            create_if_missing_bool,
-        )
-
-        _, namespace = connect_to_outlook()
-        try:
-            cached_entry, mail_item = _resolve_mail_item(
-                namespace, email_number=email_number, message_id=message_id
-            )
-        except ToolError as exc:
-            return f"Errore: {exc}"
-
-        target_folder, attempts = folder_service.resolve_folder(
-            namespace,
-            folder_id=target_folder_id,
-            folder_path=target_folder_path,
-            folder_name=target_folder_name,
-        )
-
-        if not target_folder and create_if_missing_bool and target_folder_path:
-            normalized = normalize_folder_path(target_folder_path)
-            if normalized:
-                segments = [segment for segment in normalized.split("\\") if segment]
-                if segments:
-                    parent_segments = segments[:-1]
-                    leaf_name = segments[-1]
-                    parent_folder = None
-                    if parent_segments:
-                        parent_path = "\\\\" + "\\".join(parent_segments)
-                        parent_folder = folder_service.get_folder_by_path(namespace, parent_path)
-                    if parent_folder:
-                        try:
-                            target_folder = parent_folder.Folders.Add(leaf_name)
-                            attempts = []
-                        except Exception as exc:
-                            attempts.append(f"Creazione automatica '{leaf_name}' fallita: {exc}")
-                    else:
-                        attempts.append("Cartella padre non trovata per la creazione automatica.")
-
-        if not target_folder:
-            detail = "; ".join(attempts) if attempts else "cartella di destinazione non trovata."
-            return f"Errore: {detail}"
-
-        try:
-            moved_item = mail_item.Move(target_folder)
-        except Exception as exc:
-            logger.exception("Outlook ha rifiutato lo spostamento del messaggio.")
-            return f"Errore: impossibile spostare il messaggio ({exc})."
-
-        destination_path = safe_folder_path(target_folder) or getattr(target_folder, "Name", "(destinazione)")
-        new_entry_id = safe_entry_id(moved_item) or safe_entry_id(mail_item)
-        if email_number is not None:
-            _update_cached_email(
-                email_number,
-                folder_path=destination_path,
-                id=new_entry_id,
-            )
-
-        reference = f"#{email_number}" if email_number is not None else (message_id or new_entry_id or "N/D")
-        return (
-            f"Messaggio {reference} spostato nella cartella '{destination_path}'. "
-            f"(message_id={new_entry_id or 'N/D'})"
-        )
-    except Exception as exc:
-        logger.exception("Errore durante move_email_to_folder.")
-        return f"Errore durante lo spostamento del messaggio: {exc}"
-
-@mcp.tool()
+    from outlook_mcp.tools.email_actions import move_email_to_folder as _impl
+    return _impl(target_folder_id=target_folder_id, target_folder_path=target_folder_path, target_folder_name=target_folder_name, email_number=email_number, message_id=message_id, create_if_missing=create_if_missing)
 def mark_email_read_unread(
     email_number: Optional[int] = None,
     message_id: Optional[str] = None,
     unread: Optional[bool] = None,
     flag: Optional[str] = None,
 ) -> str:
-    """Toggle the unread flag of a message."""
-    try:
-        if unread is None and flag is None:
-            return "Errore: specifica 'unread' True/False oppure flag='read'/'unread'."
-
-        if unread is not None:
-            target_unread = bool(coerce_bool(unread))
-        else:
-            normalized = str(flag).strip().lower()
-            if normalized in {"read", "letto", "letta"}:
-                target_unread = False
-            elif normalized in {"unread", "non letto", "non letta"}:
-                target_unread = True
-            else:
-                return "Errore: flag deve essere 'read' o 'unread'."
-
-        logger.info(
-            "mark_email_read_unread chiamato (numero=%s id=%s unread=%s).",
-            email_number,
-            message_id,
-            target_unread,
-        )
-
-        _, namespace = connect_to_outlook()
-        try:
-            _, mail_item = _resolve_mail_item(namespace, email_number=email_number, message_id=message_id)
-        except ToolError as exc:
-            return f"Errore: {exc}"
-
-        try:
-            mail_item.UnRead = target_unread
-            mail_item.Save()
-        except Exception as exc:
-            logger.exception("Outlook ha rifiutato l'aggiornamento dello stato lettura.")
-            return f"Errore: impossibile aggiornare lo stato lettura ({exc})."
-
-        _update_cached_email(email_number, unread=target_unread)
-        status_label = "Non letta" if target_unread else "Letta"
-        reference = f"#{email_number}" if email_number is not None else (message_id or safe_entry_id(mail_item) or "messaggio")
-        return f"Messaggio {reference} contrassegnato come {status_label}."
-    except Exception as exc:
-        logger.exception("Errore durante mark_email_read_unread.")
-        return f"Errore durante l'aggiornamento dello stato di lettura: {exc}"
-
-def _apply_categories_to_item(mail_item, categories: List[str], overwrite: bool, append: bool) -> List[str]:
-    """Apply categories to the given mail item and return the final set."""
-    normalized = [cat.strip() for cat in categories if cat and cat.strip()]
-    if not normalized:
-        raise ValueError("Nessuna categoria valida fornita.")
-
-    existing_raw = getattr(mail_item, "Categories", "") or ""
-    existing = [segment.strip() for segment in existing_raw.split(";") if segment.strip()]
-    existing_set = {cat for cat in existing if cat}
-    new_set = {cat for cat in normalized if cat}
-
-    if overwrite:
-        final = sorted(new_set)
-    else:
-        if not existing_set and not append:
-            final = sorted(new_set)
-        else:
-            final = sorted(existing_set.union(new_set))
-
-    mail_item.Categories = "; ".join(final)
-    mail_item.Save()
-    return final
-
-@mcp.tool()
+    from outlook_mcp.tools.email_actions import mark_email_read_unread as _impl
+    return _impl(email_number=email_number, message_id=message_id, unread=unread, flag=flag)
 def apply_category(
     categories: Optional[Any] = None,
     category: Optional[str] = None,
@@ -3143,47 +1893,8 @@ def apply_category(
     overwrite: bool = False,
     append: bool = False,
 ) -> str:
-    """Apply one or more Outlook categories to a message."""
-    try:
-        category_list = ensure_string_list(categories)
-        if category:
-            category_list.extend(ensure_string_list(category))
-        category_list = [cat for cat in category_list if cat]
-        if not category_list:
-            return "Errore: specifica almeno una categoria da applicare."
-
-        overwrite_bool = coerce_bool(overwrite)
-        append_bool = coerce_bool(append)
-        logger.info(
-            "apply_category chiamato (categorie=%s numero=%s id=%s overwrite=%s append=%s).",
-            category_list,
-            email_number,
-            message_id,
-            overwrite_bool,
-            append_bool,
-        )
-
-        _, namespace = connect_to_outlook()
-        try:
-            _, mail_item = _resolve_mail_item(namespace, email_number=email_number, message_id=message_id)
-        except ToolError as exc:
-            return f"Errore: {exc}"
-
-        try:
-            final_categories = _apply_categories_to_item(mail_item, category_list, overwrite_bool, append_bool)
-        except ValueError as exc:
-            return f"Errore: {exc}"
-
-        if email_number is not None:
-            _update_cached_email(email_number, categories="; ".join(final_categories))
-
-        reference = f"#{email_number}" if email_number is not None else (message_id or safe_entry_id(mail_item) or "messaggio")
-        return f"Categorie applicate al messaggio {reference}: {', '.join(final_categories) if final_categories else '(nessuna)'}."
-    except Exception as exc:
-        logger.exception("Errore durante apply_category.")
-        return f"Errore durante l'aggiornamento delle categorie: {exc}"
-
-@mcp.tool()
+    from outlook_mcp.tools.email_actions import apply_category as _impl
+    return _impl(categories=categories, category=category, email_number=email_number, message_id=message_id, overwrite=overwrite, append=append)
 def reply_to_email_by_number(
     email_number: Optional[int] = None,
     reply_text: str = "",
@@ -3193,72 +1904,8 @@ def reply_to_email_by_number(
     attachments: Optional[Any] = None,
     use_html: bool = False,
 ) -> str:
-    """Reply to an Outlook message using cached numbering or EntryID."""
-    try:
-        if not reply_text.strip():
-            return "Errore: specifica il testo della risposta."
-
-        reply_all_bool = coerce_bool(reply_all)
-        send_bool = coerce_bool(send)
-        use_html_bool = coerce_bool(use_html)
-        attachment_paths = ensure_string_list(attachments)
-        logger.info(
-            "reply_to_email_by_number chiamato (numero=%s id=%s reply_all=%s invia=%s allegati=%s html=%s).",
-            email_number,
-            message_id,
-            reply_all_bool,
-            send_bool,
-            attachment_paths,
-            use_html_bool,
-        )
-
-        _, namespace = connect_to_outlook()
-        try:
-            _, mail_item = _resolve_mail_item(namespace, email_number=email_number, message_id=message_id)
-        except ToolError as exc:
-            return f"Errore: {exc}"
-
-        reply = mail_item.ReplyAll() if reply_all_bool else mail_item.Reply()
-        try:
-            if use_html_bool:
-                original_body = getattr(reply, "HTMLBody", "")
-                reply.HTMLBody = f"{reply_text}<br><br>{original_body}"
-            else:
-                original_body = getattr(reply, "Body", "")
-                reply.Body = f"{reply_text}\n\n{original_body}"
-        except Exception:
-            reply.Body = reply_text
-
-        for path_value in attachment_paths:
-            absolute = os.path.abspath(path_value)
-            if not os.path.exists(absolute):
-                return f"Errore: file '{absolute}' non trovato."
-            try:
-                reply.Attachments.Add(absolute)
-            except Exception as exc:
-                logger.exception("Impossibile allegare il file %s alla risposta.", absolute)
-                return f"Errore: impossibile allegare '{absolute}' ({exc})."
-
-        if send_bool:
-            reply.Send()
-        else:
-            try:
-                reply.Save()
-            except Exception:
-                pass
-
-        sender_name = getattr(mail_item, "SenderName", "Destinatario")
-        entry_id = safe_entry_id(mail_item)
-        action = "inviata" if send_bool else "salvata in Bozze"
-        return (
-            f"Risposta {action} per {sender_name}. "
-            f"(message_id={entry_id or message_id or 'N/D'})"
-        )
-    except Exception as exc:
-        logger.exception("Errore durante reply_to_email_by_number (numero=%s id=%s).", email_number, message_id)
-        return f"Errore durante l'invio della risposta: {exc}"
-
-@mcp.tool()
+    from outlook_mcp.tools.email_actions import reply_to_email_by_number as _impl
+    return _impl(email_number=email_number, reply_text=reply_text, message_id=message_id, reply_all=reply_all, send=send, attachments=attachments, use_html=use_html)
 def compose_email(
     recipient_email: str,
     subject: str,
@@ -3269,62 +1916,8 @@ def compose_email(
     send: bool = True,
     use_html: bool = False,
 ) -> str:
-    """Compose a new Outlook email with optional attachments."""
-    try:
-        if not recipient_email.strip():
-            return "Errore: specifica almeno un destinatario."
-
-        send_bool = coerce_bool(send)
-        use_html_bool = coerce_bool(use_html)
-        attachment_paths = ensure_string_list(attachments)
-        logger.info(
-            "compose_email chiamato (destinatario=%s cc=%s bcc=%s oggetto='%s' invia=%s allegati=%s html=%s).",
-            recipient_email,
-            cc_email,
-            bcc_email,
-            subject,
-            send_bool,
-            attachment_paths,
-            use_html_bool,
-        )
-
-        outlook, _ = connect_to_outlook()
-        mail = outlook.CreateItem(0)
-        mail.To = recipient_email
-        if cc_email:
-            mail.CC = cc_email
-        if bcc_email:
-            mail.BCC = bcc_email
-        mail.Subject = subject
-
-        if use_html_bool:
-            existing = getattr(mail, "HTMLBody", "")
-            mail.HTMLBody = f"{body}{existing}"
-        else:
-            mail.Body = body
-
-        for path_value in attachment_paths:
-            absolute = os.path.abspath(path_value)
-            if not os.path.exists(absolute):
-                return f"Errore: file '{absolute}' non trovato."
-            try:
-                mail.Attachments.Add(absolute)
-            except Exception as exc:
-                logger.exception("Impossibile allegare il file %s.", absolute)
-                return f"Errore: impossibile allegare '{absolute}' ({exc})."
-
-        if send_bool:
-            mail.Send()
-            return f"Email inviata a: {recipient_email}"
-
-        mail.Save()
-        entry_id = safe_entry_id(mail)
-        return f"Bozza salvata (message_id={entry_id or 'N/D'})."
-    except Exception as exc:
-        logger.exception("Errore durante compose_email per destinatario %s.", recipient_email)
-        return f"Errore durante la composizione dell'email: {exc}"
-
-@mcp.tool()
+    from outlook_mcp.tools.email_actions import compose_email as _impl
+    return _impl(recipient_email=recipient_email, subject=subject, body=body, cc_email=cc_email, bcc_email=bcc_email, attachments=attachments, send=send, use_html=use_html)
 def get_attachments(
     email_number: Optional[int] = None,
     message_id: Optional[str] = None,
@@ -3332,322 +1925,26 @@ def get_attachments(
     download: bool = False,
     limit: Optional[int] = None,
 ) -> str:
-    """List (and optionally download) attachments from a message."""
-    try:
-        download_bool = coerce_bool(download)
-        if limit is not None:
-            try:
-                limit_value = int(limit)
-                if limit_value < 1:
-                    return "Errore: 'limit' deve essere un intero positivo."
-            except (TypeError, ValueError):
-                return "Errore: 'limit' deve essere un intero positivo."
-        else:
-            limit_value = None
-
-        if download_bool and not save_to:
-            return "Errore: specifica 'save_to' quando download=True."
-
-        logger.info(
-            "get_attachments chiamato (numero=%s id=%s download=%s limit=%s destinazione=%s).",
-            email_number,
-            message_id,
-            download_bool,
-            limit_value,
-            save_to,
-        )
-
-        _, namespace = connect_to_outlook()
-        try:
-            _, mail_item = _resolve_mail_item(namespace, email_number=email_number, message_id=message_id)
-        except ToolError as exc:
-            return f"Errore: {exc}"
-
-        if not hasattr(mail_item, "Attachments") or mail_item.Attachments.Count == 0:
-            return "Questo messaggio non contiene allegati."
-
-        total_attachments = mail_item.Attachments.Count
-        max_index = total_attachments if limit_value is None else min(total_attachments, limit_value)
-
-        if download_bool and save_to:
-            os.makedirs(save_to, exist_ok=True)
-
-        lines = [
-            f"Allegati trovati: {total_attachments} (mostrati {max_index}).",
-            "",
-        ]
-        saved_paths: List[str] = []
-
-        for position in range(1, max_index + 1):
-            attachment = mail_item.Attachments(position)
-            name = getattr(attachment, "FileName", f"Allegato {position}")
-            size = getattr(attachment, "Size", None)
-            size_text = f"{size} byte" if isinstance(size, int) else "dimensione sconosciuta"
-            lines.append(f"- {name} ({size_text})")
-
-            if download_bool and save_to:
-                safe_name = safe_filename(name or f"allegato_{position}")
-                base, ext = os.path.splitext(safe_name)
-                destination = os.path.join(save_to, safe_name)
-                counter = 1
-                while os.path.exists(destination):
-                    destination = os.path.join(save_to, f"{base}_{counter}{ext}")
-                    counter += 1
-                try:
-                    attachment.SaveAsFile(destination)
-                    saved_paths.append(destination)
-                except Exception as exc:
-                    logger.exception("Impossibile salvare l'allegato %s.", name)
-                    lines.append(f"  * Errore nel salvataggio: {exc}")
-
-        if download_bool and saved_paths:
-            lines.append("")
-            lines.append("Allegati salvati in:")
-            lines.extend(f"- {path}" for path in saved_paths)
-
-        return "\n".join(lines)
-    except Exception as exc:
-        logger.exception("Errore durante get_attachments.")
-        return f"Errore durante la gestione degli allegati: {exc}"
+    from outlook_mcp.tools.attachments import get_attachments as _impl
+    return _impl(email_number=email_number, message_id=message_id, save_to=save_to, download=download, limit=limit)
 
 
-@mcp.tool()
 def search_contacts(
     search_term: Optional[str] = None,
     max_results: int = 50,
 ) -> str:
-    """Search Outlook contacts optionally filtering by a search term."""
-    try:
-        if not isinstance(max_results, int) or max_results < 1 or max_results > 200:
-            return "Errore: 'max_results' deve essere un intero tra 1 e 200."
+    from outlook_mcp.tools.contacts import search_contacts as _impl
+    return _impl(search_term=search_term, max_results=max_results)
 
-        if search_term is not None:
-            search_display = str(search_term).strip()
-            normalized_term = search_display.lower()
-        else:
-            search_display = None
-            normalized_term = ""
-
-        logger.info(
-            "search_contacts chiamato (termine=%s max_results=%s).",
-            search_display,
-            max_results,
-        )
-
-        _, namespace = connect_to_outlook()
-        try:
-            contacts_folder = namespace.GetDefaultFolder(10)  # Contacts default folder
-        except Exception as exc:
-            logger.exception("Impossibile accedere alla cartella Contatti.")
-            return f"Errore: impossibile accedere alla cartella dei contatti ({exc})."
-
-        items = getattr(contacts_folder, "Items", None)
-        if not items:
-            return "Nessun contatto disponibile."
-
-        try:
-            total_count = getattr(items, "Count", None)
-        except Exception:
-            total_count = None
-
-        def iter_contacts():
-            """Yield contact entries from the COM collection."""
-            try:
-                count = getattr(items, "Count", None)
-            except Exception:
-                count = None
-            if isinstance(count, int) and count > 0 and callable(getattr(items, "__call__", None)):
-                for index in range(1, count + 1):
-                    try:
-                        yield items(index)
-                    except Exception:
-                        continue
-                return
-            try:
-                iterator = iter(items)
-            except TypeError:
-                backing = getattr(items, "_items", None)
-                if isinstance(backing, (list, tuple)):
-                    for entry in backing:
-                        yield entry
-                    return
-                try:
-                    current = items.GetFirst()
-                except Exception:
-                    current = None
-                if current is not None:
-                    while current:
-                        yield current
-                        try:
-                            current = items.GetNext()
-                        except Exception:
-                            break
-                    return
-                try:
-                    materialized = list(items)  # type: ignore[arg-type]
-                except Exception:
-                    return
-                for entry in materialized:
-                    yield entry
-                return
-            else:
-                for entry in iterator:
-                    yield entry
-
-        matches: List[Dict[str, str]] = []
-
-        for contact in iter_contacts():
-            if not contact:
-                continue
-
-            name_candidates = [
-                getattr(contact, "FullName", None),
-                getattr(contact, "FileAs", None),
-                getattr(contact, "CompanyName", None),
-            ]
-            display_name = next((value for value in name_candidates if value), "Senza nome")
-
-            email_candidates = [
-                getattr(contact, "Email1Address", None),
-                getattr(contact, "Email2Address", None),
-                getattr(contact, "Email3Address", None),
-            ]
-            primary_email = next((value for value in email_candidates if value), "")
-
-            phone_candidates = [
-                getattr(contact, "MobileTelephoneNumber", None),
-                getattr(contact, "BusinessTelephoneNumber", None),
-                getattr(contact, "HomeTelephoneNumber", None),
-                getattr(contact, "PrimaryTelephoneNumber", None),
-            ]
-            phone_number = next((value for value in phone_candidates if value), "")
-
-            company = getattr(contact, "CompanyName", "") or ""
-            categories = getattr(contact, "Categories", "") or ""
-
-            if normalized_term:
-                haystack_parts = [
-                    str(display_name),
-                    str(primary_email or ""),
-                    company,
-                    str(phone_number or ""),
-                    categories,
-                ]
-                haystack = " ".join(part.lower() for part in haystack_parts if part)
-                if normalized_term not in haystack:
-                    continue
-
-            matches.append(
-                {
-                    "name": str(display_name),
-                    "email": str(primary_email).strip() if primary_email else "",
-                    "company": company.strip(),
-                    "phone": str(phone_number).strip() if phone_number else "",
-                }
-            )
-
-            if len(matches) >= max_results:
-                break
-
-        if not matches:
-            return "Nessun contatto corrisponde ai criteri richiesti."
-
-        header_suffix = ""
-        if total_count is not None:
-            header_suffix = f" su {total_count}"
-        lines = [f"Trovati {len(matches)} contatti{header_suffix}.", ""]
-        for index, info in enumerate(matches, 1):
-            parts = [f"{index}. {info['name']}"]
-            if info["email"]:
-                parts.append(f"<{info['email']}>")
-            details: List[str] = []
-            if info["company"]:
-                details.append(info["company"])
-            if info["phone"]:
-                details.append(info["phone"])
-            if details:
-                parts.append(f"({'; '.join(details)})")
-            lines.append(" ".join(parts))
-
-        if normalized_term:
-            lines.append("")
-            lines.append(f"Filtro applicato: '{search_display}'.")
-
-        return "\n".join(lines)
-    except Exception as exc:
-        logger.exception("Errore durante search_contacts.")
-        return f"Errore durante la ricerca dei contatti: {exc}"
-
-@mcp.tool()
 def attach_to_email(
     attachments: Any,
     email_number: Optional[int] = None,
     message_id: Optional[str] = None,
     send: bool = False,
 ) -> str:
-    """Attach local files to an Outlook message (draft or reply)."""
-    try:
-        attachment_paths = ensure_string_list(attachments)
-        if not attachment_paths:
-            return "Errore: specifica almeno un percorso di file da allegare."
+    from outlook_mcp.tools.attachments import attach_to_email as _impl
+    return _impl(attachments=attachments, email_number=email_number, message_id=message_id, send=send)
 
-        send_bool = coerce_bool(send)
-        logger.info(
-            "attach_to_email chiamato (numero=%s id=%s allegati=%s invia=%s).",
-            email_number,
-            message_id,
-            attachment_paths,
-            send_bool,
-        )
-
-        _, namespace = connect_to_outlook()
-        try:
-            _, mail_item = _resolve_mail_item(namespace, email_number=email_number, message_id=message_id)
-        except ToolError as exc:
-            return f"Errore: {exc}"
-
-        attached_files: List[str] = []
-        for path_value in attachment_paths:
-            absolute = os.path.abspath(path_value)
-            if not os.path.exists(absolute):
-                return f"Errore: file '{absolute}' non trovato."
-            try:
-                mail_item.Attachments.Add(absolute)
-                attached_files.append(absolute)
-            except Exception as exc:
-                logger.exception("Impossibile allegare il file %s.", absolute)
-                return f"Errore: impossibile allegare '{absolute}' ({exc})."
-
-        reference_id = message_id or safe_entry_id(mail_item) or "N/D"
-
-        if send_bool:
-            try:
-                mail_item.Send()
-            except Exception as exc:
-                logger.exception("Invio del messaggio fallito dopo l'aggiunta degli allegati.")
-                try:
-                    mail_item.Save()
-                except Exception:
-                    pass
-                return (
-                    f"Allegati aggiunti ({len(attached_files)}), ma invio non riuscito: {exc}. "
-                    f"(message_id={reference_id})"
-                )
-            return f"{len(attached_files)} allegati aggiunti e messaggio inviato (message_id={reference_id})."
-
-        try:
-            mail_item.Save()
-        except Exception:
-            pass
-        return (
-            f"Allegati aggiunti al messaggio ({', '.join(os.path.basename(p) for p in attached_files)}). "
-            f"(message_id={reference_id})"
-        )
-    except Exception as exc:
-        logger.exception("Errore durante attach_to_email.")
-        return f"Errore durante l'aggiunta degli allegati: {exc}"
-
-@mcp.tool()
 def batch_manage_emails(
     email_numbers: Optional[Any] = None,
     message_ids: Optional[Any] = None,
@@ -3657,142 +1954,8 @@ def batch_manage_emails(
     mark_as: Optional[str] = None,
     delete: bool = False,
 ) -> str:
-    """Apply move/mark/delete actions to multiple messages in a single call."""
-    try:
-        numbers = ensure_int_list(email_numbers)
-        ids = ensure_string_list(message_ids)
-        if not numbers and not ids:
-            return "Errore: specifica almeno un email_number o message_id."
-
-        delete_bool = coerce_bool(delete)
-
-        mark_target: Optional[bool] = None
-        if mark_as is not None:
-            normalized = str(mark_as).strip().lower()
-            if normalized in {"read", "letto", "letta"}:
-                mark_target = False
-            elif normalized in {"unread", "non letto", "non letta"}:
-                mark_target = True
-            else:
-                return "Errore: 'mark_as' deve essere 'read' o 'unread'."
-
-        move_requested = any([move_to_folder_id, move_to_folder_path, move_to_folder_name])
-        logger.info(
-            "batch_manage_emails chiamato (numeri=%s ids=%s move=%s mark=%s delete=%s).",
-            numbers,
-            ids,
-            move_requested,
-            mark_target,
-            delete_bool,
-        )
-
-        _, namespace = connect_to_outlook()
-        target_folder = None
-        target_attempts: List[str] = []
-        if move_requested:
-            target_folder, target_attempts = folder_service.resolve_folder(
-                namespace,
-                folder_id=move_to_folder_id,
-                folder_path=move_to_folder_path,
-                folder_name=move_to_folder_name,
-            )
-            if not target_folder:
-                detail = "; ".join(target_attempts) if target_attempts else "cartella di destinazione non trovata."
-                return f"Errore: {detail}"
-
-        successes: List[str] = []
-        failures: List[str] = []
-
-        def process_email(number: Optional[int], entry_id: Optional[str], label: str) -> None:
-            try:
-                _, mail_item = _resolve_mail_item(namespace, email_number=number, message_id=entry_id)
-            except ToolError as exc:
-                failures.append(f"{label}: {exc}")
-                return
-
-            reference_id = safe_entry_id(mail_item) or entry_id or "N/D"
-            operations: List[str] = []
-
-            if move_requested and target_folder:
-                try:
-                    mail_item = mail_item.Move(target_folder)
-                    operations.append(
-                        f"spostato in {safe_folder_path(target_folder) or getattr(target_folder, 'Name', '')}"
-                    )
-                except Exception as exc:
-                    failures.append(f"{label} (id={reference_id}): errore nello spostamento ({exc})")
-                    return
-
-            if mark_target is not None:
-                try:
-                    mail_item.UnRead = mark_target
-                    operations.append(
-                        "contrassegnato come non letto" if mark_target else "contrassegnato come letto"
-                    )
-                except Exception as exc:
-                    failures.append(
-                        f"{label} (id={reference_id}): impossibile aggiornare lo stato lettura ({exc})"
-                    )
-                    return
-
-            if delete_bool:
-                try:
-                    mail_item.Delete()
-                    operations.append("eliminato")
-                except Exception as exc:
-                    failures.append(f"{label} (id={reference_id}): eliminazione non riuscita ({exc})")
-                    return
-            else:
-                try:
-                    mail_item.Save()
-                except Exception:
-                    pass
-
-            if number is not None:
-                if delete_bool and email_cache and number in email_cache:
-                    email_cache.pop(number, None)
-                else:
-                    updates: Dict[str, Any] = {}
-                    if move_requested and target_folder:
-                        updates["folder_path"] = safe_folder_path(target_folder)
-                        updates["id"] = safe_entry_id(mail_item) or reference_id
-                    if mark_target is not None:
-                        updates["unread"] = mark_target
-                    if updates:
-                        _update_cached_email(number, **updates)
-
-            final_ref = safe_entry_id(mail_item) or reference_id
-            if not operations:
-                operations.append("nessuna modifica")
-            successes.append(f"{label} (id={final_ref}): {', '.join(operations)}")
-
-        for number in numbers:
-            process_email(number, None, f"numero={number}")
-        for entry_id in ids:
-            process_email(None, entry_id, f"id={entry_id}")
-
-        result_lines = [
-            f"Operazioni riuscite: {len(successes)}",
-            f"Operazioni fallite: {len(failures)}",
-        ]
-        if successes:
-            result_lines.append("")
-            result_lines.append("Dettagli riusciti:")
-            result_lines.extend(f"- {line}" for line in successes)
-        if failures:
-            result_lines.append("")
-            result_lines.append("Errori:")
-            result_lines.extend(f"- {line}" for line in failures)
-
-        return "\n".join(result_lines)
-    except Exception as exc:
-        logger.exception("Errore durante batch_manage_emails.")
-        return f"Errore durante le operazioni batch sui messaggi: {exc}"
-
-# ---------------------------------------------------------------------------
-# Application entrypoints
-# ---------------------------------------------------------------------------
-
+    from outlook_mcp.tools.email_actions import batch_manage_emails as _impl
+    return _impl(email_numbers=email_numbers, message_ids=message_ids, move_to_folder_id=move_to_folder_id, move_to_folder_path=move_to_folder_path, move_to_folder_name=move_to_folder_name, mark_as=mark_as, delete=delete)
 def _serialize_tool_metadata(tool: Any) -> Dict[str, Any]:
     """Convert FastMCP tool metadata into plain dicts for JSON responses."""
     return {
@@ -3864,6 +2027,10 @@ def _create_http_app() -> Any:
         """Shared execution helper for HTTP-triggered tool calls."""
         logger.info("Invocazione HTTP del tool %s con argomenti=%s", tool_name, arguments)
         try:
+            # Feature-gate check before actual invocation
+            group = get_tool_group(tool_name)
+            if not is_tool_enabled(tool_name, group):
+                raise HTTPException(status_code=403, detail=f"Tool '{tool_name}' disabilitato dal server")  # type: ignore[misc]
             contents, output = await mcp.call_tool(tool_name, arguments)
             return {
                 "tool": tool_name,
@@ -3921,9 +2088,10 @@ def _create_http_app() -> Any:
     async def root() -> Dict[str, Any]:
         """Provide a quick-start payload when browsing the root endpoint."""
         tools = await mcp.list_tools()
+        visible = [t for t in tools if is_tool_enabled(t.name, get_tool_group(t.name))]
         return {
             "message": "Outlook MCP HTTP Bridge attivo. Usa POST /tools/{tool_name} oppure POST / con {\"tool\": \"nome\", \"arguments\": {...}}.",
-            "available_tools": [tool.name for tool in tools],
+            "available_tools": [tool.name for tool in visible],
         }
 
     @app.post("/")
@@ -3943,7 +2111,8 @@ def _create_http_app() -> Any:
     async def list_tools() -> Dict[str, Any]:
         """Return metadata for the registered MCP tools."""
         tools = await mcp.list_tools()
-        return {"tools": [_serialize_tool_metadata(tool) for tool in tools]}
+        visible = [t for t in tools if is_tool_enabled(t.name, get_tool_group(t.name))]
+        return {"tools": [_serialize_tool_metadata(tool) for tool in visible]}
 
     @app.post("/tools/{tool_name}")
     async def invoke_tool(tool_name: str, request: ToolCallRequest) -> Dict[str, Any]:
@@ -4074,3 +2243,8 @@ if __name__ == "__main__":
     except Exception as exc:  # pylint: disable=broad-except
         print(f"Errore durante l'avvio del server: {str(exc)}")
         logger.exception("Errore durante l'avvio di Outlook MCP Server.")
+
+
+
+
+
