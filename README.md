@@ -12,6 +12,8 @@ Outlook MCP Server exposes Microsoft Outlook email and calendar data through Ant
 - Action helpers that let you reply inline (`reply_to_email_by_number`) or draft new outbound mail (`compose_email`) directly from MCP clients.
 - Folder administration utilities (`list_folders`, `get_folder_metadata`, `create_folder`, `rename_folder`, `delete_folder`) so you can inspect and curate the mailbox tree without leaving MCP.
 - Message maintenance shortcuts (`move_email_to_folder`, `mark_email_read_unread`, `apply_category`, `get_attachments`, `attach_to_email`, `batch_manage_emails`) that keep triage, tagging, and filing within the same workflow.
+- Contact lookup via `search_contacts`, with smart fallbacks for Outlook COM collections even when they do not expose a standard iterator.
+- Calendar authoring helper `create_calendar_event` to draft all-day or timed appointments (and optionally notify attendees) directly from MCP.
 - Built-in rotating logging (`logs/outlook_mcp_server.log`) and caches that keep long MCP sessions observable and responsive.
 
 ## Requirements
@@ -141,9 +143,10 @@ Each MCP tool accepts keyword arguments so clients can override defaults as need
 - **Elenco email**: `list_recent_emails`, `list_sent_emails`, `search_emails`, `list_pending_replies` offrono filtri su giorni, cartelle/percorsi, offset, stato lettura e preview opzionale.
 - **Dettagli e contesto**: `get_email_by_number`, `get_email_context` usano la cache dell’ultimo elenco per recuperare corpo completo, thread correlati e metadati chiave.
 - **Azioni sui messaggi**: `reply_to_email_by_number`, `compose_email`, `move_email_to_folder`, `mark_email_read_unread`, `apply_category`, `move_email_to_domain_folder` coprono risposta, bozza, spostamenti e categorie Outlook.
-- **Allegati**: `get_attachments` (solo metadata o download su disco) e `attach_to_email` per aggiungere file a bozze o risposte prima dell’invio.
+- **Allegati**: `get_attachments` (solo metadata o download su disco) e `attach_to_email` per aggiungere file a bozze o risposte prima dell'invio, confermando sempre il `message_id` coinvolto.
+- **Contatti**: `search_contacts` filtra la rubrica locale anche quando Outlook espone collezioni non indicizzabili.
 - **Operazioni batch**: `batch_manage_emails` consente movimenti, flag lettura e cancellazioni multiple usando numeri o EntryID.
-- **Calendario**: `list_upcoming_events`, `search_calendar_events`, `get_event_by_number` mantengono invariato l’accesso completo a riunioni e appuntamenti.
+- **Calendario**: `list_upcoming_events`, `search_calendar_events`, `get_event_by_number` mantengono invariato l'accesso completo a riunioni e appuntamenti, mentre `create_calendar_event` permette di schedulare nuovi impegni (anche all-day) dal flusso MCP.
 
 ## Outlook automation roadmap
 
@@ -205,6 +208,11 @@ compose_email("team@example.com", "Report settimanale", "Allego il riepilogo del
 - If Outlook is closed or prompts for credentials, reopen it (or accept the prompt) before restarting the MCP server.
 - Cache errors normally mean a list/search command was not run during the current session; repeat the listing and retry.
 - `pywin32` security prompts may appear the first time the script automates Outlook; allow access and (optionally) whitelist the automation in the Outlook Trust Center.
+
+## Testing
+
+- **Unit tests**: `python -m pytest`
+- **Integrazione reale**: `OUTLOOK_MCP_REAL=1 python -m pytest tests/test_outlook_real_integration.py` richiede Outlook aperto con l'account desiderato. Il test crea cartelle temporanee, un contatto, un evento ed invia una bozza a se stessi, ripulendo tutto al termine.
 
 ## Limitations
 

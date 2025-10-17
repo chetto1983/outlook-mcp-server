@@ -2264,6 +2264,163 @@ def search_calendar_events(
         )
         return f"Errore durante la ricerca degli eventi: {str(e)}"
 
+
+@mcp.tool()
+def create_calendar_event(
+    subject: str,
+    start_time: str,
+    duration_minutes: Optional[int] = 60,
+    location: Optional[str] = None,
+    body: Optional[str] = None,
+    attendees: Optional[Any] = None,
+    reminder_minutes: Optional[int] = 15,
+    calendar_name: Optional[str] = None,
+    all_day: bool = False,
+    send_invitations: bool = True,
+) -> str:
+    """Create a new Outlook calendar event (meeting or appointment)."""
+    if not subject or not subject.strip():
+        return "Errore: specifica un oggetto ('subject') per l'evento."
+
+    start_dt = _parse_datetime_string(start_time)
+    if not start_dt:
+        return "Errore: 'start_time' deve essere una data valida (es. '2025-10-20 10:30')."
+
+    all_day_bool = coerce_bool(all_day)
+    send_bool = coerce_bool(send_invitations)
+
+    if not all_day_bool:
+        if duration_minutes is None:
+            duration_value = 60
+        else:
+            try:
+                duration_value = int(duration_minutes)
+            except (TypeError, ValueError):
+                return "Errore: 'duration_minutes' deve essere un intero positivo."
+            if duration_value <= 0:
+                return "Errore: 'duration_minutes' deve essere un intero positivo."
+    else:
+        duration_value = None
+
+    attendee_list = ensure_string_list(attendees)
+
+    reminder_set = False
+    reminder_value: Optional[int] = None
+    if reminder_minutes is not None:
+        try:
+            reminder_value = int(reminder_minutes)
+        except (TypeError, ValueError):
+            return "Errore: 'reminder_minutes' deve essere un intero (minuti)."
+        if reminder_value >= 0:
+            reminder_set = True
+        else:
+            reminder_value = None
+
+    logger.info(
+        "create_calendar_event chiamato (subject=%s start=%s durata=%s luogo=%s partecipanti=%s all_day=%s invia=%s calendario=%s).",
+        subject,
+        start_time,
+        duration_value,
+        location,
+        attendee_list,
+        all_day_bool,
+        send_bool,
+        calendar_name,
+    )
+
+    try:
+        outlook, namespace = connect_to_outlook()
+        if calendar_name:
+            target_calendar = get_calendar_folder_by_name(namespace, calendar_name)
+            if not target_calendar:
+                return f"Errore: calendario '{calendar_name}' non trovato."
+        else:
+            target_calendar = namespace.GetDefaultFolder(9)  # olFolderCalendar
+
+        calendar_display = getattr(target_calendar, "Name", "Calendario")
+        appointment = outlook.CreateItem(1)  # olAppointmentItem
+
+        subject_clean = subject.strip()
+        appointment.Subject = subject_clean
+
+        if all_day_bool:
+            normalized_start = start_dt.replace(hour=0, minute=0, second=0, microsecond=0)
+            appointment.Start = normalized_start
+            appointment.End = normalized_start + datetime.timedelta(days=1)
+            appointment.AllDayEvent = True
+        else:
+            appointment.Start = start_dt
+            appointment.AllDayEvent = False
+            appointment.Duration = duration_value or 60
+            appointment.End = start_dt + datetime.timedelta(minutes=appointment.Duration)
+
+        if location:
+            appointment.Location = location
+        if body:
+            appointment.Body = body
+
+        if attendee_list:
+            appointment.MeetingStatus = 1  # olMeeting
+            for email in attendee_list:
+                if not email:
+                    continue
+                try:
+                    recipient = appointment.Recipients.Add(email)
+                    if hasattr(recipient, "Type"):
+                        recipient.Type = 1  # Required attendee
+                except Exception as exc:
+                    logger.warning("Impossibile aggiungere il destinatario '%s': %s", email, exc)
+
+        appointment.ReminderSet = reminder_set
+        if reminder_set and reminder_value is not None:
+            appointment.ReminderMinutesBeforeStart = reminder_value
+
+        try:
+            appointment.Save()
+        except Exception as exc:
+            logger.exception("Salvataggio dell'appuntamento fallito.")
+            return f"Errore: impossibile salvare l'evento ({exc})."
+
+        if calendar_name:
+            try:
+                moved = appointment.Move(target_calendar)
+                if moved:
+                    appointment = moved
+            except Exception as exc:
+                logger.exception("Impossibile spostare l'evento nel calendario '%s'.", calendar_display)
+                return (
+                    "Errore: salvataggio completato ma non è stato possibile spostare l'evento nel "
+                    f"calendario '{calendar_display}' ({exc})."
+                )
+
+        if send_bool and attendee_list:
+            try:
+                appointment.Send()
+            except Exception as exc:
+                logger.exception("Invio degli inviti fallito.")
+                return f"Errore: evento creato ma invio degli inviti fallito ({exc})."
+
+        clear_calendar_cache()
+
+        entry_id = safe_entry_id(appointment) or "N/D"
+        start_display = start_dt.strftime("%Y-%m-%d") if all_day_bool else start_dt.strftime("%Y-%m-%d %H:%M")
+
+        lines = [
+            f"Evento '{subject_clean}' creato per {start_display} nel calendario '{calendar_display}'.",
+            f"Message ID: {entry_id}",
+        ]
+        if attendee_list:
+            lines.append(f"Partecipanti: {', '.join(attendee_list)}")
+        if send_bool and attendee_list:
+            lines.append("Inviti inviati ai partecipanti.")
+        elif attendee_list:
+            lines.append("Inviti non inviati (send_invitations impostato a False).")
+
+        return "\n".join(lines)
+    except Exception as exc:
+        logger.exception("Errore durante create_calendar_event.")
+        return f"Errore durante la creazione dell'evento: {exc}"
+
 @mcp.tool()
 def get_email_by_number(
     email_number: Optional[int] = None,
@@ -3253,6 +3410,174 @@ def get_attachments(
         logger.exception("Errore durante get_attachments.")
         return f"Errore durante la gestione degli allegati: {exc}"
 
+
+@mcp.tool()
+def search_contacts(
+    search_term: Optional[str] = None,
+    max_results: int = 50,
+) -> str:
+    """Search Outlook contacts optionally filtering by a search term."""
+    try:
+        if not isinstance(max_results, int) or max_results < 1 or max_results > 200:
+            return "Errore: 'max_results' deve essere un intero tra 1 e 200."
+
+        if search_term is not None:
+            search_display = str(search_term).strip()
+            normalized_term = search_display.lower()
+        else:
+            search_display = None
+            normalized_term = ""
+
+        logger.info(
+            "search_contacts chiamato (termine=%s max_results=%s).",
+            search_display,
+            max_results,
+        )
+
+        _, namespace = connect_to_outlook()
+        try:
+            contacts_folder = namespace.GetDefaultFolder(10)  # Contacts default folder
+        except Exception as exc:
+            logger.exception("Impossibile accedere alla cartella Contatti.")
+            return f"Errore: impossibile accedere alla cartella dei contatti ({exc})."
+
+        items = getattr(contacts_folder, "Items", None)
+        if not items:
+            return "Nessun contatto disponibile."
+
+        try:
+            total_count = getattr(items, "Count", None)
+        except Exception:
+            total_count = None
+
+        def iter_contacts():
+            """Yield contact entries from the COM collection."""
+            try:
+                count = getattr(items, "Count", None)
+            except Exception:
+                count = None
+            if isinstance(count, int) and count > 0 and callable(getattr(items, "__call__", None)):
+                for index in range(1, count + 1):
+                    try:
+                        yield items(index)
+                    except Exception:
+                        continue
+                return
+            try:
+                iterator = iter(items)
+            except TypeError:
+                backing = getattr(items, "_items", None)
+                if isinstance(backing, (list, tuple)):
+                    for entry in backing:
+                        yield entry
+                    return
+                try:
+                    current = items.GetFirst()
+                except Exception:
+                    current = None
+                if current is not None:
+                    while current:
+                        yield current
+                        try:
+                            current = items.GetNext()
+                        except Exception:
+                            break
+                    return
+                try:
+                    materialized = list(items)  # type: ignore[arg-type]
+                except Exception:
+                    return
+                for entry in materialized:
+                    yield entry
+                return
+            else:
+                for entry in iterator:
+                    yield entry
+
+        matches: List[Dict[str, str]] = []
+
+        for contact in iter_contacts():
+            if not contact:
+                continue
+
+            name_candidates = [
+                getattr(contact, "FullName", None),
+                getattr(contact, "FileAs", None),
+                getattr(contact, "CompanyName", None),
+            ]
+            display_name = next((value for value in name_candidates if value), "Senza nome")
+
+            email_candidates = [
+                getattr(contact, "Email1Address", None),
+                getattr(contact, "Email2Address", None),
+                getattr(contact, "Email3Address", None),
+            ]
+            primary_email = next((value for value in email_candidates if value), "")
+
+            phone_candidates = [
+                getattr(contact, "MobileTelephoneNumber", None),
+                getattr(contact, "BusinessTelephoneNumber", None),
+                getattr(contact, "HomeTelephoneNumber", None),
+                getattr(contact, "PrimaryTelephoneNumber", None),
+            ]
+            phone_number = next((value for value in phone_candidates if value), "")
+
+            company = getattr(contact, "CompanyName", "") or ""
+            categories = getattr(contact, "Categories", "") or ""
+
+            if normalized_term:
+                haystack_parts = [
+                    str(display_name),
+                    str(primary_email or ""),
+                    company,
+                    str(phone_number or ""),
+                    categories,
+                ]
+                haystack = " ".join(part.lower() for part in haystack_parts if part)
+                if normalized_term not in haystack:
+                    continue
+
+            matches.append(
+                {
+                    "name": str(display_name),
+                    "email": str(primary_email).strip() if primary_email else "",
+                    "company": company.strip(),
+                    "phone": str(phone_number).strip() if phone_number else "",
+                }
+            )
+
+            if len(matches) >= max_results:
+                break
+
+        if not matches:
+            return "Nessun contatto corrisponde ai criteri richiesti."
+
+        header_suffix = ""
+        if total_count is not None:
+            header_suffix = f" su {total_count}"
+        lines = [f"Trovati {len(matches)} contatti{header_suffix}.", ""]
+        for index, info in enumerate(matches, 1):
+            parts = [f"{index}. {info['name']}"]
+            if info["email"]:
+                parts.append(f"<{info['email']}>")
+            details: List[str] = []
+            if info["company"]:
+                details.append(info["company"])
+            if info["phone"]:
+                details.append(info["phone"])
+            if details:
+                parts.append(f"({'; '.join(details)})")
+            lines.append(" ".join(parts))
+
+        if normalized_term:
+            lines.append("")
+            lines.append(f"Filtro applicato: '{search_display}'.")
+
+        return "\n".join(lines)
+    except Exception as exc:
+        logger.exception("Errore durante search_contacts.")
+        return f"Errore durante la ricerca dei contatti: {exc}"
+
 @mcp.tool()
 def attach_to_email(
     attachments: Any,
@@ -3293,19 +3618,31 @@ def attach_to_email(
                 logger.exception("Impossibile allegare il file %s.", absolute)
                 return f"Errore: impossibile allegare '{absolute}' ({exc})."
 
+        reference_id = message_id or safe_entry_id(mail_item) or "N/D"
+
         if send_bool:
             try:
                 mail_item.Send()
             except Exception as exc:
                 logger.exception("Invio del messaggio fallito dopo l'aggiunta degli allegati.")
-                return f"Allegati aggiunti ({len(attached_files)}), ma invio non riuscito: {exc}"
-            return f"{len(attached_files)} allegati aggiunti e messaggio inviato."
+                try:
+                    mail_item.Save()
+                except Exception:
+                    pass
+                return (
+                    f"Allegati aggiunti ({len(attached_files)}), ma invio non riuscito: {exc}. "
+                    f"(message_id={reference_id})"
+                )
+            return f"{len(attached_files)} allegati aggiunti e messaggio inviato (message_id={reference_id})."
 
         try:
             mail_item.Save()
         except Exception:
             pass
-        return f"Allegati aggiunti al messaggio ({', '.join(os.path.basename(p) for p in attached_files)})."
+        return (
+            f"Allegati aggiunti al messaggio ({', '.join(os.path.basename(p) for p in attached_files)}). "
+            f"(message_id={reference_id})"
+        )
     except Exception as exc:
         logger.exception("Errore durante attach_to_email.")
         return f"Errore durante l'aggiunta degli allegati: {exc}"

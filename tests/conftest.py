@@ -1,3 +1,4 @@
+import os
 import sys
 import types
 from pathlib import Path
@@ -56,4 +57,7 @@ def _ensure_stub_modules() -> None:
         sys.modules["mcp.server.fastmcp.exceptions"] = exceptions_module
 
 
-_ensure_stub_modules()
+USE_REAL_OUTLOOK = os.environ.get("OUTLOOK_MCP_REAL", "").strip().lower() in {"1", "true", "yes", "on"}
+
+if not USE_REAL_OUTLOOK:
+    _ensure_stub_modules()
