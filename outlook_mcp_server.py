@@ -3834,7 +3834,7 @@ def _verify_outlook_connection() -> None:
     del outlook
 
 
-def _create_http_app() -> "FastAPI":
+def _create_http_app() -> Any:
     """Instantiate the optional FastAPI bridge for HTTP integrations."""
     if (
         FastAPI is None
