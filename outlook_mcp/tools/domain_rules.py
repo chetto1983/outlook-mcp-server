@@ -12,33 +12,33 @@ from outlook_mcp.utils import coerce_bool
 
 
 def _connect():
-    from outlook_mcp_server import connect_to_outlook
+    from outlook_mcp import connect_to_outlook
 
     return connect_to_outlook()
 
 
 def _resolve(namespace, *, email_number: Optional[int], message_id: Optional[str] = None):
-    from outlook_mcp_server import _resolve_mail_item
+    from outlook_mcp.services.email import resolve_mail_item
 
-    return _resolve_mail_item(namespace, email_number=email_number, message_id=message_id)
+    return resolve_mail_item(namespace, email_number=email_number, message_id=message_id)
 
 
 def _ensure_structure(namespace, domain: str, root_folder_name: str, subfolders: Optional[List[str]]):
-    from outlook_mcp_server import _ensure_domain_folder_structure
+    from outlook_mcp.services.email import ensure_domain_folder_structure
 
-    return _ensure_domain_folder_structure(namespace, domain, root_folder_name, subfolders)
+    return ensure_domain_folder_structure(namespace, domain, root_folder_name, subfolders)
 
 
 def _extract_domain(address: Optional[str]) -> Optional[str]:
-    from outlook_mcp_server import _extract_email_domain
+    from outlook_mcp.services.email import extract_email_domain
 
-    return _extract_email_domain(address)
+    return extract_email_domain(address)
 
 
 def _derive_sender(entry: Dict[str, Any]) -> Optional[str]:
-    from outlook_mcp_server import _derive_sender_email
+    from outlook_mcp.services.email import derive_sender_email
 
-    return _derive_sender_email(entry)
+    return derive_sender_email(entry)
 
 
 @mcp.tool()

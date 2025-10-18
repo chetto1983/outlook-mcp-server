@@ -12,23 +12,21 @@ from outlook_mcp.utils import coerce_bool
 from outlook_mcp import MAX_EVENT_LOOKAHEAD_DAYS
 
 # Reuse server helpers to avoid duplication
-from outlook_mcp_server import (
+from outlook_mcp.services.calendar import (
     get_all_calendar_folders,
     collect_events_across_calendars,
     get_events_from_folder,
-    _present_event_listing,
+    present_event_listing,
 )
 
 
 def _connect():
-    from outlook_mcp_server import connect_to_outlook
+    from outlook_mcp import connect_to_outlook
 
     return connect_to_outlook()
 
 
 def _get_calendar_folder(namespace, calendar_name: Optional[str]):
-    from outlook_mcp_server import get_calendar_folder_by_name
-
     return get_calendar_folder_by_name(namespace, calendar_name) if calendar_name else namespace.GetDefaultFolder(9)
 
 
@@ -39,7 +37,7 @@ def list_upcoming_events(
     calendar_name: Optional[str] = None,
     max_results: int = 50,
     include_description: bool = False,
-    include_all_calendars: bool = False,
+    include_all_calendars: bool = True,
 ) -> str:
     """Elenca i prossimi eventi (fino a 90 giorni), con descrizione opzionale."""
     if not isinstance(days, int) or days < 1 or days > MAX_EVENT_LOOKAHEAD_DAYS:
@@ -74,7 +72,7 @@ def list_upcoming_events(
             calendar_display = calendar_folder.Name if calendar_name else "Calendario"
             events = get_events_from_folder(calendar_folder, days)
 
-        return _present_event_listing(
+        return present_event_listing(
             events=events,
             calendar_display=calendar_display,
             days=days,
@@ -95,7 +93,7 @@ def search_calendar_events(
     calendar_name: Optional[str] = None,
     max_results: int = 50,
     include_description: bool = False,
-    include_all_calendars: bool = False,
+    include_all_calendars: bool = True,
 ) -> str:
     """Cerca eventi per parole chiave con gli stessi filtri dell'elenco."""
     if not search_term:
@@ -135,7 +133,7 @@ def search_calendar_events(
             calendar_display = calendar_folder.Name if calendar_name else "Calendario"
             events = get_events_from_folder(calendar_folder, days, search_term)
 
-        return _present_event_listing(
+        return present_event_listing(
             events=events,
             calendar_display=calendar_display,
             days=days,

@@ -15,7 +15,7 @@ from outlook_mcp_server import mcp  # FastMCP
 
 from outlook_mcp import logger
 from outlook_mcp.utils import coerce_bool, ensure_string_list, safe_filename, safe_entry_id
-from outlook_mcp_server import _resolve_mail_item
+from outlook_mcp.services.email import resolve_mail_item
 from mcp.server.fastmcp.exceptions import ToolError
 
 
@@ -61,10 +61,10 @@ def get_attachments(
             save_to,
         )
 
-        from outlook_mcp_server import connect_to_outlook
+        from outlook_mcp import connect_to_outlook
         _, namespace = connect_to_outlook()
         try:
-            _, mail_item = _resolve_mail_item(namespace, email_number=email_number, message_id=message_id)
+            _, mail_item = resolve_mail_item(namespace, email_number=email_number, message_id=message_id)
         except ToolError as exc:
             return f"Errore: {exc}"
 
@@ -146,10 +146,10 @@ def attach_to_email(
             send_bool,
         )
 
-        from outlook_mcp_server import connect_to_outlook
+        from outlook_mcp import connect_to_outlook
         _, namespace = connect_to_outlook()
         try:
-            _, mail_item = _resolve_mail_item(namespace, email_number=email_number, message_id=message_id)
+            _, mail_item = resolve_mail_item(namespace, email_number=email_number, message_id=message_id)
         except ToolError as exc:
             return f"Errore: {exc}"
 

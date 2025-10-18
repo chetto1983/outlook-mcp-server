@@ -18,30 +18,29 @@ from outlook_mcp.utils import (
     normalize_folder_path,
 )
 from outlook_mcp import folders as folder_service
+from outlook_mcp.services.email import (
+    resolve_mail_item,
+    update_cached_email,
+    apply_categories_to_item,
+)
 
 # Import runtime helpers lazily to avoid circular imports
 def _connect():
-    from outlook_mcp_server import connect_to_outlook
+    from outlook_mcp import connect_to_outlook
 
     return connect_to_outlook()
 
 
 def _resolve(namespace, *, email_number: Optional[int], message_id: Optional[str]):
-    from outlook_mcp_server import _resolve_mail_item
-
-    return _resolve_mail_item(namespace, email_number=email_number, message_id=message_id)
+    return resolve_mail_item(namespace, email_number=email_number, message_id=message_id)
 
 
 def _update_cache(number: Optional[int], **updates):
-    from outlook_mcp_server import _update_cached_email
-
-    _update_cached_email(number, **updates)
+    update_cached_email(number, **updates)
 
 
 def _apply_cats(mail_item, categories: List[str], overwrite: bool, append: bool) -> List[str]:
-    from outlook_mcp_server import _apply_categories_to_item
-
-    return _apply_categories_to_item(mail_item, categories, overwrite, append)
+    return apply_categories_to_item(mail_item, categories, overwrite, append)
 
 
 @mcp.tool()

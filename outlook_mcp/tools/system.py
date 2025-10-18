@@ -9,7 +9,8 @@ from ..features import is_tool_enabled, get_tool_group
 
 # Import the FastMCP instance and the underlying implementations from the
 # main server module to avoid duplicating logic.
-from outlook_mcp_server import mcp, params as _params_impl, get_current_datetime as _get_current_datetime_impl
+from outlook_mcp_server import mcp
+from outlook_mcp.services.system import build_params_payload, get_current_datetime as _service_get_current_datetime
 
 
 @mcp.tool()
@@ -22,11 +23,11 @@ def params(
     """Ritorna metadati MCP/HTTP per handshake con client esterni."""
     # Delegate to the underlying implementation (which already filters
     # tool listing by enabled gates).
-    return _params_impl(protocolVersion=protocolVersion, capabilities=capabilities, clientInfo=clientInfo)
+    return build_params_payload(mcp_instance=mcp, protocol_version=protocolVersion, capabilities=capabilities, client_info=clientInfo)
 
 
 @mcp.tool()
 @feature_gate(group="general")
 def get_current_datetime(include_utc: bool = True) -> str:
     """Ritorna data/ora correnti; opzionalmente include i riferimenti UTC."""
-    return _get_current_datetime_impl(include_utc=include_utc)
+    return _service_get_current_datetime(include_utc=include_utc)

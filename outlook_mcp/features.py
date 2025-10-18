@@ -1,4 +1,4 @@
-"""Feature flag support for enabling/disabling MCP tools.
+﻿"""Feature flag support for enabling/disabling MCP tools.
 
 This module provides a lightweight gating system so administrators can
 enable/disable groups of tools or individual tools without changing code.
@@ -22,7 +22,9 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-from typing import Dict, Optional, Set
+from functools import wraps
+import inspect
+from typing import Dict, Optional, Set, Any
 
 from .logger import logger
 
@@ -159,21 +161,26 @@ def feature_gate(group: Optional[str] = None, name: Optional[str] = None):
         if group:
             _TOOL_GROUPS[tool_name] = str(group)
 
+        @wraps(func)
         def wrapper(*args, **kwargs):
             grp = _TOOL_GROUPS.get(tool_name)
             if not is_tool_enabled(tool_name, grp):
                 from mcp.server.fastmcp.exceptions import ToolError  # local import
 
                 raise ToolError(
-                    f"Lo strumento '{tool_name}' è disabilitato. "
+                    f"Lo strumento '{tool_name}' e' disabilitato. "
                     f"Aggiorna features.json o le variabili ambiente per abilitarlo."
                 )
             return func(*args, **kwargs)
 
-        # Preserve attributes used by FastMCP if needed
+        # Preserve attributes/signature so FastMCP can derive JSON schema
         wrapper.__name__ = func.__name__
         wrapper.__doc__ = func.__doc__
         wrapper.__dict__.update(func.__dict__)
+        try:
+            wrapper.__signature__ = inspect.signature(func)
+        except (ValueError, TypeError):
+            pass
         return wrapper
 
     return decorator
@@ -192,4 +199,5 @@ __all__ = [
     "reload_features",
     "get_tool_group",
 ]
+
 

@@ -11,7 +11,7 @@ from outlook_mcp import folders as folder_service
 
 
 def _connect():
-    from outlook_mcp_server import connect_to_outlook
+    from outlook_mcp import connect_to_outlook
 
     return connect_to_outlook()
 

@@ -17,19 +17,19 @@ from outlook_mcp import (
 )
 
 # Reuse shared helpers from server to avoid duplication
-from outlook_mcp_server import (
+from outlook_mcp.services.email import (
     get_emails_from_folder,
     get_all_mail_folders,
     collect_emails_across_folders,
-    _present_email_listing,
-    _collect_user_addresses,
-    _normalize_email_address,
-    _email_has_user_reply_with_context,
-    _build_conversation_outline,
+    present_email_listing,
+    collect_user_addresses,
+    normalize_email_address,
+    email_has_user_reply_with_context,
+    build_conversation_outline,
 )
 
 def _connect():
-    from outlook_mcp_server import connect_to_outlook
+    from outlook_mcp import connect_to_outlook
 
     return connect_to_outlook()
 
@@ -129,7 +129,7 @@ def list_recent_emails(
         if unread_only_bool:
             emails = [email for email in emails if email.get("unread")]
 
-        return _present_email_listing(
+        return present_email_listing(
             emails=emails,
             folder_display=folder_display,
             days=days,
@@ -190,7 +190,7 @@ def list_sent_emails(
             folder_display = "Posta inviata"
 
         emails = get_emails_from_folder(folder, days)
-        return _present_email_listing(
+        return present_email_listing(
             emails=emails,
             folder_display=folder_display,
             days=days,
@@ -307,7 +307,7 @@ def search_emails(
         if unread_only_bool:
             emails = [email for email in emails if email.get("unread")]
 
-        return _present_email_listing(
+        return present_email_listing(
             emails=emails,
             folder_display=folder_display,
             days=days,
@@ -378,9 +378,9 @@ def list_pending_replies(
 
     try:
         _, namespace = _connect()
-        user_addresses = _collect_user_addresses(namespace)
+        user_addresses = collect_user_addresses(namespace)
         normalized_user_addresses = {
-            addr for addr in (_normalize_email_address(addr) for addr in user_addresses) if addr
+            addr for addr in (normalize_email_address(addr) for addr in user_addresses) if addr
         }
 
         if include_all_bool:
@@ -420,7 +420,7 @@ def list_pending_replies(
                     break
                 continue
 
-            sender_email = _normalize_email_address(email.get("sender_email")) or _normalize_email_address(
+            sender_email = normalize_email_address(email.get("sender_email")) or normalize_email_address(
                 email.get("sender")
             )
             if sender_email and sender_email in normalized_user_addresses:
@@ -433,7 +433,7 @@ def list_pending_replies(
             related_entries: Optional[List[Dict[str, Any]]] = None
             mail_item_ref = None
             try:
-                already_replied, related_entries, mail_item_ref = _email_has_user_reply_with_context(
+                already_replied, related_entries, mail_item_ref = email_has_user_reply_with_context(
                     namespace=namespace,
                     email_data=email,
                     user_addresses=user_addresses,
@@ -452,7 +452,7 @@ def list_pending_replies(
                 mail_item_ref = None
 
             if not already_replied:
-                outline = _build_conversation_outline(
+                outline = build_conversation_outline(
                     namespace=namespace,
                     email_data=email,
                     lookback_days=lookback_days,
@@ -474,7 +474,7 @@ def list_pending_replies(
             processed,
         )
 
-        presentation = _present_email_listing(
+        presentation = present_email_listing(
             emails=pending_emails,
             folder_display=folder_display,
             days=days,

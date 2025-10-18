@@ -10,23 +10,21 @@ from outlook_mcp_server import mcp
 
 from outlook_mcp import logger, clear_calendar_cache
 from outlook_mcp.utils import ensure_string_list, to_python_datetime, safe_entry_id
+from outlook_mcp.services.common import parse_datetime_string
+from outlook_mcp.services.calendar import get_calendar_folder_by_name
 
 
 def _connect():
-    from outlook_mcp_server import connect_to_outlook
+    from outlook_mcp import connect_to_outlook
 
     return connect_to_outlook()
 
 
 def _parse_dt(value: Optional[str]):
-    from outlook_mcp_server import _parse_datetime_string
-
-    return _parse_datetime_string(value)
+    return parse_datetime_string(value)
 
 
 def _calendar_by_name(namespace, name: Optional[str]):
-    from outlook_mcp_server import get_calendar_folder_by_name
-
     return get_calendar_folder_by_name(namespace, name) if name else namespace.GetDefaultFolder(9)
 
 

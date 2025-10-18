@@ -17,8 +17,8 @@ from outlook_mcp.utils import (
     safe_folder_path,
 )
 
-# Reuse helpers from the server (kept as shared utilities)
-from outlook_mcp_server import _resolve_mail_item, format_email, _build_conversation_outline
+# Reuse helpers from the service layer
+from outlook_mcp.services.email import resolve_mail_item, format_email, build_conversation_outline
 
 
 @mcp.tool()
@@ -44,7 +44,7 @@ def get_email_by_number(
             include_body_bool,
         )
 
-        from outlook_mcp_server import connect_to_outlook
+        from outlook_mcp import connect_to_outlook
         _, namespace = connect_to_outlook()
 
         email_data: Optional[Dict[str, Any]] = None
@@ -198,7 +198,7 @@ def get_email_context(
 ) -> str:
     """Restituisce un contesto sintetico per la conversazione dell'email indicata."""
     try:
-        from outlook_mcp_server import connect_to_outlook
+        from outlook_mcp import connect_to_outlook
         _, namespace = connect_to_outlook()
         include_thread_bool = coerce_bool(include_thread)
 
@@ -209,7 +209,7 @@ def get_email_context(
             )
 
         focus_email = email_cache[email_number]
-        outline = _build_conversation_outline(
+        outline = build_conversation_outline(
             namespace=namespace,
             email_data=focus_email,
             lookback_days=lookback_days,

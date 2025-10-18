@@ -91,7 +91,7 @@ Uso dei tool principali
 - `get_attachments(...)` / `attach_to_email(...)` – ispezione/allegato file.
 - `reply_to_email_by_number(...)` / `compose_email(...)` – risposte e nuove email (plain‑text) con invio opzionale.
 - `move_email_to_folder(...)`, `mark_email_read_unread(...)`, `apply_category(...)`, `batch_manage_emails(...)` – manutenzione messaggi.
-- `list_upcoming_events(...)` / `search_calendar_events(...)` / `get_event_by_number(...)` – calendario.
+- `list_upcoming_events(...)` / `search_calendar_events(...)` / `get_event_by_number(...)` – calendario. Per default le ricerche eventi scandiscono tutti i calendari visibili; usa `calendar_name` per limitarle.
 - `create_calendar_event(...)` – creazione eventi (all‑day o a durata) con invito opzionale.
 
 Suggerimenti di workflow
@@ -121,4 +121,3 @@ Limitazioni
 - I corpi molto lunghi possono essere troncati in output.
 - Le email sono inviate in plain‑text; le firme di Outlook non sono aggiunte automaticamente.
 - Le interazioni MCP operano sul profilo Outlook dell'utente Windows che esegue il server.
-
