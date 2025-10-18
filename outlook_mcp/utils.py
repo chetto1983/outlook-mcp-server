@@ -269,12 +269,18 @@ def to_python_datetime(raw_value: Any) -> Optional[datetime.datetime]:
     if not raw_value:
         return None
     if isinstance(raw_value, datetime.datetime):
+        if raw_value.tzinfo:
+            return raw_value.astimezone().replace(tzinfo=None)
         return raw_value
     try:
-        return datetime.datetime.fromtimestamp(raw_value.timestamp())
+        timestamp = raw_value.timestamp()
+        return datetime.datetime.fromtimestamp(timestamp)
     except Exception:
         try:
-            return datetime.datetime.strptime(str(raw_value), "%Y-%m-%d %H:%M:%S")
+            parsed = datetime.datetime.fromisoformat(str(raw_value))
+            if parsed.tzinfo:
+                return parsed.astimezone().replace(tzinfo=None)
+            return parsed
         except Exception:
             return None
 

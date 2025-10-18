@@ -139,23 +139,60 @@ def get_events_from_folder(folder, days: int, search_term: Optional[str] = None)
     if search_term:
         search_terms = [term.strip().lower() for term in search_term.split(" OR ") if term.strip()]
 
+    def fmt(dt: datetime.datetime) -> str:
+        return dt.strftime("%m/%d/%Y %I:%M %p")
+
+    start_bound = now - datetime.timedelta(days=1)
+    find_filter = f"[End] >= '{fmt(start_bound)}'"
+
+    try:
+        current = items.Find(find_filter)
+        if current:
+            logger.info(
+                "Find iniziale per la cartella calendario '%s' ha trovato l'evento '%s'.",
+                getattr(folder, "Name", folder),
+                getattr(current, "Subject", None),
+            )
+        else:
+            logger.info(
+                "Find iniziale per la cartella calendario '%s' non ha trovato elementi (filtro=%s).",
+                getattr(folder, "Name", folder),
+                find_filter,
+            )
+    except Exception:
+        logger.debug(
+            "Errore durante l'esecuzione di Find sugli eventi della cartella calendario '%s'.",
+            getattr(folder, "Name", folder),
+            exc_info=True,
+        )
+        current = None
+
     scanned = 0
     max_scan = 500
-    for appointment in items:
-        scanned += 1
-        if scanned > max_scan:
-            break
+    skip_counters = {
+        "no_start": 0,
+        "past": 0,
+        "beyond": 0,
+        "search": 0,
+        "errors": 0,
+    }
 
+    def process_appointment(appointment) -> str:
+        nonlocal scanned
+        scanned += 1
         try:
             start_dt = to_python_datetime(getattr(appointment, "Start", None))
             end_dt = to_python_datetime(getattr(appointment, "End", None))
 
             if not start_dt:
-                continue
+                skip_counters["no_start"] += 1
+                return "skip"
             if end_dt and end_dt < now:
-                continue
+                skip_counters["past"] += 1
+                return "skip"
             if start_dt > horizon:
-                continue
+                skip_counters["beyond"] += 1
+                return "break"
 
             if search_terms:
                 haystack = " ".join(
@@ -172,18 +209,50 @@ def get_events_from_folder(folder, days: int, search_term: Optional[str] = None)
                     )
                 ).lower()
                 if not any(term in haystack for term in search_terms):
-                    continue
+                    skip_counters["search"] += 1
+                    return "skip"
 
             event_data = format_calendar_event(appointment)
             events.append(event_data)
+            return "added"
         except Exception:
+            skip_counters["errors"] += 1
             logger.debug("Evento calendario ignorato per errore di elaborazione.", exc_info=True)
-            continue
+            return "skip"
+
+    if current:
+        while current:
+            outcome = process_appointment(current)
+            if outcome == "break":
+                break
+            if scanned >= max_scan and events:
+                break
+            try:
+                current = items.FindNext()
+            except Exception:
+                break
+    else:
+        logger.info(
+            "Iterazione completa sugli eventi della cartella calendario '%s' (filtro Find non disponibile).",
+            getattr(folder, "Name", folder),
+        )
+        for appointment in items:
+            outcome = process_appointment(appointment)
+            if outcome == "break":
+                break
+            if scanned >= max_scan and events:
+                break
 
     logger.info(
         "Recuperati %s eventi dalla cartella calendario '%s'.",
         len(events),
         getattr(folder, "Name", folder),
+    )
+    logger.info(
+        "Dettagli scansione calendario '%s': analizzati=%s salti=%s",
+        getattr(folder, "Name", folder),
+        scanned,
+        skip_counters,
     )
     return events
 

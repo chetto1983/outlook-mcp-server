@@ -160,7 +160,7 @@ def _build_demo_calls() -> Sequence[ToolCall]:
         ),
         ToolCall(
             name="search_calendar_events",
-            arguments={"search_term": "meeting", "days": 30, "max_results": 3},
+            arguments={"search_term": "riunione", "days": 30, "max_results": 3},
             label="search_calendar_events(search_term='meeting')",
         ),
     ]
