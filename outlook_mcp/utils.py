@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import datetime
+import hashlib
 from typing import Any, Dict, Iterable, List, Optional
 
 from .constants import (
@@ -127,9 +128,22 @@ def shorten_identifier(value: Optional[str], max_chars: int = 24) -> Optional[st
     """Return a shortened identifier suitable for human-friendly output."""
     if not value:
         return None
-    if len(value) <= max_chars:
-        return value
-    return value[: max_chars - 3] + "..."
+    text = str(value).strip()
+    if len(text) <= max_chars:
+        return text
+    return text[: max_chars - 3] + "..."
+
+
+def obfuscate_identifier(value: Optional[str], visible_chars: int = 4) -> Optional[str]:
+    """Return a masked identifier suitable for logging."""
+    if not value:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    prefix = text[:visible_chars]
+    digest = hashlib.sha1(text.encode("utf-8"), usedforsecurity=False).hexdigest()[:8]
+    return f"{prefix}…{digest}"
 
 
 def describe_item_type(item_type: Optional[int]) -> str:
@@ -264,31 +278,49 @@ def safe_filename(name: Optional[str], fallback: str = "allegato") -> str:
     return base
 
 
+def ensure_naive_datetime(value: Optional[datetime.datetime]) -> Optional[datetime.datetime]:
+    """Return a naive datetime, normalising timezone-aware values to local time."""
+    if value is None:
+        return None
+    if value.tzinfo is None:
+        return value
+    try:
+        return value.astimezone().replace(tzinfo=None)
+    except Exception:
+        # Fall back to dropping the tzinfo if conversion fails for exotic tz implementations.
+        return value.replace(tzinfo=None)
+
+
 def to_python_datetime(raw_value: Any) -> Optional[datetime.datetime]:
-    """Convert a COM datetime value into a Python datetime, if possible."""
+    """Convert a COM datetime value into a Python datetime, normalised to naive."""
     if not raw_value:
         return None
+
     if isinstance(raw_value, datetime.datetime):
-        if raw_value.tzinfo:
-            return raw_value.astimezone().replace(tzinfo=None)
-        return raw_value
+        return ensure_naive_datetime(raw_value)
+
+    candidate: Optional[datetime.datetime] = None
     try:
-        timestamp = raw_value.timestamp()
-        return datetime.datetime.fromtimestamp(timestamp)
+        timestamp = raw_value.timestamp()  # type: ignore[attr-defined]
     except Exception:
+        pass
+    else:
+        candidate = datetime.datetime.fromtimestamp(timestamp)
+
+    if candidate is None:
         try:
-            parsed = datetime.datetime.fromisoformat(str(raw_value))
-            if parsed.tzinfo:
-                return parsed.astimezone().replace(tzinfo=None)
-            return parsed
+            candidate = datetime.datetime.fromisoformat(str(raw_value))
         except Exception:
             return None
+
+    return ensure_naive_datetime(candidate)
 
 
 __all__ = [
     "build_body_preview",
     "coerce_bool",
     "describe_item_type",
+    "ensure_naive_datetime",
     "ensure_int_list",
     "ensure_string_list",
     "extract_attachment_names",
@@ -305,6 +337,7 @@ __all__ = [
     "safe_unread_count",
     "safe_filename",
     "shorten_identifier",
+    "obfuscate_identifier",
     "trim_conversation_id",
     "to_python_datetime",
 ]

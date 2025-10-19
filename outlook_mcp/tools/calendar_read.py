@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Optional, Any, Dict, List
 
 from ..features import feature_gate
-from outlook_mcp_server import mcp
+from outlook_mcp.toolkit import mcp_tool
 
 from outlook_mcp import logger
 from outlook_mcp.utils import coerce_bool
@@ -30,7 +30,7 @@ def _get_calendar_folder(namespace, calendar_name: Optional[str]):
     return get_calendar_folder_by_name(namespace, calendar_name) if calendar_name else namespace.GetDefaultFolder(9)
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="calendar.read")
 def list_upcoming_events(
     days: int = 7,
@@ -85,7 +85,7 @@ def list_upcoming_events(
         return f"Errore durante il recupero degli eventi: {str(e)}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="calendar.read")
 def search_calendar_events(
     search_term: str,
@@ -150,7 +150,7 @@ def search_calendar_events(
         return f"Errore durante la ricerca degli eventi: {str(e)}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="calendar.read")
 def get_event_by_number(event_number: int) -> str:
     """Recupera i dettagli completi di un evento dall'ultimo elenco."""

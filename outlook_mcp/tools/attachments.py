@@ -11,15 +11,15 @@ from typing import Any, Optional, List
 import os
 
 from ..features import feature_gate
-from outlook_mcp_server import mcp  # FastMCP
+from outlook_mcp.toolkit import mcp_tool  # FastMCP
 
 from outlook_mcp import logger
-from outlook_mcp.utils import coerce_bool, ensure_string_list, safe_filename, safe_entry_id
+from outlook_mcp.utils import coerce_bool, ensure_string_list, safe_filename, safe_entry_id, obfuscate_identifier
 from outlook_mcp.services.email import resolve_mail_item
 from mcp.server.fastmcp.exceptions import ToolError
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="attachments")
 def get_attachments(
     email_number: Optional[int] = None,
@@ -52,13 +52,14 @@ def get_attachments(
         if download_bool and not save_to:
             return "Errore: specifica 'save_to' quando download=True."
 
+        masked_id = obfuscate_identifier(message_id)
         logger.info(
-            "get_attachments chiamato (numero=%s id=%s download=%s limit=%s destinazione=%s).",
+            "attach_to_email chiamato (numero=%s id=%s allegati=%s invia=%s)."
+            ,
             email_number,
-            message_id,
-            download_bool,
-            limit_value,
-            save_to,
+            masked_id_send,
+            attachment_paths,
+            send_bool,
         )
 
         from outlook_mcp import connect_to_outlook
@@ -116,7 +117,7 @@ def get_attachments(
         return f"Errore durante la gestione degli allegati: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="attachments")
 def attach_to_email(
     attachments: Any,
@@ -138,14 +139,14 @@ def attach_to_email(
             return "Errore: specifica almeno un percorso di file da allegare."
 
         send_bool = coerce_bool(send)
+        masked_id_send = obfuscate_identifier(message_id)
         logger.info(
             "attach_to_email chiamato (numero=%s id=%s allegati=%s invia=%s).",
             email_number,
-            message_id,
+            masked_id_send,
             attachment_paths,
             send_bool,
         )
-
         from outlook_mcp import connect_to_outlook
         _, namespace = connect_to_outlook()
         try:

@@ -6,7 +6,8 @@ import datetime
 from typing import Any, Dict, Iterable, List, Optional, Sequence
 
 from outlook_mcp import calendar_cache, clear_calendar_cache, logger
-from outlook_mcp.utils import build_body_preview, safe_folder_path, to_python_datetime
+from outlook_mcp.com import OutlookComError, run_com_call, wrap_com_exception
+from outlook_mcp.utils import ensure_naive_datetime, build_body_preview, safe_folder_path, to_python_datetime
 
 from .common import format_yes_no
 
@@ -123,16 +124,30 @@ def format_calendar_event(appointment) -> Dict[str, Any]:
 
 def get_events_from_folder(folder, days: int, search_term: Optional[str] = None) -> List[Dict[str, Any]]:
     """Retrieve upcoming events from a calendar folder."""
-    now = datetime.datetime.now()
+    now = ensure_naive_datetime(datetime.datetime.now())
+    if now is None:
+        now = datetime.datetime.now()
     horizon = now + datetime.timedelta(days=days)
     events: List[Dict[str, Any]] = []
 
     try:
-        items = folder.Items
-        items.Sort("[Start]")
-        items.IncludeRecurrences = True
-    except Exception:
-        logger.warning("Impossibile accedere o ordinare gli eventi della cartella calendario '%s'.", getattr(folder, "Name", folder))
+        items = run_com_call(
+            lambda: folder.Items,
+            f"Ottenere gli eventi della cartella '{getattr(folder, 'Name', folder)}'",
+            retries=2,
+        )
+        run_com_call(lambda: items.Sort("[Start]"), "Ordinare gli eventi per data", retries=1)
+        run_com_call(
+            lambda: setattr(items, "IncludeRecurrences", True),
+            "Abilitare le ricorrenze degli eventi",
+            retries=0,
+        )
+    except OutlookComError as exc:
+        logger.warning(
+            "Impossibile preparare la cartella calendario '%s': %s",
+            getattr(folder, "Name", folder),
+            exc,
+        )
         return events
 
     search_terms: List[str] = []
@@ -145,30 +160,37 @@ def get_events_from_folder(folder, days: int, search_term: Optional[str] = None)
     start_bound = now - datetime.timedelta(days=1)
     find_filter = f"[End] >= '{fmt(start_bound)}'"
 
+    find_available = True
     try:
-        current = items.Find(find_filter)
-        if current:
-            logger.info(
-                "Find iniziale per la cartella calendario '%s' ha trovato l'evento '%s'.",
-                getattr(folder, "Name", folder),
-                getattr(current, "Subject", None),
-            )
-        else:
-            logger.info(
-                "Find iniziale per la cartella calendario '%s' non ha trovato elementi (filtro=%s).",
-                getattr(folder, "Name", folder),
-                find_filter,
-            )
-    except Exception:
+        current = run_com_call(
+            lambda: items.Find(find_filter),
+            f"Ricerca eventi con filtro {find_filter}",
+            retries=1,
+        )
+    except OutlookComError:
         logger.debug(
-            "Errore durante l'esecuzione di Find sugli eventi della cartella calendario '%s'.",
+            "Find non disponibile per la cartella calendario '%s'.",
             getattr(folder, "Name", folder),
             exc_info=True,
         )
         current = None
+        find_available = False
+
+    if current:
+        logger.info(
+            "Find iniziale per la cartella calendario '%s' ha trovato l'evento '%s'.",
+            getattr(folder, "Name", folder),
+            getattr(current, "Subject", None),
+        )
+    else:
+        logger.info(
+            "Find iniziale per la cartella calendario '%s' non ha trovato elementi (filtro=%s).",
+            getattr(folder, "Name", folder),
+            find_filter,
+        )
 
     scanned = 0
-    max_scan = 500
+    max_scan = 300 if find_available else 120
     skip_counters = {
         "no_start": 0,
         "past": 0,
@@ -181,8 +203,8 @@ def get_events_from_folder(folder, days: int, search_term: Optional[str] = None)
         nonlocal scanned
         scanned += 1
         try:
-            start_dt = to_python_datetime(getattr(appointment, "Start", None))
-            end_dt = to_python_datetime(getattr(appointment, "End", None))
+            start_dt = ensure_naive_datetime(to_python_datetime(getattr(appointment, "Start", None)))
+            end_dt = ensure_naive_datetime(to_python_datetime(getattr(appointment, "End", None)))
 
             if not start_dt:
                 skip_counters["no_start"] += 1
@@ -228,20 +250,36 @@ def get_events_from_folder(folder, days: int, search_term: Optional[str] = None)
             if scanned >= max_scan and events:
                 break
             try:
-                current = items.FindNext()
-            except Exception:
+                current = run_com_call(
+                    lambda: items.FindNext(),
+                    "Ricerca del prossimo evento del calendario",
+                    retries=1,
+                )
+            except OutlookComError:
                 break
     else:
         logger.info(
             "Iterazione completa sugli eventi della cartella calendario '%s' (filtro Find non disponibile).",
             getattr(folder, "Name", folder),
         )
-        for appointment in items:
-            outcome = process_appointment(appointment)
-            if outcome == "break":
-                break
-            if scanned >= max_scan and events:
-                break
+        try:
+            for appointment in items:
+                outcome = process_appointment(appointment)
+                if outcome == "break":
+                    break
+                if scanned >= max_scan and events:
+                    break
+        except Exception as exc:
+            logger.debug(
+                "Errore durante l'iterazione degli eventi della cartella '%s'.",
+                getattr(folder, "Name", folder),
+                exc_info=True,
+            )
+            com_error = wrap_com_exception(
+                f"Iterazione sugli eventi della cartella '{getattr(folder, 'Name', folder)}'",
+                exc,
+            )
+            logger.warning(str(com_error))
 
     logger.info(
         "Recuperati %s eventi dalla cartella calendario '%s'.",

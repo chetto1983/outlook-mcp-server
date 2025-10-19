@@ -6,13 +6,14 @@ from typing import Any, Optional, List, Dict
 import os
 
 from ..features import feature_gate
-from outlook_mcp_server import mcp  # FastMCP instance
+from outlook_mcp.toolkit import mcp_tool  # FastMCP instance
 
 from outlook_mcp import logger
 from outlook_mcp.utils import (
     coerce_bool,
     ensure_string_list,
     ensure_int_list,
+    obfuscate_identifier,
     safe_entry_id,
     safe_folder_path,
     normalize_folder_path,
@@ -43,7 +44,7 @@ def _apply_cats(mail_item, categories: List[str], overwrite: bool, append: bool)
     return apply_categories_to_item(mail_item, categories, overwrite, append)
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="email.actions")
 def move_email_to_folder(
     target_folder_id: Optional[str] = None,
@@ -131,7 +132,7 @@ def move_email_to_folder(
         return f"Errore durante lo spostamento del messaggio: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="email.actions")
 def mark_email_read_unread(
     email_number: Optional[int] = None,
@@ -184,7 +185,7 @@ def mark_email_read_unread(
         return f"Errore durante l'aggiornamento dello stato di lettura: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="email.actions")
 def apply_category(
     categories: Optional[Any] = None,
@@ -235,7 +236,7 @@ def apply_category(
         return f"Errore durante l'aggiornamento delle categorie: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="email.actions")
 def set_email_category(
     email_number: int,
@@ -253,7 +254,7 @@ def set_email_category(
     )
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="email.actions")
 def reply_to_email_by_number(
     email_number: Optional[int] = None,
@@ -326,11 +327,11 @@ def reply_to_email_by_number(
             f"(message_id={entry_id or message_id or 'N/D'})"
         )
     except Exception as exc:
-        logger.exception("Errore durante reply_to_email_by_number (numero=%s id=%s).", email_number, message_id)
+        logger.exception("Errore durante reply_to_email_by_number (numero=%s id=%s).", email_number, obfuscate_identifier(message_id))
         return f"Errore durante l'invio della risposta: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="email.actions")
 def compose_email(
     recipient_email: str,
@@ -401,7 +402,7 @@ def compose_email(
         return f"Errore durante la composizione dell'email: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="batch")
 def batch_manage_emails(
     email_numbers: Optional[Any] = None,
@@ -432,10 +433,11 @@ def batch_manage_emails(
                 return "Errore: 'mark_as' deve essere 'read' o 'unread'."
 
         move_requested = any([move_to_folder_id, move_to_folder_path, move_to_folder_name])
+        masked_ids = [obfuscate_identifier(entry) for entry in ids]
         logger.info(
             "batch_manage_emails chiamato (numeri=%s ids=%s move=%s mark=%s delete=%s).",
             numbers,
-            ids,
+            masked_ids,
             move_requested,
             mark_target,
             delete_bool,

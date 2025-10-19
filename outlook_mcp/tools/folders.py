@@ -3,7 +3,7 @@
 from typing import Any, Optional
 
 from ..features import feature_gate
-from outlook_mcp_server import mcp
+from outlook_mcp.toolkit import mcp_tool
 
 from outlook_mcp import logger
 from outlook_mcp.utils import coerce_bool, safe_folder_path
@@ -16,7 +16,7 @@ def _connect():
     return connect_to_outlook()
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="folders")
 def list_folders(
     root_folder_id: Optional[str] = None,
@@ -71,7 +71,7 @@ def list_folders(
         return f"Errore durante l'elenco delle cartelle: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="folders")
 def get_folder_metadata(
     folder_id: Optional[str] = None,
@@ -113,7 +113,7 @@ def get_folder_metadata(
         return f"Errore durante il recupero dei metadati della cartella: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="folders")
 def create_folder(
     new_folder_name: str,
@@ -167,7 +167,7 @@ def create_folder(
         return f"Errore durante la creazione della cartella: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="folders")
 def rename_folder(
     folder_id: Optional[str] = None,
@@ -213,7 +213,7 @@ def rename_folder(
         return f"Errore durante la rinomina della cartella: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="folders")
 def delete_folder(
     folder_id: Optional[str] = None,

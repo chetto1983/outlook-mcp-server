@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Optional, List, Any, Dict
 
 from ..features import feature_gate
-from outlook_mcp_server import mcp
+from outlook_mcp.toolkit import mcp_tool
 
 from outlook_mcp import logger
 from outlook_mcp.utils import coerce_bool
@@ -41,7 +41,7 @@ def _derive_sender(entry: Dict[str, Any]) -> Optional[str]:
     return derive_sender_email(entry)
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="domain.rules")
 def ensure_domain_folder(
     email_number: Optional[int] = None,
@@ -97,7 +97,7 @@ def ensure_domain_folder(
         return f"Errore durante la verifica/creazione della cartella dominio: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="domain.rules")
 def move_email_to_domain_folder(
     email_number: int,

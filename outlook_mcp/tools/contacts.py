@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional, List
 
 from ..features import feature_gate
-from outlook_mcp_server import mcp
+from outlook_mcp.toolkit import mcp_tool
 from outlook_mcp import logger
 
 def _connect():
@@ -12,7 +12,7 @@ def _connect():
     return connect_to_outlook()
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="contacts")
 def search_contacts(
     search_term: Optional[str] = None,

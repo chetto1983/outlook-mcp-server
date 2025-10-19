@@ -24,7 +24,7 @@ import os
 from pathlib import Path
 from functools import wraps
 import inspect
-from typing import Dict, Optional, Set, Any
+from typing import Dict, Optional, Set, Any, List
 
 from .logger import logger
 
@@ -147,9 +147,9 @@ def is_tool_enabled(tool_name: str, group: Optional[str] = None) -> bool:
 def feature_gate(group: Optional[str] = None, name: Optional[str] = None):
     """Decorator to gate a tool by group and record its mapping.
 
-    Use alongside @mcp.tool():
+    Use alongside @mcp_tool():
 
-        @mcp.tool()
+        @mcp_tool()
         @feature_gate(group="email.list")
         def list_recent_emails(...):
             ...
@@ -190,6 +190,43 @@ def get_tool_group(tool_name: str) -> Optional[str]:
     return _TOOL_GROUPS.get(tool_name)
 
 
+def feature_metrics() -> Dict[str, Any]:
+    """Return diagnostic information about feature configuration and tool mappings."""
+    enabled_groups = sorted(_FEATURES.enabled_groups)
+    disabled_groups = sorted(_FEATURES.disabled_groups)
+    enabled_tools = sorted(_FEATURES.enabled_tools)
+    disabled_tools = sorted(_FEATURES.disabled_tools)
+
+    tools_by_group: Dict[str, List[str]] = {}
+    for tool, group in _TOOL_GROUPS.items():
+        key = group or "ungrouped"
+        tools_by_group.setdefault(key, []).append(tool)
+    for group_tools in tools_by_group.values():
+        group_tools.sort()
+
+    active_tools = sorted(
+        tool
+        for tool, group in _TOOL_GROUPS.items()
+        if is_tool_enabled(tool, group)
+    )
+    inactive_tools = sorted(
+        tool
+        for tool, group in _TOOL_GROUPS.items()
+        if not is_tool_enabled(tool, group)
+    )
+
+    return {
+        "enabled_groups": enabled_groups,
+        "disabled_groups": disabled_groups,
+        "enabled_tools": enabled_tools,
+        "disabled_tools": disabled_tools,
+        "registered_tools": len(_TOOL_GROUPS),
+        "active_tools": active_tools,
+        "inactive_tools": inactive_tools,
+        "tools_by_group": tools_by_group,
+    }
+
+
 # Load configuration on import
 reload_features()
 
@@ -198,6 +235,7 @@ __all__ = [
     "is_tool_enabled",
     "reload_features",
     "get_tool_group",
+    "feature_metrics",
 ]
 
 

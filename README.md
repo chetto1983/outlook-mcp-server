@@ -77,6 +77,10 @@ Esempio di `features.json`:
 ```
 Gruppi rilevanti: `system`, `general`, `folders`, `email.list`, `email.detail`, `email.actions`, `attachments`, `contacts`, `calendar.read`, `calendar.write`, `domain.rules`, `batch`.
 
+Tool di amministrazione runtime disponibili nel gruppo `system`:
+- `reload_configuration()` �?" ricarica `features.json` e le variabili d'ambiente senza riavviare il server.
+- `feature_status()` �?" riepiloga gruppi/tool attivi e disabilitati.
+
 Prompt (facoltativo)
 Il file `prompt.txt` contiene un primer in italiano con regole e workflow consigliato da incollare nel tuo client MCP.
 

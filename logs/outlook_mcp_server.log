@@ -1,428 +1,91 @@
-2025-10-18 15:44:23,031 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 15:44:23,312 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
-2025-10-18 15:44:23,334 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
-2025-10-18 15:44:23,355 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
-2025-10-18 15:44:23,375 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
-2025-10-18 15:44:23,387 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
-2025-10-18 15:44:23,411 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
-2025-10-18 15:44:23,421 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
-2025-10-18 15:44:23,428 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
-2025-10-18 15:44:23,439 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
-2025-10-18 15:44:23,447 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
-2025-10-18 15:44:23,457 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 29 tool
-2025-10-18 15:44:23,462 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-18 15:44:23,463 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
-2025-10-18 15:44:23,465 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
-2025-10-18 15:44:23,468 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
-2025-10-18 15:44:23,470 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
-2025-10-18 15:44:23,472 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
-2025-10-18 15:44:23,474 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
-2025-10-18 15:44:23,476 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
-2025-10-18 15:44:23,477 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
-2025-10-18 15:44:23,479 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
-2025-10-18 15:44:23,481 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
-2025-10-18 15:44:23,482 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 29 tool
-2025-10-18 15:44:23,485 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-18 15:44:25,840 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2098 elementi.
-2025-10-18 15:44:25,857 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-18 15:44:28,625 | INFO | outlook_mcp_server | params tool invocato (protocolVersion=2025-03-26, clientInfo=None)
-2025-10-18 15:44:28,655 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
-2025-10-18 15:44:28,670 | INFO | outlook_mcp_server | list_folders chiamato (root_id=None root_path=None root_name=None profondita=1 contatori=False ids=False store=False paths=True).
-2025-10-18 15:45:08,406 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=3 cartella=None max_risultati=3 anteprima=False tutte_le_cartelle=False offset=0 unread_only=False folder_ids=[] folder_paths=[]
-2025-10-18 15:45:08,435 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=3 termine=None.
-2025-10-18 15:45:32,122 | INFO | outlook_mcp_server | list_recent_emails: restituiti 3 messaggi su 23 (termine=None cartella=Posta in arrivo offset=0).
-2025-10-18 15:45:32,136 | INFO | outlook_mcp_server | list_sent_emails chiamato con giorni=7 cartella=None max_risultati=3 anteprima=False offset=0
-2025-10-18 15:45:32,164 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=7 termine=None.
-2025-10-18 15:45:33,959 | INFO | outlook_mcp_server | list_sent_emails: restituiti 3 messaggi su 33 (termine=None cartella=Posta inviata offset=0).
-2025-10-18 15:45:33,972 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=3 anteprima=False tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-18 15:45:34,038 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=14 termine=None.
-2025-10-18 15:45:58,624 | INFO | outlook_mcp_server | list_pending_replies ha trovato 3 messaggi da gestire su 3 analizzati.
-2025-10-18 15:45:58,626 | INFO | outlook_mcp_server | list_pending_replies: restituiti 3 messaggi su 3 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
-2025-10-18 15:45:58,640 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=14 calendario=None max_risultati=5 descrizione=False tutti_i_calendari=True
-2025-10-18 15:46:03,312 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 15:46:04,869 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
-2025-10-18 15:46:04,885 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
-2025-10-18 15:46:04,888 | INFO | outlook_mcp_server | Aggregati 0 eventi provenienti da 3 cartelle calendario.
-2025-10-18 15:46:04,890 | INFO | outlook_mcp_server | list_upcoming_events: nessun evento trovato (calendario=Tutti i calendari giorni=14).
-2025-10-18 15:46:04,902 | INFO | outlook_mcp_server | search_calendar_events chiamato con termine='meeting' giorni=30 calendario=None max_risultati=3 descrizione=False tutti_i_calendari=True
-2025-10-18 15:46:07,374 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 15:46:08,885 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
-2025-10-18 15:46:08,894 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
-2025-10-18 15:46:08,896 | INFO | outlook_mcp_server | Aggregati 0 eventi provenienti da 3 cartelle calendario.
-2025-10-18 15:46:08,897 | INFO | outlook_mcp_server | search_calendar_events: nessun evento trovato (calendario=Tutti i calendari giorni=30).
-2025-10-18 15:51:18,743 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 15:51:18,908 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
-2025-10-18 15:51:18,917 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
-2025-10-18 15:51:18,931 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
-2025-10-18 15:51:18,942 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
-2025-10-18 15:51:18,948 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
-2025-10-18 15:51:18,965 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
-2025-10-18 15:51:18,974 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
-2025-10-18 15:51:18,980 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
-2025-10-18 15:51:18,987 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
-2025-10-18 15:51:18,995 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
-2025-10-18 15:51:19,001 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 29 tool
-2025-10-18 15:51:19,007 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-18 15:51:19,010 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
-2025-10-18 15:51:19,012 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
-2025-10-18 15:51:19,013 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
-2025-10-18 15:51:19,015 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
-2025-10-18 15:51:19,016 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
-2025-10-18 15:51:19,018 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
-2025-10-18 15:51:19,020 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
-2025-10-18 15:51:19,021 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
-2025-10-18 15:51:19,023 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
-2025-10-18 15:51:19,025 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
-2025-10-18 15:51:19,027 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 29 tool
-2025-10-18 15:51:19,030 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-18 15:51:19,079 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2098 elementi.
-2025-10-18 15:51:19,085 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-18 15:51:31,516 | INFO | outlook_mcp_server | params tool invocato (protocolVersion=2025-03-26, clientInfo=None)
-2025-10-18 15:51:31,541 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
-2025-10-18 15:51:31,556 | INFO | outlook_mcp_server | list_folders chiamato (root_id=None root_path=None root_name=None profondita=1 contatori=False ids=False store=False paths=True).
-2025-10-18 15:51:32,342 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=3 cartella=None max_risultati=3 anteprima=False tutte_le_cartelle=False offset=0 unread_only=False folder_ids=[] folder_paths=[]
-2025-10-18 15:51:32,365 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=3 termine=None.
-2025-10-18 15:51:33,431 | INFO | outlook_mcp_server | list_recent_emails: restituiti 3 messaggi su 23 (termine=None cartella=Posta in arrivo offset=0).
-2025-10-18 15:51:33,442 | INFO | outlook_mcp_server | list_sent_emails chiamato con giorni=7 cartella=None max_risultati=3 anteprima=False offset=0
-2025-10-18 15:51:33,456 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=7 termine=None.
-2025-10-18 15:51:34,875 | INFO | outlook_mcp_server | list_sent_emails: restituiti 3 messaggi su 33 (termine=None cartella=Posta inviata offset=0).
-2025-10-18 15:51:34,888 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=3 anteprima=False tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-18 15:51:34,968 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=14 termine=None.
-2025-10-18 15:51:50,032 | INFO | outlook_mcp_server | list_pending_replies ha trovato 3 messaggi da gestire su 3 analizzati.
-2025-10-18 15:51:50,034 | INFO | outlook_mcp_server | list_pending_replies: restituiti 3 messaggi su 3 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
-2025-10-18 15:51:50,048 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=14 calendario=None max_risultati=5 descrizione=False tutti_i_calendari=True
-2025-10-18 15:51:51,100 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 15:51:51,116 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
-2025-10-18 15:51:51,135 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
-2025-10-18 15:51:51,137 | INFO | outlook_mcp_server | Aggregati 0 eventi provenienti da 3 cartelle calendario.
-2025-10-18 15:51:51,138 | INFO | outlook_mcp_server | list_upcoming_events: nessun evento trovato (calendario=Tutti i calendari giorni=14).
-2025-10-18 15:51:51,148 | INFO | outlook_mcp_server | search_calendar_events chiamato con termine='riunione' giorni=30 calendario=None max_risultati=3 descrizione=False tutti_i_calendari=True
-2025-10-18 15:51:52,058 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 15:51:52,075 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
-2025-10-18 15:51:52,089 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
-2025-10-18 15:51:52,092 | INFO | outlook_mcp_server | Aggregati 0 eventi provenienti da 3 cartelle calendario.
-2025-10-18 15:51:52,093 | INFO | outlook_mcp_server | search_calendar_events: nessun evento trovato (calendario=Tutti i calendari giorni=30).
-2025-10-18 15:55:37,839 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 15:55:37,878 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 15:55:37,880 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 15:55:37,881 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
-2025-10-18 15:56:42,334 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 15:56:42,343 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 15:56:42,345 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 15:56:42,346 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
-2025-10-18 15:58:09,903 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 15:58:09,914 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 15:58:09,916 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 15:58:09,917 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
-2025-10-18 15:58:20,332 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 15:59:29,806 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:00:12,179 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:00:12,323 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
-2025-10-18 16:00:12,330 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
-2025-10-18 16:00:12,345 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
-2025-10-18 16:00:12,358 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
-2025-10-18 16:00:12,364 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
-2025-10-18 16:00:12,383 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
-2025-10-18 16:00:12,394 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
-2025-10-18 16:00:12,399 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
-2025-10-18 16:00:12,408 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
-2025-10-18 16:00:12,414 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
-2025-10-18 16:00:12,420 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 29 tool
-2025-10-18 16:00:12,425 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-18 16:00:12,427 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
-2025-10-18 16:00:12,428 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
-2025-10-18 16:00:12,429 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
-2025-10-18 16:00:12,430 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
-2025-10-18 16:00:12,431 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
-2025-10-18 16:00:12,433 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
-2025-10-18 16:00:12,435 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
-2025-10-18 16:00:12,437 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
-2025-10-18 16:00:12,439 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
-2025-10-18 16:00:12,442 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
-2025-10-18 16:00:12,444 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 29 tool
-2025-10-18 16:00:12,446 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-18 16:00:12,496 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2098 elementi.
-2025-10-18 16:00:12,501 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-18 16:00:20,617 | INFO | outlook_mcp_server | params tool invocato (protocolVersion=2025-03-26, clientInfo=None)
-2025-10-18 16:00:20,648 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
-2025-10-18 16:00:20,662 | INFO | outlook_mcp_server | list_folders chiamato (root_id=None root_path=None root_name=None profondita=1 contatori=False ids=False store=False paths=True).
-2025-10-18 16:00:21,250 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=3 cartella=None max_risultati=3 anteprima=False tutte_le_cartelle=False offset=0 unread_only=False folder_ids=[] folder_paths=[]
-2025-10-18 16:00:21,273 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=3 termine=None.
-2025-10-18 16:00:22,446 | INFO | outlook_mcp_server | list_recent_emails: restituiti 3 messaggi su 23 (termine=None cartella=Posta in arrivo offset=0).
-2025-10-18 16:00:22,459 | INFO | outlook_mcp_server | list_sent_emails chiamato con giorni=7 cartella=None max_risultati=3 anteprima=False offset=0
-2025-10-18 16:00:22,475 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=7 termine=None.
-2025-10-18 16:00:24,274 | INFO | outlook_mcp_server | list_sent_emails: restituiti 3 messaggi su 33 (termine=None cartella=Posta inviata offset=0).
-2025-10-18 16:00:24,286 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=3 anteprima=False tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-18 16:00:24,358 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=14 termine=None.
-2025-10-18 16:00:40,872 | INFO | outlook_mcp_server | list_pending_replies ha trovato 3 messaggi da gestire su 3 analizzati.
-2025-10-18 16:00:40,875 | INFO | outlook_mcp_server | list_pending_replies: restituiti 3 messaggi su 3 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
-2025-10-18 16:00:40,893 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=14 calendario=None max_risultati=5 descrizione=False tutti_i_calendari=True
-2025-10-18 16:00:41,895 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:00:41,913 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
-2025-10-18 16:00:41,931 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
-2025-10-18 16:00:41,935 | INFO | outlook_mcp_server | Aggregati 0 eventi provenienti da 3 cartelle calendario.
-2025-10-18 16:00:41,937 | INFO | outlook_mcp_server | list_upcoming_events: nessun evento trovato (calendario=Tutti i calendari giorni=14).
-2025-10-18 16:00:41,947 | INFO | outlook_mcp_server | search_calendar_events chiamato con termine='riunione' giorni=30 calendario=None max_risultati=3 descrizione=False tutti_i_calendari=True
-2025-10-18 16:00:43,108 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:00:43,137 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
-2025-10-18 16:00:43,155 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
-2025-10-18 16:00:43,158 | INFO | outlook_mcp_server | Aggregati 0 eventi provenienti da 3 cartelle calendario.
-2025-10-18 16:00:43,160 | INFO | outlook_mcp_server | search_calendar_events: nessun evento trovato (calendario=Tutti i calendari giorni=30).
-2025-10-18 16:02:55,108 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:02:55,118 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:02:55,118 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 16:02:55,120 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:02:55,120 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
-2025-10-18 16:02:55,122 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
-2025-10-18 16:03:07,211 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:03:07,353 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
-2025-10-18 16:03:07,362 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
-2025-10-18 16:03:07,375 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
-2025-10-18 16:03:07,386 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
-2025-10-18 16:03:07,393 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
-2025-10-18 16:03:07,411 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
-2025-10-18 16:03:07,419 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
-2025-10-18 16:03:07,425 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
-2025-10-18 16:03:07,435 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
-2025-10-18 16:03:07,440 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
-2025-10-18 16:03:07,448 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 29 tool
-2025-10-18 16:03:07,452 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-18 16:03:07,453 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
-2025-10-18 16:03:07,455 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
-2025-10-18 16:03:07,457 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
-2025-10-18 16:03:07,458 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
-2025-10-18 16:03:07,460 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
-2025-10-18 16:03:07,464 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
-2025-10-18 16:03:07,466 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
-2025-10-18 16:03:07,467 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
-2025-10-18 16:03:07,469 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
-2025-10-18 16:03:07,471 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
-2025-10-18 16:03:07,473 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 29 tool
-2025-10-18 16:03:07,474 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-18 16:03:07,519 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2098 elementi.
-2025-10-18 16:03:07,523 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-18 16:03:17,699 | INFO | outlook_mcp_server | params tool invocato (protocolVersion=2025-03-26, clientInfo=None)
-2025-10-18 16:03:17,723 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
-2025-10-18 16:03:17,737 | INFO | outlook_mcp_server | list_folders chiamato (root_id=None root_path=None root_name=None profondita=1 contatori=False ids=False store=False paths=True).
-2025-10-18 16:03:18,245 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=3 cartella=None max_risultati=3 anteprima=False tutte_le_cartelle=False offset=0 unread_only=False folder_ids=[] folder_paths=[]
-2025-10-18 16:03:18,262 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=3 termine=None.
-2025-10-18 16:03:19,369 | INFO | outlook_mcp_server | list_recent_emails: restituiti 3 messaggi su 23 (termine=None cartella=Posta in arrivo offset=0).
-2025-10-18 16:03:19,381 | INFO | outlook_mcp_server | list_sent_emails chiamato con giorni=7 cartella=None max_risultati=3 anteprima=False offset=0
-2025-10-18 16:03:19,394 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=7 termine=None.
-2025-10-18 16:03:20,825 | INFO | outlook_mcp_server | list_sent_emails: restituiti 3 messaggi su 33 (termine=None cartella=Posta inviata offset=0).
-2025-10-18 16:03:20,838 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=3 anteprima=False tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-18 16:03:20,876 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=14 termine=None.
-2025-10-18 16:03:36,514 | INFO | outlook_mcp_server | list_pending_replies ha trovato 3 messaggi da gestire su 3 analizzati.
-2025-10-18 16:03:36,516 | INFO | outlook_mcp_server | list_pending_replies: restituiti 3 messaggi su 3 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
-2025-10-18 16:03:36,531 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=14 calendario=None max_risultati=5 descrizione=False tutti_i_calendari=True
-2025-10-18 16:03:37,580 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:03:37,583 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 16:03:37,608 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
-2025-10-18 16:03:37,610 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 16:03:37,633 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
-2025-10-18 16:03:37,635 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 16:03:37,638 | INFO | outlook_mcp_server | Aggregati 0 eventi provenienti da 3 cartelle calendario.
-2025-10-18 16:03:37,640 | INFO | outlook_mcp_server | list_upcoming_events: nessun evento trovato (calendario=Tutti i calendari giorni=14).
-2025-10-18 16:03:37,651 | INFO | outlook_mcp_server | search_calendar_events chiamato con termine='riunione' giorni=30 calendario=None max_risultati=3 descrizione=False tutti_i_calendari=True
-2025-10-18 16:03:38,641 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:03:38,644 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=4 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 4}
-2025-10-18 16:03:38,671 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
-2025-10-18 16:03:38,674 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 1}
-2025-10-18 16:03:38,695 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
-2025-10-18 16:03:38,697 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 16:03:38,701 | INFO | outlook_mcp_server | Aggregati 0 eventi provenienti da 3 cartelle calendario.
-2025-10-18 16:03:38,703 | INFO | outlook_mcp_server | search_calendar_events: nessun evento trovato (calendario=Tutti i calendari giorni=30).
-2025-10-18 16:05:31,664 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:05:31,693 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:05:31,694 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 16:05:31,695 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:05:31,695 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
-2025-10-18 16:05:31,697 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
-2025-10-18 16:06:12,897 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:06:12,962 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:06:12,963 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 16:06:34,391 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:06:34,431 | INFO | outlook_mcp_server | Filtro Restrict calendario 'Calendario': [End] >= '10/17/2025 04:06 PM' AND [Start] <= '11/01/2025 04:06 PM'
-2025-10-18 16:06:34,445 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:06:34,446 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 16:07:24,475 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:07:24,524 | INFO | outlook_mcp_server | Filtro Restrict calendario 'Calendario': [End] >= '10/17/2025 04:07 PM' AND [Start] <= '11/01/2025 04:07 PM'
-2025-10-18 16:07:24,555 | INFO | outlook_mcp_server | Elementi dopo Restrict per 'Calendario': 2147483647
-2025-10-18 16:07:24,562 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:07:24,564 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 16:09:02,009 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:09:02,062 | INFO | outlook_mcp_server | Filtro Restrict calendario 'Calendario': [End] >= '10/17/2025 04:09 PM' AND [Start] <= '11/01/2025 04:09 PM'
-2025-10-18 16:09:02,091 | INFO | outlook_mcp_server | Elementi dopo Restrict per 'Calendario': 2147483647
-2025-10-18 16:09:02,100 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:09:02,101 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 16:11:42,127 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:11:42,192 | INFO | outlook_mcp_server | Filtro Restrict calendario 'Calendario': [End] >= '10/17/2025 04:11 PM' AND [Start] <= '11/01/2025 04:11 PM'
-2025-10-18 16:11:42,227 | INFO | outlook_mcp_server | Elementi dopo Restrict per 'Calendario': 2147483647
-2025-10-18 16:11:42,228 | INFO | outlook_mcp_server | Itereremo sulla collezione <class 'win32com.client.CDispatch'> (id=2765387861648) per la cartella 'Calendario'.
-2025-10-18 16:11:42,238 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:11:42,239 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 16:12:28,765 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:12:28,822 | INFO | outlook_mcp_server | Filtro Restrict calendario 'Calendario': [End] >= '10/17/2025 04:12 PM' AND [Start] <= '11/01/2025 04:12 PM'
-2025-10-18 16:12:28,837 | INFO | outlook_mcp_server | Elementi dopo Restrict per 'Calendario': 2147483647
-2025-10-18 16:12:28,838 | INFO | outlook_mcp_server | Itereremo sulla collezione <class 'win32com.client.CDispatch'> (id=2321125740480) per la cartella 'Calendario'.
-2025-10-18 16:12:28,843 | INFO | outlook_mcp_server | GetFirst per 'Calendario' ha restituito: None
-2025-10-18 16:12:28,843 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:12:28,844 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 16:14:14,649 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:14:14,654 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Calendario' (filtro Find non disponibile).
-2025-10-18 16:14:14,654 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:14:14,654 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=3 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 0, 'errors': 0}
-2025-10-18 16:14:14,793 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Calendario' (filtro Find non disponibile).
-2025-10-18 16:14:14,793 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:14:14,794 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
-2025-10-18 16:14:14,795 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
-2025-10-18 16:14:49,147 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:14:49,156 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento imminente'.
-2025-10-18 16:14:49,157 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:14:49,157 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
-2025-10-18 16:14:49,159 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Quarterly meeting'.
-2025-10-18 16:14:49,159 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:14:49,160 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
-2025-10-18 16:14:49,162 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
-2025-10-18 16:14:55,405 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:14:55,463 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Visita Maica Pallet  [In-person]'.
-2025-10-18 16:14:55,538 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:14:55,539 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=6 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 6}
-2025-10-18 16:15:13,163 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:15:13,203 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Visita Maica Pallet  [In-person]'.
-2025-10-18 16:15:13,222 | WARNING | outlook_mcp_server | Evento calendario ignorato per errore di elaborazione.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\services\calendar.py", line 190, in process_appointment
-    if end_dt and end_dt < now:
-                  ^^^^^^^^^^^^
-TypeError: can't compare offset-naive and offset-aware datetimes
-2025-10-18 16:15:13,233 | WARNING | outlook_mcp_server | Evento calendario ignorato per errore di elaborazione.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\services\calendar.py", line 190, in process_appointment
-    if end_dt and end_dt < now:
-                  ^^^^^^^^^^^^
-TypeError: can't compare offset-naive and offset-aware datetimes
-2025-10-18 16:15:13,257 | WARNING | outlook_mcp_server | Evento calendario ignorato per errore di elaborazione.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\services\calendar.py", line 190, in process_appointment
-    if end_dt and end_dt < now:
-                  ^^^^^^^^^^^^
-TypeError: can't compare offset-naive and offset-aware datetimes
-2025-10-18 16:15:13,270 | WARNING | outlook_mcp_server | Evento calendario ignorato per errore di elaborazione.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\services\calendar.py", line 190, in process_appointment
-    if end_dt and end_dt < now:
-                  ^^^^^^^^^^^^
-TypeError: can't compare offset-naive and offset-aware datetimes
-2025-10-18 16:15:13,280 | WARNING | outlook_mcp_server | Evento calendario ignorato per errore di elaborazione.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\services\calendar.py", line 190, in process_appointment
-    if end_dt and end_dt < now:
-                  ^^^^^^^^^^^^
-TypeError: can't compare offset-naive and offset-aware datetimes
-2025-10-18 16:15:13,289 | WARNING | outlook_mcp_server | Evento calendario ignorato per errore di elaborazione.
-Traceback (most recent call last):
-  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\services\calendar.py", line 190, in process_appointment
-    if end_dt and end_dt < now:
-                  ^^^^^^^^^^^^
-TypeError: can't compare offset-naive and offset-aware datetimes
-2025-10-18 16:15:13,291 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:15:13,292 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=6 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 6}
-2025-10-18 16:15:29,600 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:15:29,610 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento imminente'.
-2025-10-18 16:15:29,611 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:15:29,611 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
-2025-10-18 16:15:29,614 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Quarterly meeting'.
-2025-10-18 16:15:29,615 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:15:29,615 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
-2025-10-18 16:15:29,616 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
-2025-10-18 16:15:35,162 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:15:35,231 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Visita Maica Pallet  [In-person]'.
-2025-10-18 16:15:35,360 | INFO | outlook_mcp_server | Recuperati 3 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:15:35,361 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=4 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
-2025-10-18 16:15:48,368 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:15:48,379 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento imminente'.
-2025-10-18 16:15:48,379 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:15:48,379 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
-2025-10-18 16:15:48,381 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Quarterly meeting'.
-2025-10-18 16:15:48,381 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:15:48,381 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
-2025-10-18 16:15:48,382 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
-2025-10-18 16:16:02,036 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:16:02,089 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Visita Maica Pallet  [In-person]'.
-2025-10-18 16:16:02,232 | INFO | outlook_mcp_server | Recuperati 3 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:16:02,232 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=4 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
-2025-10-18 16:16:52,252 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 16:16:52,264 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento imminente'.
-2025-10-18 16:16:52,265 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:16:52,265 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
-2025-10-18 16:16:52,268 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Quarterly meeting'.
-2025-10-18 16:16:52,268 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 16:16:52,269 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
-2025-10-18 16:16:52,271 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
-2025-10-18 21:42:53,212 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
-2025-10-18 21:42:53,470 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
-2025-10-18 21:42:53,489 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
-2025-10-18 21:42:53,508 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
-2025-10-18 21:42:53,525 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
-2025-10-18 21:42:53,537 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
-2025-10-18 21:42:53,562 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
-2025-10-18 21:42:53,573 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
-2025-10-18 21:42:53,580 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
-2025-10-18 21:42:53,592 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
-2025-10-18 21:42:53,602 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
-2025-10-18 21:42:53,613 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 29 tool
-2025-10-18 21:42:53,616 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
-2025-10-18 21:42:53,618 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
-2025-10-18 21:42:53,620 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
-2025-10-18 21:42:53,622 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
-2025-10-18 21:42:53,623 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
-2025-10-18 21:42:53,624 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
-2025-10-18 21:42:53,626 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
-2025-10-18 21:42:53,627 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
-2025-10-18 21:42:53,628 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
-2025-10-18 21:42:53,629 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
-2025-10-18 21:42:53,630 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
-2025-10-18 21:42:53,632 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 29 tool
-2025-10-18 21:42:53,634 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
-2025-10-18 21:42:53,661 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2098 elementi.
-2025-10-18 21:42:53,664 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
-2025-10-18 21:42:59,902 | INFO | outlook_mcp_server | params tool invocato (protocolVersion=2025-03-26, clientInfo=None)
-2025-10-18 21:42:59,932 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
-2025-10-18 21:42:59,944 | INFO | outlook_mcp_server | list_folders chiamato (root_id=None root_path=None root_name=None profondita=1 contatori=False ids=False store=False paths=True).
-2025-10-18 21:43:01,457 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=3 cartella=None max_risultati=3 anteprima=False tutte_le_cartelle=False offset=0 unread_only=False folder_ids=[] folder_paths=[]
-2025-10-18 21:43:01,518 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=3 termine=None.
-2025-10-18 21:43:30,337 | INFO | outlook_mcp_server | list_recent_emails: restituiti 3 messaggi su 22 (termine=None cartella=Posta in arrivo offset=0).
-2025-10-18 21:43:30,355 | INFO | outlook_mcp_server | list_sent_emails chiamato con giorni=7 cartella=None max_risultati=3 anteprima=False offset=0
-2025-10-18 21:43:30,377 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta inviata' con giorni=7 termine=None.
-2025-10-18 21:43:33,505 | INFO | outlook_mcp_server | list_sent_emails: restituiti 3 messaggi su 33 (termine=None cartella=Posta inviata offset=0).
-2025-10-18 21:43:33,519 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=14 cartella=None max_risultati=3 anteprima=False tutte_le_cartelle=False solo_non_letti=False lookback_conv=28
-2025-10-18 21:43:33,610 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=14 termine=None.
-2025-10-18 21:43:53,276 | INFO | outlook_mcp_server | list_pending_replies ha trovato 3 messaggi da gestire su 3 analizzati.
-2025-10-18 21:43:53,279 | INFO | outlook_mcp_server | list_pending_replies: restituiti 3 messaggi su 3 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
-2025-10-18 21:43:53,294 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=14 calendario=None max_risultati=5 descrizione=False tutti_i_calendari=True
-2025-10-18 21:43:55,175 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Visita Maica Pallet  [In-person]'.
-2025-10-18 21:43:55,304 | INFO | outlook_mcp_server | Recuperati 3 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 21:43:55,306 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=4 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
-2025-10-18 21:43:55,323 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
-2025-10-18 21:43:55,379 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Festività in Italia'.
-2025-10-18 21:43:55,382 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
-2025-10-18 21:43:55,406 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/17/2025 09:43 PM').
-2025-10-18 21:43:55,409 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
-2025-10-18 21:43:55,415 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
-2025-10-18 21:43:55,420 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 21:43:55,424 | INFO | outlook_mcp_server | Aggregati 4 eventi provenienti da 3 cartelle calendario.
-2025-10-18 21:43:55,427 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 4 eventi su 4 (calendario=Tutti i calendari).
-2025-10-18 21:43:55,445 | INFO | outlook_mcp_server | search_calendar_events chiamato con termine='riunione' giorni=30 calendario=None max_risultati=3 descrizione=False tutti_i_calendari=True
-2025-10-18 21:43:56,687 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Visita Maica Pallet  [In-person]'.
-2025-10-18 21:43:56,914 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
-2025-10-18 21:43:56,917 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=5 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 3, 'errors': 0}
-2025-10-18 21:43:56,947 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
-2025-10-18 21:43:57,002 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
-2025-10-18 21:43:57,005 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 1, 'errors': 0}
-2025-10-18 21:43:57,035 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/17/2025 09:43 PM').
-2025-10-18 21:43:57,038 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
-2025-10-18 21:43:57,044 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
-2025-10-18 21:43:57,047 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
-2025-10-18 21:43:57,053 | INFO | outlook_mcp_server | Aggregati 1 eventi provenienti da 3 cartelle calendario.
-2025-10-18 21:43:57,055 | INFO | outlook_mcp_server | search_calendar_events: restituiti 1 eventi su 1 (calendario=Tutti i calendari).
+2025-10-19 11:17:19,323 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-19 11:17:19,330 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento imminente'.
+2025-10-19 11:17:19,330 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-19 11:17:19,330 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-19 11:17:19,332 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Quarterly meeting'.
+2025-10-19 11:17:19,332 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-19 11:17:19,332 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
+2025-10-19 11:17:19,333 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento con timezone'.
+2025-10-19 11:17:19,333 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-19 11:17:19,333 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-19 11:17:19,334 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
+2025-10-19 11:20:37,961 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-19 11:20:38,087 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-19 11:20:38,100 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-19 11:20:38,102 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-19 11:20:38,104 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-19 11:20:38,106 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-19 11:20:38,108 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-19 11:20:38,110 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-19 11:20:38,111 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-19 11:20:38,113 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-19 11:20:38,114 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-19 11:20:38,163 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 31 tool
+2025-10-19 11:20:38,166 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
+2025-10-19 11:20:38,166 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-19 11:20:38,167 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-19 11:20:38,168 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-19 11:20:38,169 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-19 11:20:38,170 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-19 11:20:38,172 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-19 11:20:38,173 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-19 11:20:38,174 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-19 11:20:38,175 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-19 11:20:38,176 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-19 11:20:38,177 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 31 tool
+2025-10-19 11:20:38,178 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
+2025-10-19 11:20:38,194 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2088 elementi.
+2025-10-19 11:20:38,196 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
+2025-10-19 11:20:49,461 | INFO | outlook_mcp_server | Segnale SIGINT ricevuto; arresto graduale in corso.
+2025-10-19 11:21:11,959 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-19 11:21:11,967 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento imminente'.
+2025-10-19 11:21:11,967 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-19 11:21:11,967 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-19 11:21:11,969 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Quarterly meeting'.
+2025-10-19 11:21:11,969 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-19 11:21:11,969 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
+2025-10-19 11:21:11,971 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento con timezone'.
+2025-10-19 11:21:11,971 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-19 11:21:11,971 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-19 11:21:11,972 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
+2025-10-19 11:21:56,812 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-19 11:22:09,604 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-19 11:22:09,624 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento imminente'.
+2025-10-19 11:22:09,625 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-19 11:22:09,625 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-19 11:22:09,626 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Quarterly meeting'.
+2025-10-19 11:22:09,627 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-19 11:22:09,627 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
+2025-10-19 11:22:09,628 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento con timezone'.
+2025-10-19 11:22:09,628 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-19 11:22:09,628 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-19 11:22:09,629 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
+2025-10-19 11:24:47,640 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-19 11:24:47,758 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-19 11:24:47,764 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-19 11:24:47,767 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-19 11:24:47,769 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-19 11:24:47,771 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-19 11:24:47,773 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-19 11:24:47,775 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-19 11:24:47,776 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-19 11:24:47,778 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-19 11:24:47,780 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-19 11:24:47,828 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 31 tool
+2025-10-19 11:24:47,832 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
+2025-10-19 11:24:47,833 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-19 11:24:47,834 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-19 11:24:47,835 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-19 11:24:47,836 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-19 11:24:47,837 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-19 11:24:47,838 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-19 11:24:47,838 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-19 11:24:47,839 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-19 11:24:47,840 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-19 11:24:47,841 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-19 11:24:47,842 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 31 tool
+2025-10-19 11:24:47,843 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
+2025-10-19 11:24:47,854 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-19 11:24:47,861 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2088 elementi.
+2025-10-19 11:24:47,863 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
+2025-10-19 11:24:49,951 | INFO | outlook_mcp_server | Segnale SIGINT ricevuto; arresto graduale in corso.

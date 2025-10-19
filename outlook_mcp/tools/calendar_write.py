@@ -6,7 +6,7 @@ from typing import Any, Optional
 import datetime
 
 from ..features import feature_gate
-from outlook_mcp_server import mcp
+from outlook_mcp.toolkit import mcp_tool
 
 from outlook_mcp import logger, clear_calendar_cache
 from outlook_mcp.utils import ensure_string_list, to_python_datetime, safe_entry_id
@@ -28,7 +28,7 @@ def _calendar_by_name(namespace, name: Optional[str]):
     return get_calendar_folder_by_name(namespace, name) if name else namespace.GetDefaultFolder(9)
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="calendar.write")
 def create_calendar_event(
     subject: str,

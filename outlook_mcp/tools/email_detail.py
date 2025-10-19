@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Optional, Any, Dict, List
 
 from ..features import feature_gate
-from outlook_mcp_server import mcp  # FastMCP instance
+from outlook_mcp.toolkit import mcp_tool  # FastMCP instance
 
 from outlook_mcp import logger
 from outlook_mcp import folders as folder_service
@@ -15,13 +15,14 @@ from outlook_mcp.utils import (
     trim_conversation_id,
     safe_entry_id,
     safe_folder_path,
+    obfuscate_identifier,
 )
 
 # Reuse helpers from the service layer
 from outlook_mcp.services.email import resolve_mail_item, format_email, build_conversation_outline
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="email.detail")
 def get_email_by_number(
     email_number: Optional[int] = None,
@@ -184,11 +185,15 @@ def get_email_by_number(
         return "\n".join(result_lines)
 
     except Exception as exc:
-        logger.exception("Errore nel recupero dei dettagli del messaggio (numero=%s id=%s).", email_number, message_id)
+        logger.exception(
+            "Errore nel recupero dei dettagli del messaggio (numero=%s id=%s).",
+            email_number,
+            obfuscate_identifier(message_id),
+        )
         return f"Errore durante il recupero dei dettagli del messaggio: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="email.detail")
 def get_email_context(
     email_number: int,

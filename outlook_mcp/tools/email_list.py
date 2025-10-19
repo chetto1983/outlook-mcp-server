@@ -3,7 +3,7 @@
 from typing import Any, Optional, List, Dict
 
 from ..features import feature_gate
-from outlook_mcp_server import mcp
+from outlook_mcp.toolkit import mcp_tool
 
 from outlook_mcp import logger
 from outlook_mcp import folders as folder_service
@@ -34,7 +34,7 @@ def _connect():
     return connect_to_outlook()
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="email.list")
 def list_recent_emails(
     days: int = 7,
@@ -143,7 +143,7 @@ def list_recent_emails(
         return f"Errore durante il recupero dei messaggi: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="email.list")
 def list_sent_emails(
     days: int = 7,
@@ -206,7 +206,7 @@ def list_sent_emails(
         return f"Errore durante il recupero dei messaggi inviati: {str(e)}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="email.list")
 def search_emails(
     search_term: str,
@@ -326,7 +326,7 @@ def search_emails(
         return f"Errore nella ricerca dei messaggi: {exc}"
 
 
-@mcp.tool()
+@mcp_tool()
 @feature_gate(group="email.list")
 def list_pending_replies(
     days: int = 14,

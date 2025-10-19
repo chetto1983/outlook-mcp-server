@@ -53,6 +53,15 @@ class MockAppointment:
         self.Parent = SimpleNamespace(FolderPath=folder_path)
 
 
+def _to_naive_datetime(value):
+    if isinstance(value, datetime.datetime) and value.tzinfo:
+        try:
+            return value.astimezone().replace(tzinfo=None)
+        except Exception:
+            return value.replace(tzinfo=None)
+    return value
+
+
 class MockItems:
     def __init__(self, appointments):
         self._appointments = list(appointments)
@@ -81,7 +90,8 @@ class MockItems:
             filtered = [
                 appt
                 for appt in self._appointments
-                if appt.End >= start_match and appt.Start <= end_match
+                if _to_naive_datetime(appt.End) >= start_match
+                and _to_naive_datetime(appt.Start) <= end_match
             ]
         restricted_items = MockItems(filtered)
         restricted_items.IncludeRecurrences = self.IncludeRecurrences
@@ -92,7 +102,9 @@ class MockItems:
         self.last_find_filter = filter_query
         start_match = _extract_datetime(filter_query, r"\[End\] >= '([^']+)'")
         if start_match:
-            self._find_results = [appt for appt in self._appointments if appt.End >= start_match]
+            self._find_results = [
+                appt for appt in self._appointments if _to_naive_datetime(appt.End) >= start_match
+            ]
         else:
             self._find_results = list(self._appointments)
         self._find_index = 0
@@ -184,6 +196,24 @@ def test_get_events_from_folder_filters_search_term(monkeypatch):
 
     assert [event["subject"] for event in events] == ["Quarterly meeting"]
     assert folder.Items.last_find_filter is not None
+
+
+def test_get_events_from_folder_handles_timezone_aware(monkeypatch):
+    _freeze_now(monkeypatch)
+
+    aware_now = FixedDateTime.now(datetime.timezone.utc)
+    start = aware_now + datetime.timedelta(hours=1)
+    end = start + datetime.timedelta(hours=1)
+    appointment = MockAppointment(
+        "Evento con timezone",
+        start=start,
+        end=end,
+    )
+
+    folder = MockFolder("Calendario", [appointment])
+    events = calendar_service.get_events_from_folder(folder, days=1)
+
+    assert [event["subject"] for event in events] == ["Evento con timezone"]
 
 
 def test_collect_events_across_calendars_deduplicates(monkeypatch):
