@@ -54,12 +54,12 @@ def get_attachments(
 
         masked_id = obfuscate_identifier(message_id)
         logger.info(
-            "attach_to_email chiamato (numero=%s id=%s allegati=%s invia=%s)."
-            ,
+            "get_attachments chiamato (numero=%s id=%s download=%s limit=%s destinazione=%s).",
             email_number,
-            masked_id_send,
-            attachment_paths,
-            send_bool,
+            masked_id,
+            download_bool,
+            limit_value,
+            save_to,
         )
 
         from outlook_mcp import connect_to_outlook

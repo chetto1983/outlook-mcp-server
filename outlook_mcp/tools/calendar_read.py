@@ -14,6 +14,7 @@ from outlook_mcp import MAX_EVENT_LOOKAHEAD_DAYS
 # Reuse server helpers to avoid duplication
 from outlook_mcp.services.calendar import (
     get_all_calendar_folders,
+    get_calendar_folder_by_name,
     collect_events_across_calendars,
     get_events_from_folder,
     present_event_listing,
