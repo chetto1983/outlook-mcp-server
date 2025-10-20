@@ -145,6 +145,13 @@ DETTAGLI:  Anteprime ~220 char | Max 5 allegati listati | Thread max 15 items
    → search_contacts(partecipante) per ogni attendee
    → search_emails(term=partecipante, days=30)
 
+⏱️  RIPROGRAMMA EVENTO
+   1. search_calendar_events(term, days=30) → individua meeting
+   2. get_event_by_number(N) → conferma dettagli correnti
+   3. move_calendar_event(event_number=N, new_start_time="YYYY-MM-DD HH:MM",
+      new_duration_minutes=..., new_location="...", new_calendar_name=?, send_updates=?)
+   4. search_calendar_events(term, days=30) → verifica orario aggiornato
+
 ═══════════════════════════════════════════════════════════════════════════════
  FORMATO RISPOSTA STANDARD
 ═══════════════════════════════════════════════════════════════════════════════

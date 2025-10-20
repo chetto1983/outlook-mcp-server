@@ -82,8 +82,10 @@ def get_calendar_folder_by_name(namespace, calendar_name: str):
 def format_calendar_event(appointment) -> Dict[str, Any]:
     """Generate a structured representation of an Outlook appointment."""
     try:
-        start_dt = to_python_datetime(getattr(appointment, "Start", None))
-        end_dt = to_python_datetime(getattr(appointment, "End", None))
+        start_raw = getattr(appointment, "StartUTC", None) or getattr(appointment, "Start", None)
+        end_raw = getattr(appointment, "EndUTC", None) or getattr(appointment, "End", None)
+        start_dt = to_python_datetime(start_raw)
+        end_dt = to_python_datetime(end_raw)
 
         def fmt(dt: Optional[datetime.datetime]) -> Optional[str]:
             if not dt:

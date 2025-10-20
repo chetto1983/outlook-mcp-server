@@ -122,7 +122,8 @@ def create_calendar_event(
         subject_clean = subject.strip()
         appointment.Subject = subject_clean
 
-        local_start = ensure_naive_datetime(_ensure_local(start_dt)) or start_dt
+        local_start_tz = _ensure_local(start_dt)
+        local_start = ensure_naive_datetime(local_start_tz) or start_dt
 
         normalized_start: Optional[datetime.datetime] = None
         if all_day_bool:
@@ -131,10 +132,14 @@ def create_calendar_event(
             appointment.End = normalized_start + datetime.timedelta(days=1)
             appointment.AllDayEvent = True
         else:
-            appointment.Start = local_start
             appointment.AllDayEvent = False
-            appointment.Duration = duration_value or 60
-            appointment.End = local_start + datetime.timedelta(minutes=appointment.Duration)
+            duration_val = duration_value or 60
+            utc_start = local_start_tz.astimezone(datetime.timezone.utc)
+            appointment.Start = local_start
+            appointment.StartUTC = utc_start
+            appointment.Duration = duration_val
+            appointment.End = local_start + datetime.timedelta(minutes=duration_val)
+            appointment.EndUTC = utc_start + datetime.timedelta(minutes=duration_val)
 
         if location:
             appointment.Location = location
@@ -182,10 +187,25 @@ def create_calendar_event(
                 logger.exception("Invio degli inviti fallito.")
                 return f"Errore: evento creato ma invio degli inviti fallito ({exc})."
 
+        if not all_day_bool:
+            desired_local = local_start
+            actual_local = ensure_naive_datetime(to_python_datetime(getattr(appointment, "Start", None)))
+            if actual_local and abs((actual_local - desired_local).total_seconds()) >= 60:
+                try:
+                    desired_start_tz = _ensure_local(desired_local)
+                    appointment.Start = desired_local
+                    appointment.StartUTC = desired_start_tz.astimezone(datetime.timezone.utc)
+                    minutes = appointment.Duration or duration_value or 60
+                    appointment.End = desired_local + datetime.timedelta(minutes=minutes)
+                    appointment.EndUTC = appointment.StartUTC + datetime.timedelta(minutes=minutes)
+                    appointment.Save()
+                except Exception:
+                    logger.debug("Correzione orario evento non riuscita.", exc_info=True)
+
         clear_calendar_cache()
 
         entry_id = safe_entry_id(appointment) or "N/D"
-        display_start = normalized_start if all_day_bool and normalized_start else local_start
+        display_start = normalized_start if all_day_bool and normalized_start else ensure_naive_datetime(to_python_datetime(getattr(appointment, "Start", None))) or local_start
         start_display = display_start.strftime("%Y-%m-%d") if all_day_bool else display_start.strftime("%Y-%m-%d %H:%M")
 
         lines = [
@@ -266,19 +286,23 @@ def move_calendar_event(
             logger.exception("Impossibile recuperare l'evento con EntryID=%s.", target_id)
             return f"Errore: impossibile recuperare l'evento (EntryID={target_id}): {exc}"
 
+        desired_local_target: Optional[datetime.datetime] = None
+
         if new_start_time:
             parsed_start = _parse_dt(new_start_time)
             if not parsed_start:
                 return "Errore: 'new_start_time' non è in un formato valido (usa es. '2025-10-23 09:00')."
-            local_start = ensure_naive_datetime(_ensure_local(parsed_start))
-            if not local_start:
-                local_start = ensure_naive_datetime(parsed_start) or parsed_start
+            local_start_tz = _ensure_local(parsed_start)
+            local_start = ensure_naive_datetime(local_start_tz) or parsed_start
             if getattr(appointment, "AllDayEvent", False):
                 normalized = local_start.replace(hour=0, minute=0, second=0, microsecond=0)
                 appointment.Start = normalized
                 appointment.End = normalized + datetime.timedelta(days=1)
             else:
+                utc_start = local_start_tz.astimezone(datetime.timezone.utc)
                 appointment.Start = local_start
+                appointment.StartUTC = utc_start
+                desired_local_target = local_start
 
         if duration_value is not None and not getattr(appointment, "AllDayEvent", False):
             appointment.Duration = duration_value
@@ -286,6 +310,11 @@ def move_calendar_event(
                 current_start = ensure_naive_datetime(to_python_datetime(getattr(appointment, "Start", None)))
                 if current_start:
                     appointment.End = current_start + datetime.timedelta(minutes=duration_value)
+                start_utc = getattr(appointment, "StartUTC", None)
+                if start_utc:
+                    utc_start = start_utc if isinstance(start_utc, datetime.datetime) else to_python_datetime(start_utc)
+                    if isinstance(utc_start, datetime.datetime):
+                        appointment.EndUTC = utc_start + datetime.timedelta(minutes=duration_value)
             except Exception:
                 pass
 
@@ -321,6 +350,20 @@ def move_calendar_event(
                     "Evento aggiornato ma invio degli aggiornamenti ai partecipanti non riuscito "
                     f"({exc})."
                 )
+
+        if desired_local_target and not getattr(appointment, "AllDayEvent", False):
+            actual_local = ensure_naive_datetime(to_python_datetime(getattr(appointment, "Start", None)))
+            if actual_local and abs((actual_local - desired_local_target).total_seconds()) >= 60:
+                try:
+                    desired_start_tz = _ensure_local(desired_local_target)
+                    appointment.Start = desired_local_target
+                    appointment.StartUTC = desired_start_tz.astimezone(datetime.timezone.utc)
+                    minutes = appointment.Duration or duration_value or 60
+                    appointment.End = desired_local_target + datetime.timedelta(minutes=minutes)
+                    appointment.EndUTC = appointment.StartUTC + datetime.timedelta(minutes=minutes)
+                    appointment.Save()
+                except Exception:
+                    logger.debug("Correzione orario evento durante lo spostamento non riuscita.", exc_info=True)
 
         clear_calendar_cache()
 

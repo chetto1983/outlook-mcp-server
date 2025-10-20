@@ -14,3 +14,4 @@ logs/
 .DS_Store
 Thumbs.db
 
+logs/outlook_mcp_server.log
