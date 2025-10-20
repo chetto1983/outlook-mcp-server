@@ -1,5 +1,8 @@
-Outlook MCP Server
-===================
+# Outlook MCP Server
+
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![MCP 1.2.0+](https://img.shields.io/badge/MCP-1.2.0+-green.svg)](https://github.com/modelcontextprotocol)
+[![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)](https://www.microsoft.com/windows)
 
 Outlook MCP Server espone email e calendario di Microsoft Outlook tramite il Model Context Protocol (MCP). Permette ad assistenti MCP di elencare e cercare messaggi, creare riassunti, individuare risposte mancanti, gestire allegati, consultare eventi e rispondere senza uscire da Outlook. Include anche un bridge HTTP opzionale per piattaforme di automazione (es. n8n).
 
@@ -23,6 +26,21 @@ Installazione
 2. (Consigliato) Crea un virtualenv e attivalo.
 3. Installa le dipendenze: `pip install -r requirements.txt`.
 4. Assicurati che Outlook sia utilizzabile dall'utente che avvia il server.
+
+Quick Start - 3 minuti
+----------------------
+```bash
+# 1. Installa dipendenze core
+pip install mcp pywin32
+
+# 2. Avvia server MCP (stdio - per Claude Desktop)
+python outlook_mcp_server.py
+
+# 3. (Opzionale) Testa con modalità HTTP
+pip install fastapi uvicorn[standard]
+python outlook_mcp_server.py --mode http --port 8000
+curl http://localhost:8000/tools
+```
 
 Avvio rapido (stdio MCP)
 ```bash
@@ -77,6 +95,30 @@ Esempio di `features.json`:
 ```
 Gruppi rilevanti: `system`, `general`, `folders`, `email.list`, `email.detail`, `email.actions`, `attachments`, `contacts`, `calendar.read`, `calendar.write`, `domain.rules`, `batch`.
 
+**Esempi pratici:**
+
+Disabilita composizione e invio email (solo lettura):
+```json
+{
+  "disabled_tools": ["compose_email", "reply_to_email_by_number"]
+}
+```
+
+Modalità solo lettura completa (disabilita tutte le operazioni di scrittura):
+```json
+{
+  "disabled_groups": ["email.actions", "calendar.write", "batch"]
+}
+```
+
+Abilita solo funzionalità sistema e ricerca:
+```json
+{
+  "enabled_groups": ["system", "email.list", "calendar.read", "contacts"],
+  "disabled_groups": []
+}
+```
+
 Tool di amministrazione runtime disponibili nel gruppo `system`:
 - `reload_configuration()` �?" ricarica `features.json` e le variabili d'ambiente senza riavviare il server.
 - `feature_status()` �?" riepiloga gruppi/tool attivi e disabilitati.
@@ -110,6 +152,22 @@ Logging e troubleshooting
 - Se Outlook e' chiuso o chiede credenziali, aprilo e riprova.
 - Gli avvisi di sicurezza `pywin32` possono comparire al primo avvio: consenti l'accesso.
 - Errori di cache indicano che non hai ancora eseguito un elenco/ricerca nella sessione corrente.
+
+Risoluzione Problemi Comuni
+---------------------------
+
+| Errore | Causa | Soluzione |
+|--------|-------|-----------|
+| `pywintypes.com_error` | Outlook chiuso o non accessibile | Apri Outlook manualmente e verifica che il profilo sia accessibile |
+| `Cache not found for email #N` | Nessun list/search eseguito | Esegui `list_recent_emails()` o `search_emails()` prima di chiamare tool di dettaglio |
+| `Permission denied` | Profilo Outlook non accessibile | Verifica credenziali Windows e permessi sul profilo Outlook |
+| `Tool not found` | Tool disabilitato via features.json | Controlla `features.json` o usa `feature_status()` per verificare tool abilitati |
+| `Folder not found` | Cartella specificata non esiste | Usa `list_folders()` per verificare nomi cartelle corretti, oppure `create_folder()` |
+| `COM object not responding` | Outlook in stato instabile | Chiudi e riapri Outlook, poi riavvia il server MCP |
+| `Max retries exceeded` | Outlook sovraccarico | Riduci `max_results` nelle chiamate o aumenta timeout nelle richieste |
+| `Invalid datetime format` | Formato data non corretto | Usa formato ISO 8601: `YYYY-MM-DDTHH:MM:SS` (es. `2025-10-20T14:30:00`) |
+| Server non risponde su HTTP | Porta già in uso | Cambia porta con `--port` o termina processo che usa la porta |
+| `ModuleNotFoundError: fastapi` | Dipendenze HTTP non installate | Esegui `pip install fastapi uvicorn[standard]` |
 
 Test
 - Unita': `python -m pytest`
