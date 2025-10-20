@@ -1,9 +1,4 @@
 # Outlook MCP Server
-
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![MCP 1.2.0+](https://img.shields.io/badge/MCP-1.2.0+-green.svg)](https://github.com/modelcontextprotocol)
-[![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)](https://www.microsoft.com/windows)
-
 Outlook MCP Server espone email e calendario di Microsoft Outlook tramite il Model Context Protocol (MCP). Permette ad assistenti MCP di elencare e cercare messaggi, creare riassunti, individuare risposte mancanti, gestire allegati, consultare eventi e rispondere senza uscire da Outlook. Include anche un bridge HTTP opzionale per piattaforme di automazione (es. n8n).
 
 Caratteristiche
@@ -41,6 +36,8 @@ pip install fastapi uvicorn[standard]
 python outlook_mcp_server.py --mode http --port 8000
 curl http://localhost:8000/tools
 ```
+
+**🚀 Automazioni con n8n:** Vedi [N8N_QUICKSTART.md](N8N_QUICKSTART.md) per setup rapido automazioni email con n8n (workflow pronti all'uso inclusi!)
 
 Avvio rapido (stdio MCP)
 ```bash
