@@ -286,13 +286,23 @@ def search_emails(
             if not selected_folders:
                 detail = "; ".join(failures) if failures else "cartelle non trovate."
                 return f"Errore: impossibile individuare le cartelle richieste ({detail})."
-            emails = collect_emails_across_folders(selected_folders, days, search_term)
+            emails = collect_emails_across_folders(
+                selected_folders,
+                days,
+                search_term,
+                target_total=max_results + offset_value,
+            )
             folder_display = "Cartelle selezionate"
         elif include_all_bool:
             if folder_name:
                 logger.info("Parametro folder_name ignorato perche include_all_folders=True.")
             folders = get_all_mail_folders(namespace)
-            emails = collect_emails_across_folders(folders, days, search_term)
+            emails = collect_emails_across_folders(
+                folders,
+                days,
+                search_term,
+                target_total=max_results + offset_value,
+            )
             folder_display = "Tutte le cartelle"
         else:
             if folder_name:

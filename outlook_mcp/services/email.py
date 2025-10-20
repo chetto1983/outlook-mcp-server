@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import datetime
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Set, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 from mcp.server.fastmcp.exceptions import ToolError
 
@@ -402,6 +402,12 @@ def get_emails_from_folder(folder, days: int, search_term: Optional[str] = None)
     emails_list: List[Dict[str, Any]] = []
     now = datetime.datetime.now()
     threshold_date = now - datetime.timedelta(days=days)
+    term_groups: List[List[str]] = []
+    if search_term:
+        for raw_term in filter(None, (chunk.strip() for chunk in search_term.split(" OR "))):
+            tokens = [token for token in raw_term.lower().split() if token]
+            if tokens:
+                term_groups.append(tokens)
 
     try:
         try:
@@ -425,18 +431,25 @@ def get_emails_from_folder(folder, days: int, search_term: Optional[str] = None)
             search_term,
         )
 
-        if search_term:
-            search_terms = [term.strip() for term in search_term.split(" OR ")]
-            try:
-                sql_conditions = []
-                for term in search_terms:
-                    sql_conditions.append(f"\"urn:schemas:httpmail:subject\" LIKE '%{term}%'")
-                    sql_conditions.append(f"\"urn:schemas:httpmail:fromname\" LIKE '%{term}%'")
-                    sql_conditions.append(f"\"urn:schemas:httpmail:textdescription\" LIKE '%{term}%'")
-                filter_term = "@SQL=" + " OR ".join(sql_conditions)
-                folder_items = folder.Items.Restrict(filter_term)
-            except Exception:
-                pass
+        def _matches_search_groups(email_data: Dict[str, Any]) -> bool:
+            if not term_groups:
+                return True
+            haystacks = [
+                email_data.get("subject") or "",
+                email_data.get("sender") or "",
+                email_data.get("sender_email") or "",
+                " ".join(email_data.get("recipients") or []),
+                " ".join(email_data.get("to_recipients") or []),
+                " ".join(email_data.get("cc_recipients") or []),
+                " ".join(email_data.get("bcc_recipients") or []),
+                email_data.get("body") or "",
+                email_data.get("preview") or "",
+            ]
+            normalized = [value.lower() for value in haystacks if isinstance(value, str)]
+            for tokens in term_groups:
+                if tokens and all(any(token in field for field in normalized) for token in tokens):
+                    return True
+            return False
 
         count = 0
         for item in folder_items:
@@ -446,19 +459,55 @@ def get_emails_from_folder(folder, days: int, search_term: Optional[str] = None)
                     if received_time < threshold_date:
                         break
 
-                    if search_term and folder_items == folder.Items:
-                        search_terms = [term.strip().lower() for term in search_term.split(" OR ")]
-                        haystack_subject = getattr(item, "Subject", "").lower()
-                        haystack_sender = getattr(item, "SenderName", "").lower()
-                        body = getattr(item, "Body", "")
-                        haystack_body = body.lower() if isinstance(body, str) else ""
-                        if not any(
-                            term in haystack_subject or term in haystack_sender or term in haystack_body
-                            for term in search_terms
-                        ):
-                            continue
+                    if term_groups:
+                        pre_fields: List[str] = []
+                        try:
+                            subject = getattr(item, "Subject", "")
+                            sender_name = getattr(item, "SenderName", "")
+                            sender_email = getattr(item, "SenderEmailAddress", "")
+                            body = getattr(item, "Body", "")
+                            pre_fields.extend(
+                                [
+                                    subject if isinstance(subject, str) else "",
+                                    sender_name if isinstance(sender_name, str) else "",
+                                    sender_email if isinstance(sender_email, str) else "",
+                                    body if isinstance(body, str) else "",
+                                ]
+                            )
+                        except Exception:
+                            pass
+                        try:
+                            recipient_strings: List[str] = []
+                            for recipient in getattr(item, "Recipients", []):
+                                name = getattr(recipient, "Name", None)
+                                address = getattr(recipient, "Address", None)
+                                if name and address:
+                                    recipient_strings.append(f"{name} <{address}>")
+                                elif name:
+                                    recipient_strings.append(str(name))
+                                elif address:
+                                    recipient_strings.append(str(address))
+                            if recipient_strings:
+                                pre_fields.append(" ".join(recipient_strings))
+                        except Exception:
+                            pass
+                        normalized_item_fields = [
+                            value.lower() for value in pre_fields if isinstance(value, str) and value
+                        ]
+                        if normalized_item_fields:
+                            matches_term = False
+                            for tokens in term_groups:
+                                if tokens and all(
+                                    any(token in field for field in normalized_item_fields) for token in tokens
+                                ):
+                                    matches_term = True
+                                    break
+                            if not matches_term:
+                                continue
 
                     email_data = format_email(item)
+                    if search_term and not _matches_search_groups(email_data):
+                        continue
                     emails_list.append(email_data)
                     count += 1
                     if count >= MAX_EMAIL_SCAN_PER_FOLDER:
@@ -547,8 +596,12 @@ def collect_emails_across_folders(
 ) -> List[Dict[str, Any]]:
     """Aggregate emails from multiple folders into a single newest-first list."""
     aggregated: Dict[str, Dict[str, Any]] = {}
-    total_folders = len(folders)
-    max_per_folder = max(150 // max(total_folders, 1), 5)
+    total_folders = max(len(folders), 1)
+    base_limit = max(150 // total_folders, 5)
+    max_per_folder = MAX_EMAIL_SCAN_PER_FOLDER if search_term else base_limit
+    if target_total:
+        per_folder_goal = max(1, (target_total + total_folders - 1) // total_folders)
+        max_per_folder = max(max_per_folder, per_folder_goal)
     for folder in folders:
         try:
             folder_emails = get_emails_from_folder(folder, days, search_term)
@@ -556,8 +609,8 @@ def collect_emails_across_folders(
             logger.debug("Cartella ignorata durante la raccolta globale: %s", getattr(folder, "FolderPath", folder))
             continue
 
-        limited_emails = folder_emails[:max_per_folder]
-        if len(folder_emails) > len(limited_emails):
+        limited_emails = folder_emails if search_term else folder_emails[:max_per_folder]
+        if not search_term and len(folder_emails) > len(limited_emails):
             logger.debug(
                 "Cartella '%s': limitati %s messaggi su %s per contenere la scansione globale.",
                 getattr(folder, "Name", str(folder)),
@@ -570,6 +623,8 @@ def collect_emails_across_folders(
                 continue
             if email_id not in aggregated:
                 aggregated[email_id] = email
+            if target_total and len(aggregated) >= target_total:
+                break
 
         if target_total and len(aggregated) >= target_total:
             break
