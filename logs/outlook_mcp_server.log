@@ -1,0 +1,273 @@
+2025-10-20 15:05:12,731 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-20 15:05:12,856 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-20 15:05:12,864 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-20 15:05:12,866 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-20 15:05:12,868 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-20 15:05:12,869 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-20 15:05:12,871 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-20 15:05:12,872 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-20 15:05:12,874 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-20 15:05:12,876 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-20 15:05:12,877 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-20 15:05:12,925 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 31 tool
+2025-10-20 15:05:12,928 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
+2025-10-20 15:05:12,928 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-20 15:05:12,929 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-20 15:05:12,930 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-20 15:05:12,930 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-20 15:05:12,931 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-20 15:05:12,932 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-20 15:05:12,933 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-20 15:05:12,933 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-20 15:05:12,934 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-20 15:05:12,935 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-20 15:05:12,936 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 31 tool
+2025-10-20 15:05:12,936 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
+2025-10-20 15:05:13,537 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-20 15:05:13,602 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2091 elementi.
+2025-10-20 15:05:13,605 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
+2025-10-20 15:09:41,162 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=1 calendario=None max_risultati=50 descrizione=False tutti_i_calendari=True
+2025-10-20 15:09:42,453 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Rispondere alla mail su collaborazione ABB'.
+2025-10-20 15:09:42,489 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:09:42,490 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=3 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:09:42,499 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
+2025-10-20 15:09:42,503 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-20 15:09:42,504 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:09:42,511 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/19/2025 03:09 PM').
+2025-10-20 15:09:42,512 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
+2025-10-20 15:09:42,513 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-20 15:09:42,514 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:09:42,516 | INFO | outlook_mcp_server | Aggregati 1 eventi provenienti da 3 cartelle calendario.
+2025-10-20 15:09:42,517 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 1 eventi su 1 (calendario=Tutti i calendari).
+2025-10-20 15:10:04,404 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=1 calendario=None max_risultati=50 descrizione=False tutti_i_calendari=True
+2025-10-20 15:10:04,978 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Rispondere alla mail su collaborazione ABB'.
+2025-10-20 15:10:04,998 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:10:05,000 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=3 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:10:05,010 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
+2025-10-20 15:10:05,014 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-20 15:10:05,016 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:10:05,027 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/19/2025 03:10 PM').
+2025-10-20 15:10:05,030 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
+2025-10-20 15:10:05,033 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-20 15:10:05,035 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:10:05,038 | INFO | outlook_mcp_server | Aggregati 1 eventi provenienti da 3 cartelle calendario.
+2025-10-20 15:10:05,039 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 1 eventi su 1 (calendario=Tutti i calendari).
+2025-10-20 15:10:33,851 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Ricordami: Perrucca start=2025-10-21 07:30 durata=30 luogo=Altec (CORSO MARCHE 79, 10146 Torino (TO)) partecipanti=['MARCHETTO Davide'] all_day=False invia=True calendario=None).
+2025-10-20 15:15:41,536 | INFO | outlook_mcp_server | Segnale SIGINT ricevuto; arresto graduale in corso.
+2025-10-20 15:15:51,259 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-20 15:15:51,284 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento imminente'.
+2025-10-20 15:15:51,285 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:15:51,285 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:15:51,287 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Quarterly meeting'.
+2025-10-20 15:15:51,287 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:15:51,287 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
+2025-10-20 15:15:51,289 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento con timezone'.
+2025-10-20 15:15:51,289 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:15:51,289 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:15:51,290 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
+2025-10-20 15:16:28,555 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-20 15:16:28,690 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-20 15:16:28,696 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-20 15:16:28,698 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-20 15:16:28,700 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-20 15:16:28,702 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-20 15:16:28,704 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-20 15:16:28,706 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-20 15:16:28,708 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-20 15:16:28,709 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-20 15:16:28,724 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-20 15:16:28,773 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 31 tool
+2025-10-20 15:16:28,776 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
+2025-10-20 15:16:28,777 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-20 15:16:28,778 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-20 15:16:28,779 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-20 15:16:28,780 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-20 15:16:28,781 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-20 15:16:28,782 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-20 15:16:28,783 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-20 15:16:28,784 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-20 15:16:28,784 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-20 15:16:28,785 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-20 15:16:28,786 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 31 tool
+2025-10-20 15:16:28,787 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
+2025-10-20 15:16:28,799 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-20 15:16:28,808 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2091 elementi.
+2025-10-20 15:16:28,810 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
+2025-10-20 15:18:42,406 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=1 calendario=None max_risultati=50 descrizione=False tutti_i_calendari=True
+2025-10-20 15:18:43,008 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Rispondere alla mail su collaborazione ABB'.
+2025-10-20 15:18:43,037 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:18:43,039 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=3 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:18:43,048 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
+2025-10-20 15:18:43,050 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-20 15:18:43,052 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:18:43,059 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/19/2025 03:18 PM').
+2025-10-20 15:18:43,061 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
+2025-10-20 15:18:43,062 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-20 15:18:43,063 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:18:43,065 | INFO | outlook_mcp_server | Aggregati 1 eventi provenienti da 3 cartelle calendario.
+2025-10-20 15:18:43,066 | INFO | outlook_mcp_server | list_upcoming_events: restituiti 1 eventi su 1 (calendario=Tutti i calendari).
+2025-10-20 15:19:16,891 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Ricordami: Perrucca start=2025-10-21T07:30:00 durata=30 luogo=Altec (CORSO MARCHE 79, 10146 Torino (TO)) partecipanti=['MARCHETTO Davide'] all_day=False invia=True calendario=None).
+2025-10-20 15:20:43,368 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-20 15:20:43,380 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento imminente'.
+2025-10-20 15:20:43,381 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:20:43,381 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:20:43,382 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Quarterly meeting'.
+2025-10-20 15:20:43,383 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:20:43,383 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
+2025-10-20 15:20:43,384 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento con timezone'.
+2025-10-20 15:20:43,384 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:20:43,384 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:20:43,385 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
+2025-10-20 15:21:54,258 | INFO | outlook_mcp_server | Segnale SIGINT ricevuto; arresto graduale in corso.
+2025-10-20 15:21:55,692 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-20 15:21:55,810 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-20 15:21:55,817 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-20 15:21:55,819 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-20 15:21:55,821 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-20 15:21:55,823 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-20 15:21:55,825 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-20 15:21:55,827 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-20 15:21:55,829 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-20 15:21:55,831 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-20 15:21:55,845 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-20 15:21:55,896 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 31 tool
+2025-10-20 15:21:55,900 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
+2025-10-20 15:21:55,901 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-20 15:21:55,902 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-20 15:21:55,903 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-20 15:21:55,904 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-20 15:21:55,905 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-20 15:21:55,906 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-20 15:21:55,906 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-20 15:21:55,907 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-20 15:21:55,908 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-20 15:21:55,909 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-20 15:21:55,910 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 31 tool
+2025-10-20 15:21:55,911 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
+2025-10-20 15:21:55,923 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-20 15:21:55,931 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2091 elementi.
+2025-10-20 15:21:55,933 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
+2025-10-20 15:23:10,024 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-20 15:23:10,057 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento imminente'.
+2025-10-20 15:23:10,058 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:23:10,058 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:23:10,059 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Quarterly meeting'.
+2025-10-20 15:23:10,059 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:23:10,059 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
+2025-10-20 15:23:10,060 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento con timezone'.
+2025-10-20 15:23:10,061 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:23:10,061 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:23:10,061 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
+2025-10-20 15:25:51,243 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-20 15:25:51,860 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Codex Test Event 2025-10-20 15:25:51 start=2025-10-20 17:25 durata=30 luogo=Test Room partecipanti=[] all_day=False invia=False calendario=None).
+2025-10-20 15:25:51,871 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-20 15:25:51,909 | INFO | outlook_mcp_server | search_calendar_events chiamato con termine='Codex Test Event 2025-10-20 15:25:51' giorni=7 calendario=None max_risultati=10 descrizione=False tutti_i_calendari=True
+2025-10-20 15:25:52,661 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Rispondere alla mail su collaborazione ABB'.
+2025-10-20 15:25:52,695 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:25:52,695 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=5 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 2, 'errors': 0}
+2025-10-20 15:25:52,704 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
+2025-10-20 15:25:52,706 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-20 15:25:52,706 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:25:52,713 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/19/2025 03:25 PM').
+2025-10-20 15:25:52,713 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
+2025-10-20 15:25:52,714 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-20 15:25:52,714 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:25:52,715 | INFO | outlook_mcp_server | Aggregati 1 eventi provenienti da 3 cartelle calendario.
+2025-10-20 15:25:52,715 | INFO | outlook_mcp_server | search_calendar_events: restituiti 1 eventi su 1 (calendario=Tutti i calendari).
+2025-10-20 15:28:40,957 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-20 15:28:51,233 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-20 15:28:51,855 | INFO | outlook_mcp_server | search_calendar_events chiamato con termine='Codex Test Event 2025-10-20 15:25:51' giorni=7 calendario=None max_risultati=50 descrizione=False tutti_i_calendari=True
+2025-10-20 15:28:51,865 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-20 15:28:52,432 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Rispondere alla mail su collaborazione ABB'.
+2025-10-20 15:28:52,462 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:28:52,462 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=4 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 2, 'errors': 0}
+2025-10-20 15:28:52,470 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
+2025-10-20 15:28:52,472 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-20 15:28:52,472 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:28:52,478 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/19/2025 03:28 PM').
+2025-10-20 15:28:52,478 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
+2025-10-20 15:28:52,479 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-20 15:28:52,479 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:28:52,480 | INFO | outlook_mcp_server | Aggregati 0 eventi provenienti da 3 cartelle calendario.
+2025-10-20 15:28:52,480 | INFO | outlook_mcp_server | search_calendar_events: nessun evento trovato (calendario=Tutti i calendari giorni=7).
+2025-10-20 15:31:48,144 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-20 15:31:48,156 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento imminente'.
+2025-10-20 15:31:48,156 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:31:48,157 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:31:48,158 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Quarterly meeting'.
+2025-10-20 15:31:48,158 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:31:48,158 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
+2025-10-20 15:31:48,159 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento con timezone'.
+2025-10-20 15:31:48,160 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:31:48,160 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:31:48,161 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
+2025-10-20 15:36:36,084 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-20 15:36:36,109 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Codex Move Test 15:36:36 start=2025-10-20 17:06 durata=30 luogo=Room A partecipanti=[] all_day=False invia=False calendario=None).
+2025-10-20 15:36:36,125 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-20 15:36:36,208 | INFO | outlook_mcp_server | search_calendar_events chiamato con termine='Codex Move Test 15:36:36' giorni=3 calendario=None max_risultati=5 descrizione=False tutti_i_calendari=True
+2025-10-20 15:36:37,383 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Rispondere alla mail su collaborazione ABB'.
+2025-10-20 15:36:37,424 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:36:37,424 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=4 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 1, 'errors': 0}
+2025-10-20 15:36:37,436 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
+2025-10-20 15:36:37,438 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-20 15:36:37,439 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:36:37,449 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/19/2025 03:36 PM').
+2025-10-20 15:36:37,449 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
+2025-10-20 15:36:37,450 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-20 15:36:37,450 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:36:37,451 | INFO | outlook_mcp_server | Aggregati 1 eventi provenienti da 3 cartelle calendario.
+2025-10-20 15:36:37,451 | INFO | outlook_mcp_server | search_calendar_events: restituiti 1 eventi su 1 (calendario=Tutti i calendari).
+2025-10-20 15:36:37,452 | INFO | outlook_mcp_server | move_calendar_event chiamato (entry_id=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010D0000B12F2EC9C1542243BEEFD9D2C078D1B20000847DF3270000 numero=1 nuovo_start=2025-10-20 17:51 nuova_durata=40 nuova_location=Room B nuovo_calendario=None invia=False).
+2025-10-20 15:36:37,515 | INFO | outlook_mcp_server | search_calendar_events chiamato con termine='Codex Move Test 15:36:36' giorni=3 calendario=None max_risultati=5 descrizione=False tutti_i_calendari=True
+2025-10-20 15:36:38,129 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Rispondere alla mail su collaborazione ABB'.
+2025-10-20 15:36:38,162 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:36:38,163 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=4 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 1, 'errors': 0}
+2025-10-20 15:36:38,173 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
+2025-10-20 15:36:38,175 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-20 15:36:38,175 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:36:38,185 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/19/2025 03:36 PM').
+2025-10-20 15:36:38,186 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
+2025-10-20 15:36:38,187 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-20 15:36:38,187 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:36:38,188 | INFO | outlook_mcp_server | Aggregati 1 eventi provenienti da 3 cartelle calendario.
+2025-10-20 15:36:38,188 | INFO | outlook_mcp_server | search_calendar_events: restituiti 1 eventi su 1 (calendario=Tutti i calendari).
+2025-10-20 15:36:38,259 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento imminente'.
+2025-10-20 15:36:38,260 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:36:38,260 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:36:38,261 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Quarterly meeting'.
+2025-10-20 15:36:38,261 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:36:38,261 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 1, 'errors': 0}
+2025-10-20 15:36:38,263 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Evento con timezone'.
+2025-10-20 15:36:38,263 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:36:38,263 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:36:38,264 | INFO | outlook_mcp_server | Aggregati 2 eventi provenienti da 2 cartelle calendario.
+2025-10-20 15:36:45,210 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-20 15:36:45,992 | INFO | outlook_mcp_server | create_calendar_event chiamato (subject=Codex Move Test 15:36:45 start=2025-10-20 17:06 durata=30 luogo=Room A partecipanti=[] all_day=False invia=False calendario=None).
+2025-10-20 15:36:46,006 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-20 15:36:46,085 | INFO | outlook_mcp_server | search_calendar_events chiamato con termine='Codex Move Test 15:36:45' giorni=3 calendario=None max_risultati=5 descrizione=False tutti_i_calendari=True
+2025-10-20 15:36:48,117 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Rispondere alla mail su collaborazione ABB'.
+2025-10-20 15:36:48,152 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:36:48,152 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=4 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 1, 'errors': 0}
+2025-10-20 15:36:48,162 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
+2025-10-20 15:36:48,164 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-20 15:36:48,164 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:36:48,172 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/19/2025 03:36 PM').
+2025-10-20 15:36:48,172 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
+2025-10-20 15:36:48,173 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-20 15:36:48,174 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:36:48,174 | INFO | outlook_mcp_server | Aggregati 1 eventi provenienti da 3 cartelle calendario.
+2025-10-20 15:36:48,175 | INFO | outlook_mcp_server | search_calendar_events: restituiti 1 eventi su 1 (calendario=Tutti i calendari).
+2025-10-20 15:36:48,175 | INFO | outlook_mcp_server | move_calendar_event chiamato (entry_id=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010D0000B12F2EC9C1542243BEEFD9D2C078D1B20000847DF3280000 numero=1 nuovo_start=2025-10-20 17:51 nuova_durata=40 nuova_location=Room B nuovo_calendario=None invia=False).
+2025-10-20 15:36:48,242 | INFO | outlook_mcp_server | search_calendar_events chiamato con termine='Codex Move Test 15:36:45' giorni=3 calendario=None max_risultati=5 descrizione=False tutti_i_calendari=True
+2025-10-20 15:36:48,865 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Rispondere alla mail su collaborazione ABB'.
+2025-10-20 15:36:48,900 | INFO | outlook_mcp_server | Recuperati 1 eventi dalla cartella calendario 'Calendario'.
+2025-10-20 15:36:48,900 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=4 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 1, 'errors': 0}
+2025-10-20 15:36:48,911 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
+2025-10-20 15:36:48,913 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-20 15:36:48,914 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-20 15:36:48,921 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/19/2025 03:36 PM').
+2025-10-20 15:36:48,921 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
+2025-10-20 15:36:48,922 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-20 15:36:48,923 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-20 15:36:48,923 | INFO | outlook_mcp_server | Aggregati 1 eventi provenienti da 3 cartelle calendario.
+2025-10-20 15:36:48,924 | INFO | outlook_mcp_server | search_calendar_events: restituiti 1 eventi su 1 (calendario=Tutti i calendari).

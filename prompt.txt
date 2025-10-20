@@ -93,6 +93,8 @@ DETTAGLI:  Anteprime ~220 char | Max 5 allegati listati | Thread max 15 items
 │ get_event_by_number(event_number)                                         │
 │ create_calendar_event(subject, start_time, duration_minutes, location,    │
 │                      attendees, body, send_invitations, all_day)          │
+│ move_calendar_event(event_number|entry_id, new_start_time, duration,      │
+│                     location, calendar_name, send_updates)                │
 └───────────────────────────────────────────────────────────────────────────┘
 
 ┌─ DOMAIN RULES [ARCHIVIAZIONE AUTOMATICA] ─────────────────────────────────┐

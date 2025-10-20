@@ -20,11 +20,18 @@ def parse_datetime_string(value: Optional[str]) -> Optional[datetime.datetime]:
     text = value.strip()
     if not text:
         return None
+    tz_from_suffix: Optional[datetime.tzinfo] = None
     if text.endswith("Z"):
+        tz_from_suffix = datetime.timezone.utc
         text = text[:-1]
 
     try:
-        return datetime.datetime.fromisoformat(text)
+        parsed = datetime.datetime.fromisoformat(text)
+        if parsed.tzinfo:
+            return parsed
+        if tz_from_suffix:
+            return parsed.replace(tzinfo=tz_from_suffix)
+        return parsed
     except ValueError:
         pass
 
@@ -36,7 +43,10 @@ def parse_datetime_string(value: Optional[str]) -> Optional[datetime.datetime]:
         "%Y-%m-%d",
     ):
         try:
-            return datetime.datetime.strptime(text, fmt)
+            parsed = datetime.datetime.strptime(text, fmt)
+            if tz_from_suffix:
+                return parsed.replace(tzinfo=tz_from_suffix)
+            return parsed
         except ValueError:
             continue
     return None
@@ -58,4 +68,3 @@ def format_yes_no(value: Any) -> str:
 def format_read_status(unread: bool) -> str:
     """Return localized read status labels."""
     return "Non letta" if bool(unread) else "Letta"
-

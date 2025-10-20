@@ -135,7 +135,15 @@ Uso dei tool principali
 - `reply_to_email_by_number(...)` / `compose_email(...)` – risposte e nuove email (plain‑text) con invio opzionale.
 - `move_email_to_folder(...)`, `mark_email_read_unread(...)`, `apply_category(...)`, `batch_manage_emails(...)` – manutenzione messaggi.
 - `list_upcoming_events(...)` / `search_calendar_events(...)` / `get_event_by_number(...)` – calendario. Per default le ricerche eventi scandiscono tutti i calendari visibili; usa `calendar_name` per limitarle.
-- `create_calendar_event(...)` – creazione eventi (all‑day o a durata) con invito opzionale.
+- `create_calendar_event(...)` – creazione eventi (all-day o a durata) con invito opzionale.
+- `move_calendar_event(...)` – riprogramma o sposta eventi esistenti (orario, durata, luogo, calendario) con aggiornamenti facoltativi ai partecipanti.
+
+Per usare `move_calendar_event` recupera prima l'evento con `list_upcoming_events`/`search_calendar_events` e passa il relativo `event_number` (oppure l'`entry_id` se già noto). Puoi impostare:
+- `new_start_time`: data/ora locale in formato `YYYY-MM-DD HH:MM` o ISO.
+- `new_duration_minutes`: durata in minuti (solo eventi non all-day).
+- `new_location`: testo libero per spostare la sede.
+- `new_calendar_name`: sposta l'evento in un altro calendario accessibile.
+- `send_updates`: `true` per inoltrare gli aggiornamenti ai partecipanti quando l'evento è un meeting.
 
 Suggerimenti di workflow
 - Esegui sempre prima un elenco/ricerca: alimenta le cache usate dai tool di dettaglio/azione.
