@@ -74,6 +74,21 @@ Endpoint utili:
 
 Nota: il server deve girare sullo stesso host Windows che ha accesso a Outlook (COM). Docker non puo' accedere a COM diretto.
 
+Configurazione: Filtri Contenuti
+- Il file `config.json` include la sezione `filters.promotional_keywords`, usata dai briefing per ignorare newsletter, promozioni e inviti marketing.
+- Personalizza la lista inserendo parole chiave coerenti con le tue campagne ricorrenti, ad esempio:
+  ```json
+  "filters": {
+    "promotional_keywords": [
+      "newsletter",
+      "promo vip",
+      "iscriviti",
+      "unsubscribe"
+    ]
+  }
+  ```
+- Dopo aver modificato il file esegui il tool `reload_configuration()` (gruppo `system`) per ricaricare i filtri senza riavviare il server.
+
 Configurazione: Feature Flags
 Abilita/disabilita gruppi o singoli tool senza modificare il codice. Di default tutto e' abilitato.
 - File `features.json` nella root del progetto o variabile `OUTLOOK_MCP_FEATURES_FILE` con path ad un JSON.

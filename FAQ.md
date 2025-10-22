@@ -123,6 +123,11 @@ Il prompt consiglia questo workflow:
 ### Posso usare HTML nelle email?
 Sì, imposta `use_html=True` in `compose_email()` o `reply_to_email_by_number()`. Di default è `False` (plain text).
 
+### Come faccio a escludere newsletter o promozioni dal briefing?
+1. Apri `config.json` e aggiorna l'elenco `filters.promotional_keywords` con le parole chiave da ignorare (es. `"newsletter"`, `"promo"`, `"unsubscribe"`).
+2. Esegui il tool MCP `reload_configuration()` per ricaricare le impostazioni senza riavviare il server.
+3. Ripeti il briefing: i messaggi con quelle parole chiave in oggetto/corpo verranno filtrati automaticamente.
+
 ---
 
 ## Performance e Limiti

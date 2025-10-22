@@ -304,6 +304,14 @@ def mail_item_marked_replied(mail_item, baseline: Optional[datetime.datetime]) -
 def format_email(mail_item) -> Dict[str, Any]:
     """Format an Outlook mail item into a structured dictionary."""
     try:
+        def safe_attr(item, name: str, default: Any = None) -> Any:
+            """Safely read COM attributes, returning a default when inaccessible."""
+            try:
+                value = getattr(item, name)
+            except Exception:
+                return default
+            return value if value is not None else default
+
         recipients_by_type = extract_recipients(mail_item)
         all_recipients = (
             recipients_by_type["to"]
@@ -352,7 +360,8 @@ def format_email(mail_item) -> Dict[str, Any]:
         attachment_names: List[str] = []
         if hasattr(mail_item, "Attachments"):
             try:
-                attachment_count = mail_item.Attachments.Count
+                attachments = mail_item.Attachments
+                attachment_count = attachments.Count if attachments else 0
                 has_attachments = attachment_count > 0
                 if has_attachments:
                     attachment_names = extract_attachment_names(mail_item)
@@ -360,15 +369,15 @@ def format_email(mail_item) -> Dict[str, Any]:
                 attachment_count = 0
                 has_attachments = False
 
-        importance_value = mail_item.Importance if hasattr(mail_item, "Importance") else None
+        importance_value = safe_attr(mail_item, "Importance")
         importance_label = describe_importance(importance_value)
 
         email_data = {
-            "id": mail_item.EntryID,
-            "conversation_id": mail_item.ConversationID if hasattr(mail_item, "ConversationID") else None,
-            "subject": mail_item.Subject,
-            "sender": mail_item.SenderName,
-            "sender_email": mail_item.SenderEmailAddress,
+            "id": safe_attr(mail_item, "EntryID"),
+            "conversation_id": safe_attr(mail_item, "ConversationID"),
+            "subject": safe_attr(mail_item, "Subject"),
+            "sender": safe_attr(mail_item, "SenderName", "Mittente sconosciuto"),
+            "sender_email": safe_attr(mail_item, "SenderEmailAddress"),
             "received_time": received_display,
             "received_iso": received_iso,
             "sent_time": sent_display,
@@ -384,12 +393,12 @@ def format_email(mail_item) -> Dict[str, Any]:
             "has_attachments": has_attachments,
             "attachment_count": attachment_count,
             "attachment_names": attachment_names,
-            "unread": mail_item.UnRead if hasattr(mail_item, "UnRead") else False,
+            "unread": bool(safe_attr(mail_item, "UnRead", False)),
             "importance": importance_value if importance_value is not None else 1,
             "importance_label": importance_label,
-            "categories": mail_item.Categories if hasattr(mail_item, "Categories") else "",
+            "categories": safe_attr(mail_item, "Categories", ""),
             "folder_path": safe_folder_path(mail_item),
-            "message_class": getattr(mail_item, "MessageClass", ""),
+            "message_class": safe_attr(mail_item, "MessageClass", ""),
         }
         return email_data
     except Exception as exc:

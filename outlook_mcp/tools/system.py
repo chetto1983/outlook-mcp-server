@@ -13,6 +13,7 @@ from outlook_mcp.services.system import (
     get_current_datetime as _service_get_current_datetime,
     get_profile_identity as _service_get_profile_identity,
 )
+from outlook_mcp.settings import reload_settings as reload_runtime_settings
 
 
 @mcp_tool()
@@ -77,6 +78,7 @@ def get_profile_identity() -> str:
 def reload_configuration() -> str:
     """Ricarica la configurazione runtime (features.json e variabili ambiente)."""
     reload_features()
+    reload_runtime_settings()
     register_all_tools(get_current_mcp(), force=True)
     metrics = feature_metrics()
     enabled_groups = metrics["enabled_groups"] or ["-"]

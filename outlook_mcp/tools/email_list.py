@@ -27,6 +27,7 @@ from outlook_mcp.services.email import (
     email_has_user_reply_with_context,
     build_conversation_outline,
 )
+from outlook_mcp.settings import get_promotional_keywords
 
 def _connect():
     from outlook_mcp import connect_to_outlook
@@ -393,6 +394,8 @@ def list_pending_replies(
             addr for addr in (normalize_email_address(addr) for addr in user_addresses) if addr
         }
 
+        promotional_keywords = get_promotional_keywords()
+
         if include_all_bool:
             if folder_name:
                 logger.info("Parametro folder_name ignorato poiche include_all_folders=True.")
@@ -420,6 +423,7 @@ def list_pending_replies(
         pending_emails: List[Dict[str, Any]] = []
         processed = 0
         truncated_scan = False
+        processed_conversations: Set[str] = set()
 
         for email in candidate_emails:
             processed += 1
@@ -437,6 +441,38 @@ def list_pending_replies(
                 if processed >= max_processed_before_break and len(pending_emails) >= max_results:
                     truncated_scan = processed < len(candidate_emails)
                     break
+                continue
+
+            subject_preview_text = " ".join(
+                filter(
+                    None,
+                    (
+                        email.get("subject"),
+                        email.get("preview"),
+                        sender_email or "",
+                        str(email.get("sender") or ""),
+                    ),
+                )
+            ).lower()
+
+            if any(keyword in subject_preview_text for keyword in promotional_keywords):
+                continue
+
+            to_addresses = {
+                normalize_email_address(entry)
+                for entry in (email.get("to_recipients") or [])
+            }
+            if to_addresses and normalized_user_addresses.isdisjoint(filter(None, to_addresses)):
+                continue
+
+            conversation_key = email.get("conversation_id")
+            if conversation_key:
+                conversation_key = str(conversation_key).strip()
+            if not conversation_key:
+                fallback_id = email.get("id")
+                conversation_key = f"id:{fallback_id}" if fallback_id else None
+
+            if conversation_key and conversation_key in processed_conversations:
                 continue
 
             already_replied = False
@@ -460,6 +496,9 @@ def list_pending_replies(
                 already_replied = False
                 related_entries = None
                 mail_item_ref = None
+            finally:
+                if conversation_key:
+                    processed_conversations.add(conversation_key)
 
             if not already_replied:
                 outline = build_conversation_outline(

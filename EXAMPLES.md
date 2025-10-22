@@ -65,6 +65,35 @@ feature_status()
 reload_configuration()
 ```
 
+### Esempio 3: Personalizzare i filtri promozionali
+
+**Scenario:** Escludere newsletter e campagne marketing dal briefing mattutino.
+
+**Estratto `config.json`:**
+```json
+{
+  "filters": {
+    "promotional_keywords": [
+      "newsletter",
+      "promo vip",
+      "webinar",
+      "unsubscribe"
+    ]
+  }
+}
+```
+
+**Workflow consigliato:**
+```python
+# Dopo aver aggiornato config.json
+reload_configuration()
+
+# Riesegui il briefing per applicare i nuovi filtri
+list_pending_replies(days=7, max_results=5)
+```
+
+**Risultato:** i messaggi che contengono le parole chiave indicate in oggetto/corpo vengono scartati automaticamente dal riepilogo.
+
 ---
 
 ## Gestione Email

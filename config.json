@@ -2,8 +2,25 @@
   "mcpServers": {
     "outlook": {
       "command": "python",
-      "args": ["C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\MCP\\outlook-mcp-server\\outlook_mcp_server.py"],
+      "args": [
+        "C:\\Users\\Davide\\OneDrive - Sonepar\\Documenti\\MCP\\outlook-mcp-server\\outlook_mcp_server.py"
+      ],
       "env": {}
     }
+  },
+  "filters": {
+    "promotional_keywords": [
+      "newsletter",
+      "iscriviti",
+      "webinar",
+      "evento online",
+      "evento digitale",
+      "promo ",
+      "promozione",
+      "the future of",
+      "unsubscribe",
+      "webversion",
+      "marketing"
+    ]
   }
 }

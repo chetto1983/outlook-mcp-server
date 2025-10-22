@@ -1,2 +1,234 @@
 2025-10-22 08:44:04,480 | INFO | outlook_mcp_server | list_pending_replies ha trovato 10 messaggi da gestire su 23 analizzati.
 2025-10-22 08:44:04,480 | INFO | outlook_mcp_server | list_pending_replies: restituiti 10 messaggi su 10 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
+2025-10-22 08:45:56,303 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
+2025-10-22 08:45:56,311 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=7 cartella=None max_risultati=5 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=14
+2025-10-22 08:45:56,359 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.
+2025-10-22 08:45:58,727 | ERROR | outlook_mcp_server | Impossibile formattare il messaggio con EntryID=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010C0000B12F2EC9C1542243BEEFD9D2C078D1B20002332C20230000.
+Traceback (most recent call last):
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\services\email.py", line 370, in format_email
+    "sender": mail_item.SenderName,
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Davide\AppData\Roaming\Python\Python313\site-packages\win32com\client\dynamic.py", line 631, in __getattr__
+    raise AttributeError(f"{self._username_}.{attr}")
+AttributeError: <unknown>.SenderName
+2025-10-22 08:46:02,143 | ERROR | outlook_mcp_server | Impossibile formattare il messaggio con EntryID=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010C0000B12F2EC9C1542243BEEFD9D2C078D1B20002332C20230000.
+Traceback (most recent call last):
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\services\email.py", line 370, in format_email
+    "sender": mail_item.SenderName,
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Davide\AppData\Roaming\Python\Python313\site-packages\win32com\client\dynamic.py", line 631, in __getattr__
+    raise AttributeError(f"{self._username_}.{attr}")
+AttributeError: <unknown>.SenderName
+2025-10-22 08:46:05,632 | ERROR | outlook_mcp_server | Impossibile formattare il messaggio con EntryID=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010C0000B12F2EC9C1542243BEEFD9D2C078D1B20002332C20230000.
+Traceback (most recent call last):
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\services\email.py", line 370, in format_email
+    "sender": mail_item.SenderName,
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Davide\AppData\Roaming\Python\Python313\site-packages\win32com\client\dynamic.py", line 631, in __getattr__
+    raise AttributeError(f"{self._username_}.{attr}")
+AttributeError: <unknown>.SenderName
+2025-10-22 08:46:12,589 | ERROR | outlook_mcp_server | Impossibile formattare il messaggio con EntryID=0000000057ED66F88E5F0346B882295244EEE2EA0700B12F2EC9C1542243BEEFD9D2C078D1B200000000010C0000B12F2EC9C1542243BEEFD9D2C078D1B20002332C20230000.
+Traceback (most recent call last):
+  File "C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\outlook_mcp\services\email.py", line 370, in format_email
+    "sender": mail_item.SenderName,
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Davide\AppData\Roaming\Python\Python313\site-packages\win32com\client\dynamic.py", line 631, in __getattr__
+    raise AttributeError(f"{self._username_}.{attr}")
+AttributeError: <unknown>.SenderName
+2025-10-22 08:46:26,413 | INFO | outlook_mcp_server | list_pending_replies ha trovato 5 messaggi da gestire su 12 analizzati.
+2025-10-22 08:46:26,415 | INFO | outlook_mcp_server | list_pending_replies: restituiti 5 messaggi su 5 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
+2025-10-22 08:46:26,420 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=1 calendario=None max_risultati=50 descrizione=False tutti_i_calendari=True
+2025-10-22 08:46:27,009 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Perrucca'.
+2025-10-22 08:46:27,015 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
+2025-10-22 08:46:27,016 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-22 08:46:27,026 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
+2025-10-22 08:46:27,028 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-22 08:46:27,029 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-22 08:46:27,038 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/21/2025 08:46 AM').
+2025-10-22 08:46:27,039 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
+2025-10-22 08:46:27,040 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-22 08:46:27,041 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-22 08:46:27,043 | INFO | outlook_mcp_server | Aggregati 0 eventi provenienti da 3 cartelle calendario.
+2025-10-22 08:46:27,044 | INFO | outlook_mcp_server | list_upcoming_events: nessun evento trovato (calendario=Tutti i calendari giorni=1).
+2025-10-22 08:46:27,048 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=1 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=False offset=0 unread_only=True folder_ids=[] folder_paths=[]
+2025-10-22 08:46:27,062 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=1 termine=None.
+2025-10-22 08:46:27,286 | INFO | outlook_mcp_server | list_recent_emails: nessun messaggio (termine=None cartella=Posta in arrivo giorni=1).
+2025-10-22 08:47:21,766 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:47:31,532 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:48:12,605 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:48:13,289 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=7 cartella=None max_risultati=5 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=14
+2025-10-22 08:48:13,300 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 08:48:13,331 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.
+2025-10-22 08:48:42,852 | INFO | outlook_mcp_server | list_pending_replies ha trovato 5 messaggi da gestire su 12 analizzati.
+2025-10-22 08:48:42,852 | INFO | outlook_mcp_server | list_pending_replies: restituiti 5 messaggi su 5 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
+2025-10-22 08:49:00,562 | INFO | outlook_mcp_server | Segnale SIGINT ricevuto; arresto graduale in corso.
+2025-10-22 08:49:55,529 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:49:56,188 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 08:50:06,897 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:50:07,498 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
+2025-10-22 08:50:25,246 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:50:25,924 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=7 cartella=None max_risultati=5 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=14
+2025-10-22 08:50:25,936 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 08:50:25,970 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.
+2025-10-22 08:50:54,822 | INFO | outlook_mcp_server | list_pending_replies ha trovato 5 messaggi da gestire su 12 analizzati.
+2025-10-22 08:50:54,822 | INFO | outlook_mcp_server | list_pending_replies: restituiti 5 messaggi su 5 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
+2025-10-22 08:51:10,050 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:51:10,683 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 08:51:33,306 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:51:33,938 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 08:51:33,969 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=7 cartella=None max_risultati=5 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=14
+2025-10-22 08:51:33,999 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.
+2025-10-22 08:52:01,250 | INFO | outlook_mcp_server | list_pending_replies ha trovato 5 messaggi da gestire su 12 analizzati.
+2025-10-22 08:52:01,251 | INFO | outlook_mcp_server | list_pending_replies: restituiti 5 messaggi su 5 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
+2025-10-22 08:52:20,553 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:52:21,173 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=7 cartella=None max_risultati=5 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=14
+2025-10-22 08:52:21,183 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 08:52:21,212 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.
+2025-10-22 08:52:51,779 | INFO | outlook_mcp_server | list_pending_replies ha trovato 5 messaggi da gestire su 12 analizzati.
+2025-10-22 08:52:51,779 | INFO | outlook_mcp_server | list_pending_replies: restituiti 5 messaggi su 5 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
+2025-10-22 08:53:10,217 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:53:10,847 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=1 calendario=None max_risultati=10 descrizione=False tutti_i_calendari=True
+2025-10-22 08:53:10,859 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 08:53:11,500 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Perrucca'.
+2025-10-22 08:53:11,515 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
+2025-10-22 08:53:11,515 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-22 08:53:11,524 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
+2025-10-22 08:53:11,526 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-22 08:53:11,526 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-22 08:53:11,532 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/21/2025 08:53 AM').
+2025-10-22 08:53:11,532 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
+2025-10-22 08:53:11,532 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-22 08:53:11,533 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-22 08:53:11,533 | INFO | outlook_mcp_server | Aggregati 0 eventi provenienti da 3 cartelle calendario.
+2025-10-22 08:53:11,533 | INFO | outlook_mcp_server | list_upcoming_events: nessun evento trovato (calendario=Tutti i calendari giorni=1).
+2025-10-22 08:53:24,874 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:53:25,484 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=1 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=False offset=0 unread_only=True folder_ids=[] folder_paths=[]
+2025-10-22 08:53:25,497 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 08:53:25,507 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=1 termine=None.
+2025-10-22 08:53:25,736 | INFO | outlook_mcp_server | list_recent_emails: nessun messaggio (termine=None cartella=Posta in arrivo giorni=1).
+2025-10-22 08:57:53,926 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:58:07,108 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:59:03,590 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:59:03,723 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-22 08:59:03,730 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-22 08:59:03,732 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-22 08:59:03,734 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-22 08:59:03,736 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-22 08:59:03,738 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-22 08:59:03,740 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-22 08:59:03,742 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-22 08:59:03,744 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-22 08:59:03,746 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-22 08:59:03,798 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 33 tool
+2025-10-22 08:59:03,801 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
+2025-10-22 08:59:03,802 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-22 08:59:03,803 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-22 08:59:03,804 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-22 08:59:03,805 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-22 08:59:03,806 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-22 08:59:03,807 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-22 08:59:03,807 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-22 08:59:03,808 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-22 08:59:03,809 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-22 08:59:03,810 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-22 08:59:03,811 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 33 tool
+2025-10-22 08:59:03,812 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
+2025-10-22 08:59:03,824 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 08:59:03,833 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2092 elementi.
+2025-10-22 08:59:03,835 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
+2025-10-22 08:59:44,595 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=7 cartella=None max_risultati=5 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=14
+2025-10-22 08:59:44,642 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.
+2025-10-22 08:59:46,937 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 08:59:47,619 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=7 cartella=None max_risultati=5 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=14
+2025-10-22 08:59:47,637 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 08:59:47,712 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.
+2025-10-22 09:00:19,542 | INFO | outlook_mcp_server | list_pending_replies ha trovato 5 messaggi da gestire su 12 analizzati.
+2025-10-22 09:00:19,542 | INFO | outlook_mcp_server | list_pending_replies: restituiti 5 messaggi su 5 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
+2025-10-22 09:00:26,301 | INFO | outlook_mcp_server | list_pending_replies ha trovato 5 messaggi da gestire su 12 analizzati.
+2025-10-22 09:00:26,302 | INFO | outlook_mcp_server | list_pending_replies: restituiti 5 messaggi su 5 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
+2025-10-22 09:00:26,307 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
+2025-10-22 09:00:26,313 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=1 calendario=None max_risultati=50 descrizione=False tutti_i_calendari=True
+2025-10-22 09:00:26,977 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Perrucca'.
+2025-10-22 09:00:26,983 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
+2025-10-22 09:00:26,985 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-22 09:00:26,995 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
+2025-10-22 09:00:26,999 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-22 09:00:27,000 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-22 09:00:27,007 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/21/2025 09:00 AM').
+2025-10-22 09:00:27,009 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
+2025-10-22 09:00:27,010 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-22 09:00:27,012 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-22 09:00:27,013 | INFO | outlook_mcp_server | Aggregati 0 eventi provenienti da 3 cartelle calendario.
+2025-10-22 09:00:27,014 | INFO | outlook_mcp_server | list_upcoming_events: nessun evento trovato (calendario=Tutti i calendari giorni=1).
+2025-10-22 09:00:27,018 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=1 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=False offset=0 unread_only=True folder_ids=[] folder_paths=[]
+2025-10-22 09:00:27,034 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=1 termine=None.
+2025-10-22 09:00:27,280 | INFO | outlook_mcp_server | list_recent_emails: nessun messaggio (termine=None cartella=Posta in arrivo giorni=1).
+2025-10-22 09:01:05,318 | INFO | outlook_mcp_server | Segnale SIGINT ricevuto; arresto graduale in corso.
+2025-10-22 09:01:07,897 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 09:01:08,017 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-22 09:01:08,023 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-22 09:01:08,025 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-22 09:01:08,027 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-22 09:01:08,029 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-22 09:01:08,030 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-22 09:01:08,032 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-22 09:01:08,034 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-22 09:01:08,036 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-22 09:01:08,037 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-22 09:01:08,089 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 33 tool
+2025-10-22 09:01:08,093 | INFO | outlook_mcp_server | Outlook MCP Server avviato in modalita mcp.
+2025-10-22 09:01:08,094 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.system
+2025-10-22 09:01:08,095 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.folders
+2025-10-22 09:01:08,096 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_list
+2025-10-22 09:01:08,097 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_detail
+2025-10-22 09:01:08,098 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.email_actions
+2025-10-22 09:01:08,099 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.attachments
+2025-10-22 09:01:08,099 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.contacts
+2025-10-22 09:01:08,100 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_read
+2025-10-22 09:01:08,101 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.calendar_write
+2025-10-22 09:01:08,102 | INFO | outlook_mcp_server | Registrazione tool MCP: import outlook_mcp.tools.domain_rules
+2025-10-22 09:01:08,103 | INFO | outlook_mcp_server | Registrazione tool MCP completata: 33 tool
+2025-10-22 09:01:08,104 | INFO | outlook_mcp_server | Verifica della connessione a Outlook in corso.
+2025-10-22 09:01:08,114 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 09:01:08,121 | INFO | outlook_mcp_server | Connessione a Outlook verificata. La Posta in arrivo contiene 2092 elementi.
+2025-10-22 09:01:08,123 | INFO | outlook_mcp_server | Server MCP avviato in modalita streamable-http su http://0.0.0.0:8000/mcp.
+2025-10-22 09:02:03,516 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=7 cartella=None max_risultati=5 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=14
+2025-10-22 09:02:03,557 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.
+2025-10-22 09:02:23,526 | INFO | outlook_mcp_server | list_pending_replies ha trovato 5 messaggi da gestire su 12 analizzati.
+2025-10-22 09:02:23,528 | INFO | outlook_mcp_server | list_pending_replies: restituiti 5 messaggi su 5 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
+2025-10-22 09:02:23,533 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
+2025-10-22 09:02:23,538 | INFO | outlook_mcp_server | list_upcoming_events chiamato con giorni=1 calendario=None max_risultati=50 descrizione=False tutti_i_calendari=True
+2025-10-22 09:02:24,210 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Calendario' ha trovato l'evento 'Perrucca'.
+2025-10-22 09:02:24,217 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Calendario'.
+2025-10-22 09:02:24,219 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Calendario': analizzati=2 salti={'no_start': 0, 'past': 1, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-22 09:02:24,231 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Festività in Italia' ha trovato l'evento 'Ognissanti'.
+2025-10-22 09:02:24,236 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Festività in Italia'.
+2025-10-22 09:02:24,239 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Festività in Italia': analizzati=1 salti={'no_start': 0, 'past': 0, 'beyond': 1, 'search': 0, 'errors': 0}
+2025-10-22 09:02:24,250 | INFO | outlook_mcp_server | Find iniziale per la cartella calendario 'Compleanni' non ha trovato elementi (filtro=[End] >= '10/21/2025 09:02 AM').
+2025-10-22 09:02:24,252 | INFO | outlook_mcp_server | Iterazione completa sugli eventi della cartella calendario 'Compleanni' (filtro Find non disponibile).
+2025-10-22 09:02:24,255 | INFO | outlook_mcp_server | Recuperati 0 eventi dalla cartella calendario 'Compleanni'.
+2025-10-22 09:02:24,256 | INFO | outlook_mcp_server | Dettagli scansione calendario 'Compleanni': analizzati=0 salti={'no_start': 0, 'past': 0, 'beyond': 0, 'search': 0, 'errors': 0}
+2025-10-22 09:02:24,259 | INFO | outlook_mcp_server | Aggregati 0 eventi provenienti da 3 cartelle calendario.
+2025-10-22 09:02:24,260 | INFO | outlook_mcp_server | list_upcoming_events: nessun evento trovato (calendario=Tutti i calendari giorni=1).
+2025-10-22 09:02:24,266 | INFO | outlook_mcp_server | list_recent_emails chiamato con giorni=1 cartella=None max_risultati=10 anteprima=True tutte_le_cartelle=False offset=0 unread_only=True folder_ids=[] folder_paths=[]
+2025-10-22 09:02:24,288 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=1 termine=None.
+2025-10-22 09:02:24,621 | INFO | outlook_mcp_server | list_recent_emails: nessun messaggio (termine=None cartella=Posta in arrivo giorni=1).
+2025-10-22 09:04:37,748 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 09:04:38,506 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=7 cartella=None max_risultati=5 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=14
+2025-10-22 09:04:38,519 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 09:04:38,575 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.
+2025-10-22 09:05:06,220 | INFO | outlook_mcp_server | list_pending_replies ha trovato 5 messaggi da gestire su 23 analizzati.
+2025-10-22 09:05:06,221 | INFO | outlook_mcp_server | list_pending_replies: restituiti 5 messaggi su 5 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
+2025-10-22 09:07:06,081 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 09:07:06,750 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=7 cartella=None max_risultati=5 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=14
+2025-10-22 09:07:06,761 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 09:07:06,788 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.
+2025-10-22 09:07:32,299 | INFO | outlook_mcp_server | list_pending_replies ha trovato 5 messaggi da gestire su 23 analizzati.
+2025-10-22 09:07:32,299 | INFO | outlook_mcp_server | list_pending_replies: restituiti 5 messaggi su 5 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
+2025-10-22 09:16:46,626 | INFO | outlook_mcp_server | Segnale SIGINT ricevuto; arresto graduale in corso.
+2025-10-22 09:16:53,979 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 09:16:56,233 | INFO | outlook_mcp_server | get_current_datetime chiamato con include_utc=True
+2025-10-22 09:17:19,116 | INFO | outlook_mcp_server | Configurazione features caricata da C:\Users\Davide\OneDrive - Sonepar\Documenti\MCP\outlook-mcp-server\features.json (groups on=* off=-, tools on=- off=-)
+2025-10-22 09:17:19,778 | INFO | outlook_mcp_server | list_pending_replies chiamato con giorni=7 cartella=None max_risultati=5 anteprima=True tutte_le_cartelle=False solo_non_letti=False lookback_conv=14
+2025-10-22 09:17:19,789 | INFO | outlook_mcp_server | Versione Outlook rilevata: 16.0.0.19231
+2025-10-22 09:17:19,830 | INFO | outlook_mcp_server | Raccolta email dalla cartella 'Posta in arrivo' con giorni=7 termine=None.

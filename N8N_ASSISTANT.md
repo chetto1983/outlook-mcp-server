@@ -34,6 +34,8 @@ n8n start
 python outlook_mcp_server.py --mode http --host 0.0.0.0 --port 8000
 ```
 
+**Suggerimento filtri briefing:** prima di automatizzare i report puoi personalizzare i termini marketing da ignorare modificando `config.json` → `filters.promotional_keywords` (es. `"newsletter"`, `"webinar"`, `"unsubscribe"`). Dopo ogni modifica esegui il tool `reload_configuration()` per applicare i nuovi filtri senza riavviare il server.
+
 **Credenziali n8n (per riuso):**
 Crea credenziale "Outlook MCP" con:
 - Type: HTTP Request → Generic Credential Type
