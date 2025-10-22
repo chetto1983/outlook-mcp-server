@@ -1,6 +1,6 @@
 ﻿from __future__ import annotations
 
-from typing import Any, Optional, List, Dict
+from typing import Any, Optional, List, Dict, Set
 
 from ..features import feature_gate
 from outlook_mcp.toolkit import mcp_tool
