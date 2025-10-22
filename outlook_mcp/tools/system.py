@@ -8,7 +8,11 @@ from ..features import feature_gate, feature_metrics, reload_features
 
 # Tools register via outlook_mcp.toolkit and access the shared MCP instance lazily.
 from outlook_mcp.toolkit import get_current_mcp, mcp_tool, register_all_tools
-from outlook_mcp.services.system import build_params_payload, get_current_datetime as _service_get_current_datetime
+from outlook_mcp.services.system import (
+    build_params_payload,
+    get_current_datetime as _service_get_current_datetime,
+    get_profile_identity as _service_get_profile_identity,
+)
 
 
 @mcp_tool()
@@ -34,6 +38,38 @@ def params(
 def get_current_datetime(include_utc: bool = True) -> str:
     """Ritorna data/ora correnti; opzionalmente include i riferimenti UTC."""
     return _service_get_current_datetime(include_utc=include_utc)
+
+
+@mcp_tool()
+@feature_gate(group="system")
+def get_profile_identity() -> str:
+    """Restituisce nome visualizzato e indirizzi associati al profilo Outlook corrente."""
+    payload = _service_get_profile_identity()
+    if "error" in payload:
+        return str(payload["error"])
+
+    lines = ["Profilo Outlook corrente:"]
+    display_name = payload.get("display_name") or "-"
+    primary_address = payload.get("primary_address") or "-"
+    lines.append(f"- Nome visualizzato: {display_name}")
+    lines.append(f"- Indirizzo primario: {primary_address}")
+
+    addresses = payload.get("addresses") or []
+    if addresses:
+        lines.append("- Alias riconosciuti:")
+        for addr in addresses:
+            lines.append(f"  - {addr}")
+    else:
+        lines.append("- Alias riconosciuti: Nessuno")
+
+    accounts = payload.get("accounts") or []
+    if accounts:
+        lines.append("- Account configurati:")
+        for account in accounts:
+            display = account.get("display_name") or "-"
+            smtp = account.get("smtp_address") or "-"
+            lines.append(f"  - {display} ({smtp})")
+    return "\n".join(lines)
 
 
 @mcp_tool()

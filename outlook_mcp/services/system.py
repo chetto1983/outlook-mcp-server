@@ -9,7 +9,10 @@ from outlook_mcp import logger
 from outlook_mcp.features import get_tool_group, is_tool_enabled
 from outlook_mcp.utils import coerce_bool
 
-__all__ = ["build_params_payload", "get_current_datetime"]
+from outlook_mcp import connect_to_outlook
+from outlook_mcp.services.email import collect_user_addresses, normalize_email_address
+
+__all__ = ["build_params_payload", "get_current_datetime", "get_profile_identity"]
 
 
 def build_params_payload(
@@ -87,3 +90,83 @@ def get_current_datetime(include_utc: bool = True) -> str:
         logger.exception("Errore durante get_current_datetime.")
         return f"Errore durante il calcolo della data/ora corrente: {exc}"
 
+
+def _safe_collect_accounts(namespace) -> list[dict[str, str]]:
+    """Return display name and SMTP address for each Outlook account."""
+    accounts_info: list[dict[str, str]] = []
+    try:
+        session = namespace.Application.Session
+        accounts = getattr(session, "Accounts", None)
+        if not accounts:
+            return accounts_info
+        for idx in range(1, accounts.Count + 1):
+            account = accounts.Item(idx)
+            display_name = getattr(account, "DisplayName", None)
+            smtp_address = getattr(account, "SmtpAddress", None)
+            info: dict[str, str] = {}
+            if display_name:
+                info["display_name"] = str(display_name)
+            if smtp_address:
+                info["smtp_address"] = str(smtp_address)
+            if info:
+                accounts_info.append(info)
+    except Exception:
+        logger.debug("Impossibile enumerare gli account Outlook.", exc_info=True)
+    return accounts_info
+
+
+def get_profile_identity() -> dict[str, object]:
+    """Return display name, primary address and aliases for the active Outlook profile."""
+    try:
+        _, namespace = connect_to_outlook()
+    except Exception as exc:  # pragma: no cover - Outlook COM guarded
+        logger.exception("Connessione Outlook fallita durante get_profile_identity.")
+        return {"error": f"Impossibile connettersi a Outlook: {exc}"}
+
+    display_name: str | None = None
+    primary_address: str | None = None
+    try:
+        current_user = getattr(namespace, "CurrentUser", None)
+        if current_user:
+            display_name = str(getattr(current_user, "Name", "") or "") or None
+            address_entry = getattr(current_user, "AddressEntry", None)
+            if address_entry:
+                primary_candidate = getattr(address_entry, "Address", None)
+                if primary_candidate:
+                    primary_address = normalize_email_address(str(primary_candidate))
+                try:
+                    exchange_user = address_entry.GetExchangeUser()
+                    if exchange_user:
+                        primary_smtp = getattr(exchange_user, "PrimarySmtpAddress", None)
+                        if primary_smtp:
+                            primary_address = normalize_email_address(str(primary_smtp)) or primary_address
+                except Exception:
+                    logger.debug("Impossibile ottenere ExchangeUser per CurrentUser.", exc_info=True)
+    except Exception:
+        logger.debug("Impossibile leggere CurrentUser da Outlook.", exc_info=True)
+
+    addresses = sorted(collect_user_addresses(namespace))
+    normalized_addresses = sorted(
+        {addr for addr in (normalize_email_address(address) for address in addresses) if addr}
+    )
+
+    if not primary_address and normalized_addresses:
+        primary_address = normalized_addresses[0]
+
+    if not display_name:
+        try:
+            session = namespace.Application.Session
+            if session and getattr(session, "AccountName", None):
+                display_name = str(session.AccountName)
+        except Exception:
+            logger.debug("Impossibile recuperare AccountName dalla sessione.", exc_info=True)
+        if not display_name and normalized_addresses:
+            display_name = normalized_addresses[0]
+
+    account_entries = _safe_collect_accounts(namespace)
+    return {
+        "display_name": display_name,
+        "primary_address": primary_address,
+        "addresses": normalized_addresses or addresses,
+        "accounts": account_entries,
+    }

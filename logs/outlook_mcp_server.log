@@ -1,0 +1,2 @@
+2025-10-22 08:44:04,480 | INFO | outlook_mcp_server | list_pending_replies ha trovato 10 messaggi da gestire su 23 analizzati.
+2025-10-22 08:44:04,480 | INFO | outlook_mcp_server | list_pending_replies: restituiti 10 messaggi su 10 (termine=None cartella=Posta in arrivo (senza risposta) offset=0).
