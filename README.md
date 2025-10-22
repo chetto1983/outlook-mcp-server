@@ -7,7 +7,11 @@ Caratteristiche
 - Consapevolezza della conversazione: controllo delle risposte gia' inviate e outline compatta del thread.
 - Calendario con occorrenze ricorrenti, ricerca per parole chiave e dettaglio evento.
 - Azioni: risposta inline (`reply_to_email_by_number`), composizione (`compose_email`), spostamenti, letti/non letti, categorie, allegati, batch.
+- **Proprietà email avanzate**: importance, sensitivity, flag follow-up, read receipts, delivery receipts, voting buttons.
 - Amministrazione cartelle: `list_folders`, `get_folder_metadata`, `create_folder`, `rename_folder`, `delete_folder`.
+- **Gestione Tasks**: creazione, modifica, completamento, ricerca e organizzazione attività.
+- **Rules (Regole)**: creazione, modifica, abilitazione/disabilitazione e eliminazione regole automatiche di Outlook.
+- **Free/Busy**: accesso dati disponibilità calendario e ricerca slot liberi comuni per meeting.
 - Rotating logging (`logs/outlook_mcp_server.log`) e cache per sessioni lunghe.
 
 Requisiti
@@ -105,7 +109,7 @@ Esempio di `features.json`:
   "disabled_tools": []
 }
 ```
-Gruppi rilevanti: `system`, `general`, `folders`, `email.list`, `email.detail`, `email.actions`, `attachments`, `contacts`, `calendar.read`, `calendar.write`, `domain.rules`, `batch`.
+Gruppi rilevanti: `system`, `general`, `folders`, `email.list`, `email.detail`, `email.actions`, `attachments`, `contacts`, `calendar.read`, `calendar.write`, `domain.rules`, `batch`, `tasks`, `rules`, `freebusy`.
 
 **Esempi pratici:**
 
@@ -152,6 +156,13 @@ Uso dei tool principali
 - `list_upcoming_events(...)` / `search_calendar_events(...)` / `get_event_by_number(...)` – calendario. Per default le ricerche eventi scandiscono tutti i calendari visibili; usa `calendar_name` per limitarle.
 - `create_calendar_event(...)` – creazione eventi (all-day o a durata) con invito opzionale.
 - `move_calendar_event(...)` – riprogramma o sposta eventi esistenti (orario, durata, luogo, calendario) con aggiornamenti facoltativi ai partecipanti.
+- `list_tasks(...)` / `search_tasks(...)` / `get_task_by_number(...)` – gestione attività con filtri su stato, scadenza e cartelle.
+- `create_task(...)` / `update_task(...)` / `mark_task_complete(...)` / `delete_task(...)` – creazione e modifica attività con priorità, scadenze e promemoria.
+- `flag_email(...)` – contrassegno follow-up su email con scadenza e promemoria opzionali.
+- `list_rules()` / `get_rule_details(...)` / `create_move_rule(...)` – gestione regole automatiche di Outlook.
+- `enable_disable_rule(...)` / `delete_rule(...)` – abilitazione/disabilitazione ed eliminazione regole.
+- `get_freebusy_info(...)` – recupero dati di disponibilità calendario per un destinatario.
+- `find_free_time_slots(...)` – ricerca slot temporali liberi comuni per più partecipanti.
 
 Per usare `move_calendar_event` recupera prima l'evento con `list_upcoming_events`/`search_calendar_events` e passa il relativo `event_number` (oppure l'`entry_id` se già noto). Puoi impostare:
 - `new_start_time`: data/ora locale in formato `YYYY-MM-DD HH:MM` o ISO.

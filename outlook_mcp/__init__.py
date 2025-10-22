@@ -1,6 +1,6 @@
 """Utility package for Outlook MCP server components."""
 
-from .constants import ( 
+from .constants import (
     ATTACHMENT_NAME_PREVIEW_MAX,
     BODY_PREVIEW_MAX_CHARS,
     CONVERSATION_ID_PREVIEW_MAX,
@@ -8,6 +8,7 @@ from .constants import (
     DEFAULT_DOMAIN_ROOT_NAME,
     DEFAULT_DOMAIN_SUBFOLDERS,
     DEFAULT_MAX_RESULTS,
+    DEFAULT_TASK_MAX_RESULTS,
     LAST_VERB_REPLY_CODES,
     LOG_DIR_NAME,
     LOG_FILE_NAME,
@@ -15,17 +16,20 @@ from .constants import (
     MAX_DAYS,
     MAX_EMAIL_SCAN_PER_FOLDER,
     MAX_EVENT_LOOKAHEAD_DAYS,
+    MAX_TASK_DAYS,
     PENDING_SCAN_MULTIPLIER,
     PR_LAST_VERB_EXECUTED,
     PR_LAST_VERB_EXECUTION_TIME,
 )
-from .logger import logger  
-from .connection import connect_to_outlook  
-from .cache import (  
+from .logger import logger
+from .connection import connect_to_outlook
+from .cache import (
     clear_calendar_cache,
     clear_email_cache,
+    clear_task_cache,
     email_cache,
     calendar_cache,
+    task_cache,
 )
 from . import utils 
 
@@ -35,8 +39,10 @@ __all__ = [
     "utils",
     "clear_calendar_cache",
     "clear_email_cache",
+    "clear_task_cache",
     "email_cache",
     "calendar_cache",
+    "task_cache",
     "ATTACHMENT_NAME_PREVIEW_MAX",
     "BODY_PREVIEW_MAX_CHARS",
     "CONVERSATION_ID_PREVIEW_MAX",
@@ -44,6 +50,7 @@ __all__ = [
     "DEFAULT_DOMAIN_ROOT_NAME",
     "DEFAULT_DOMAIN_SUBFOLDERS",
     "DEFAULT_MAX_RESULTS",
+    "DEFAULT_TASK_MAX_RESULTS",
     "LAST_VERB_REPLY_CODES",
     "LOG_DIR_NAME",
     "LOG_FILE_NAME",
@@ -51,6 +58,7 @@ __all__ = [
     "MAX_DAYS",
     "MAX_EMAIL_SCAN_PER_FOLDER",
     "MAX_EVENT_LOOKAHEAD_DAYS",
+    "MAX_TASK_DAYS",
     "PENDING_SCAN_MULTIPLIER",
     "PR_LAST_VERB_EXECUTED",
     "PR_LAST_VERB_EXECUTION_TIME",

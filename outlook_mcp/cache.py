@@ -116,6 +116,7 @@ class TimedLRUCache(MutableMapping[int, Any]):
 
 email_cache: TimedLRUCache = TimedLRUCache(max_entries=500, ttl_seconds=1800.0)
 calendar_cache: TimedLRUCache = TimedLRUCache(max_entries=200, ttl_seconds=1200.0)
+task_cache: TimedLRUCache = TimedLRUCache(max_entries=200, ttl_seconds=1200.0)
 
 
 def clear_email_cache() -> None:
@@ -130,4 +131,10 @@ def clear_calendar_cache() -> None:
     logger.debug("Cache degli eventi svuotata.")
 
 
-__all__ = ["email_cache", "calendar_cache", "clear_email_cache", "clear_calendar_cache", "TimedLRUCache"]
+def clear_task_cache() -> None:
+    """Clear the task cache."""
+    task_cache.clear()
+    logger.debug("Cache delle attività svuotata.")
+
+
+__all__ = ["email_cache", "calendar_cache", "task_cache", "clear_email_cache", "clear_calendar_cache", "clear_task_cache", "TimedLRUCache"]

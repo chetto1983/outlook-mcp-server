@@ -78,9 +78,14 @@ IDENTITÀ DINAMICA:
 
 ┌─ EMAIL: AZIONI [RICHIEDE VALIDAZIONE CONTATTI] ───────────────────────────┐
 │ reply_to_email_by_number(email_number, reply_text, reply_all, send,       │
-│                          attachments, use_html)                           │
+│                          attachments, use_html, importance, sensitivity,  │
+│                          request_read_receipt, request_delivery_receipt)  │
 │ compose_email(recipient_email, subject, body, cc_email, bcc_email,        │
-│              attachments, send, use_html)                                 │
+│              attachments, send, use_html, importance, sensitivity,        │
+│              request_read_receipt, request_delivery_receipt,              │
+│              voting_options)                                              │
+│ flag_email(email_number|message_id, flag_status, due_date,                │
+│           reminder_time, clear_flag)                                      │
 │                                                                           │
 │ move_email_to_folder(target_folder_*, email_number|message_id)            │
 │ mark_email_read_unread(email_number|message_id, unread, flag)             │
@@ -110,6 +115,37 @@ IDENTITÀ DINAMICA:
 │                      attendees, body, send_invitations, all_day)          │
 │ move_calendar_event(event_number|entry_id, new_start_time, duration,      │
 │                     location, calendar_name, send_updates)                │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ TASKS (ATTIVITÀ) ────────────────────────────────────────────────────────┐
+│ list_tasks(days, folder_name, include_completed, max_results,             │
+│           include_all_folders, include_preview)                           │
+│ search_tasks(search_term, days, include_completed, max_results, ...)      │
+│ get_task_by_number(task_number)                                           │
+│ create_task(subject, body, due_date, start_date, priority, status,        │
+│            reminder_time, categories, folder_name)                        │
+│ update_task(task_number|task_id, subject, body, due_date, priority,       │
+│            status, percent_complete, reminder_time, categories)           │
+│ mark_task_complete(task_number|task_id)                                   │
+│ delete_task(task_number|task_id)                                          │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ RULES (REGOLE AUTOMATICHE) ──────────────────────────────────────────────┐
+│ list_rules()                                                              │
+│ get_rule_details(rule_name)                                               │
+│ create_move_rule(rule_name, from_address, subject_contains,               │
+│                 body_contains, target_folder_*, mark_as_read, enabled,    │
+│                 stop_processing)                                          │
+│ enable_disable_rule(rule_name, enabled)                                   │
+│ delete_rule(rule_name)                                                    │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ FREE/BUSY (DISPONIBILITÀ CALENDARIO) ────────────────────────────────────┐
+│ get_freebusy_info(recipient_email, start_date, end_date,                  │
+│                  interval_minutes, merge_slots)                           │
+│ find_free_time_slots(attendees, duration_minutes, start_date, end_date,   │
+│                      working_hours_start, working_hours_end,              │
+│                      interval_minutes, max_results)                       │
 └───────────────────────────────────────────────────────────────────────────┘
 
 ┌─ DOMAIN RULES [ARCHIVIAZIONE AUTOMATICA] ─────────────────────────────────┐

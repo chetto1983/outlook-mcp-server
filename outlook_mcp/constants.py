@@ -48,3 +48,40 @@ ITEM_TYPE_NAME_MAP = {
     "note": 5,
     "post": 6,
 }
+
+# Task-specific constants
+MAX_TASK_DAYS = 365
+DEFAULT_TASK_MAX_RESULTS = 50
+TASK_STATUS_MAP = {
+    0: "Non iniziata",
+    1: "In corso",
+    2: "Completata",
+    3: "In attesa",
+    4: "Differita",
+}
+TASK_PRIORITY_MAP = {
+    0: "Bassa",
+    1: "Normale",
+    2: "Alta",
+}
+TASK_STATUS_REVERSE_MAP = {
+    "non iniziata": 0,
+    "non iniziato": 0,
+    "in corso": 1,
+    "in progress": 1,
+    "completata": 2,
+    "completato": 2,
+    "complete": 2,
+    "in attesa": 3,
+    "waiting": 3,
+    "differita": 4,
+    "deferred": 4,
+}
+TASK_PRIORITY_REVERSE_MAP = {
+    "bassa": 0,
+    "low": 0,
+    "normale": 1,
+    "normal": 1,
+    "alta": 2,
+    "high": 2,
+}

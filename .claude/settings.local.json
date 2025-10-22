@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Read(//c/Users/Davide/AppData/Roaming/Claude/**)",
+      "Bash(where:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

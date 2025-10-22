@@ -24,6 +24,10 @@ from outlook_mcp.services.email import (
     update_cached_email,
     apply_categories_to_item,
 )
+from outlook_mcp.services.common import (
+    parse_importance,
+    parse_sensitivity,
+)
 
 # Import runtime helpers lazily to avoid circular imports
 def _connect():
@@ -264,8 +268,12 @@ def reply_to_email_by_number(
     send: bool = True,
     attachments: Optional[Any] = None,
     use_html: bool = False,
+    importance: Optional[str] = None,
+    sensitivity: Optional[str] = None,
+    request_read_receipt: bool = False,
+    request_delivery_receipt: bool = False,
 ) -> str:
-    """Risponde a un messaggio (reply/reply-all), con allegati e invio opzionale."""
+    """Risponde a un messaggio (reply/reply-all), con allegati, proprietà avanzate e invio opzionale."""
     try:
         if not reply_text.strip():
             return "Errore: specifica il testo della risposta."
@@ -273,15 +281,19 @@ def reply_to_email_by_number(
         reply_all_bool = coerce_bool(reply_all)
         send_bool = coerce_bool(send)
         use_html_bool = coerce_bool(use_html)
+        request_read_bool = coerce_bool(request_read_receipt)
+        request_delivery_bool = coerce_bool(request_delivery_receipt)
         attachment_paths = ensure_string_list(attachments)
         logger.info(
-            "reply_to_email_by_number chiamato (numero=%s id=%s reply_all=%s invia=%s allegati=%s html=%s).",
+            "reply_to_email_by_number chiamato (numero=%s id=%s reply_all=%s invia=%s allegati=%s html=%s importance=%s sensitivity=%s).",
             email_number,
             message_id,
             reply_all_bool,
             send_bool,
             attachment_paths,
             use_html_bool,
+            importance,
+            sensitivity,
         )
 
         _, namespace = _connect()
@@ -300,6 +312,27 @@ def reply_to_email_by_number(
                 reply.Body = f"{reply_text}\n\n{original_body}"
         except Exception:
             reply.Body = reply_text
+
+        # Set advanced properties
+        if importance:
+            importance_code = parse_importance(importance)
+            if importance_code is not None:
+                reply.Importance = importance_code
+            else:
+                return "Errore: importanza non valida. Usa: bassa, normale, alta"
+
+        if sensitivity:
+            sensitivity_code = parse_sensitivity(sensitivity)
+            if sensitivity_code is not None:
+                reply.Sensitivity = sensitivity_code
+            else:
+                return "Errore: sensibilità non valida. Usa: normale, personale, privato, confidenziale"
+
+        if request_read_bool:
+            reply.ReadReceiptRequested = True
+
+        if request_delivery_bool:
+            reply.OriginatorDeliveryReportRequested = True
 
         for path_value in attachment_paths:
             absolute = os.path.abspath(path_value)
@@ -342,17 +375,24 @@ def compose_email(
     attachments: Optional[Any] = None,
     send: bool = True,
     use_html: bool = False,
+    importance: Optional[str] = None,
+    sensitivity: Optional[str] = None,
+    request_read_receipt: bool = False,
+    request_delivery_receipt: bool = False,
+    voting_options: Optional[str] = None,
 ) -> str:
-    """Crea e invia/archivia una nuova email con CC/BCC e allegati opzionali."""
+    """Crea e invia/archivia una nuova email con CC/BCC, allegati e proprietà avanzate."""
     try:
         if not recipient_email.strip():
             return "Errore: specifica almeno un destinatario."
 
         send_bool = coerce_bool(send)
         use_html_bool = coerce_bool(use_html)
+        request_read_bool = coerce_bool(request_read_receipt)
+        request_delivery_bool = coerce_bool(request_delivery_receipt)
         attachment_paths = ensure_string_list(attachments)
         logger.info(
-            "compose_email chiamato (destinatario=%s cc=%s bcc=%s oggetto='%s' invia=%s allegati=%s html=%s).",
+            "compose_email chiamato (destinatario=%s cc=%s bcc=%s oggetto='%s' invia=%s allegati=%s html=%s importance=%s sensitivity=%s).",
             recipient_email,
             cc_email,
             bcc_email,
@@ -360,6 +400,8 @@ def compose_email(
             send_bool,
             attachment_paths,
             use_html_bool,
+            importance,
+            sensitivity,
         )
 
         outlook, _ = _connect()
@@ -376,6 +418,31 @@ def compose_email(
             mail.HTMLBody = f"{body}{existing}"
         else:
             mail.Body = body
+
+        # Set advanced properties
+        if importance:
+            importance_code = parse_importance(importance)
+            if importance_code is not None:
+                mail.Importance = importance_code
+            else:
+                return "Errore: importanza non valida. Usa: bassa, normale, alta"
+
+        if sensitivity:
+            sensitivity_code = parse_sensitivity(sensitivity)
+            if sensitivity_code is not None:
+                mail.Sensitivity = sensitivity_code
+            else:
+                return "Errore: sensibilità non valida. Usa: normale, personale, privato, confidenziale"
+
+        if request_read_bool:
+            mail.ReadReceiptRequested = True
+
+        if request_delivery_bool:
+            mail.OriginatorDeliveryReportRequested = True
+
+        if voting_options:
+            # Voting options format: "Approve;Reject;Review"
+            mail.VotingOptions = voting_options
 
         for path_value in attachment_paths:
             absolute = os.path.abspath(path_value)
@@ -550,3 +617,102 @@ def batch_manage_emails(
     except Exception as exc:
         logger.exception("Errore durante batch_manage_emails.")
         return f"Errore durante le operazioni batch sui messaggi: {exc}"
+
+
+@mcp_tool()
+@feature_gate(group="email.actions")
+def flag_email(
+    email_number: Optional[int] = None,
+    message_id: Optional[str] = None,
+    flag_status: Optional[str] = None,
+    due_date: Optional[str] = None,
+    reminder_time: Optional[str] = None,
+    clear_flag: bool = False,
+) -> str:
+    """Imposta o rimuove il contrassegno follow-up su un'email con promemoria opzionale."""
+    try:
+        import datetime
+
+        clear_flag_bool = coerce_bool(clear_flag)
+
+        logger.info(
+            "flag_email chiamato (numero=%s id=%s flag_status=%s due_date=%s reminder=%s clear=%s).",
+            email_number,
+            message_id,
+            flag_status,
+            due_date,
+            reminder_time,
+            clear_flag_bool,
+        )
+
+        _, namespace = _connect()
+        try:
+            _, mail_item = _resolve(namespace, email_number=email_number, message_id=message_id)
+        except Exception as exc:
+            return f"Errore: {exc}"
+
+        if clear_flag_bool:
+            # Clear flag
+            try:
+                mail_item.FlagRequest = ""
+                mail_item.ReminderSet = False
+                mail_item.Save()
+                reference = f"#{email_number}" if email_number is not None else (message_id or "messaggio")
+                return f"Contrassegno rimosso dal messaggio {reference}."
+            except Exception as exc:
+                logger.exception("Impossibile rimuovere il contrassegno.")
+                return f"Errore: impossibile rimuovere il contrassegno ({exc})"
+
+        # Set flag
+        flag_request = flag_status or "Follow up"
+        try:
+            mail_item.FlagRequest = flag_request
+        except Exception as exc:
+            logger.exception("Impossibile impostare il contrassegno.")
+            return f"Errore: impossibile impostare il contrassegno ({exc})"
+
+        # Set due date
+        if due_date:
+            try:
+                due_dt = datetime.datetime.fromisoformat(due_date.replace("T", " ").replace("Z", ""))
+                mail_item.FlagDueBy = due_dt
+            except Exception as exc:
+                logger.warning("Formato data scadenza non valido: %s (%s)", due_date, exc)
+                return f"Errore: formato data scadenza non valido. Usa formato ISO (es: 2025-10-22 o 2025-10-22T14:30)"
+
+        # Set reminder
+        if reminder_time:
+            try:
+                reminder_dt = datetime.datetime.fromisoformat(reminder_time.replace("T", " ").replace("Z", ""))
+                mail_item.ReminderSet = True
+                mail_item.ReminderTime = reminder_dt
+            except Exception as exc:
+                logger.warning("Formato data promemoria non valido: %s (%s)", reminder_time, exc)
+                return f"Errore: formato data promemoria non valido. Usa formato ISO (es: 2025-10-22T14:30)"
+        elif due_date:
+            # If due_date is set but no reminder, set reminder to same time
+            try:
+                due_dt = datetime.datetime.fromisoformat(due_date.replace("T", " ").replace("Z", ""))
+                mail_item.ReminderSet = True
+                mail_item.ReminderTime = due_dt
+            except Exception:
+                pass
+
+        try:
+            mail_item.Save()
+        except Exception as exc:
+            logger.exception("Impossibile salvare il messaggio con il contrassegno.")
+            return f"Errore: impossibile salvare il messaggio ({exc})"
+
+        reference = f"#{email_number}" if email_number is not None else (message_id or "messaggio")
+        parts = [f"Messaggio {reference} contrassegnato: {flag_request}"]
+        if due_date:
+            parts.append(f"Scadenza: {due_date}")
+        if reminder_time:
+            parts.append(f"Promemoria: {reminder_time}")
+
+        return " | ".join(parts)
+
+    except Exception as exc:
+        logger.exception("Errore durante flag_email.")
+        return f"Errore durante l'impostazione del contrassegno: {exc}"
