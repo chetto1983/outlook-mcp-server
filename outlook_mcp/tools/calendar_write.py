@@ -43,6 +43,18 @@ def _ensure_local(dt: datetime.datetime) -> datetime.datetime:
         return dt
 
 
+def _safe_set_datetime_attr(item, attr_name: str, value: Optional[datetime.datetime]) -> bool:
+    """Best-effort setter for COM datetime attributes, avoiding hard failures."""
+    if value is None:
+        return False
+    try:
+        setattr(item, attr_name, value)
+        return True
+    except Exception as exc:
+        logger.debug("Impossibile impostare l'attributo %s: %s", attr_name, exc, exc_info=True)
+        return False
+
+
 @mcp_tool()
 @feature_gate(group="calendar.write")
 def create_calendar_event(
@@ -129,17 +141,13 @@ def create_calendar_event(
         if all_day_bool:
             normalized_start = local_start.replace(hour=0, minute=0, second=0, microsecond=0)
             appointment.Start = normalized_start
-            appointment.End = normalized_start + datetime.timedelta(days=1)
+            _safe_set_datetime_attr(appointment, "End", normalized_start + datetime.timedelta(days=1))
             appointment.AllDayEvent = True
         else:
             appointment.AllDayEvent = False
             duration_val = duration_value or 60
-            utc_start = local_start_tz.astimezone(datetime.timezone.utc)
             appointment.Start = local_start
-            appointment.StartUTC = utc_start
             appointment.Duration = duration_val
-            appointment.End = local_start + datetime.timedelta(minutes=duration_val)
-            appointment.EndUTC = utc_start + datetime.timedelta(minutes=duration_val)
 
         if location:
             appointment.Location = location
@@ -192,12 +200,9 @@ def create_calendar_event(
             actual_local = ensure_naive_datetime(to_python_datetime(getattr(appointment, "Start", None)))
             if actual_local and abs((actual_local - desired_local).total_seconds()) >= 60:
                 try:
-                    desired_start_tz = _ensure_local(desired_local)
                     appointment.Start = desired_local
-                    appointment.StartUTC = desired_start_tz.astimezone(datetime.timezone.utc)
                     minutes = appointment.Duration or duration_value or 60
-                    appointment.End = desired_local + datetime.timedelta(minutes=minutes)
-                    appointment.EndUTC = appointment.StartUTC + datetime.timedelta(minutes=minutes)
+                    appointment.Duration = minutes
                     appointment.Save()
                 except Exception:
                     logger.debug("Correzione orario evento non riuscita.", exc_info=True)
@@ -297,26 +302,13 @@ def move_calendar_event(
             if getattr(appointment, "AllDayEvent", False):
                 normalized = local_start.replace(hour=0, minute=0, second=0, microsecond=0)
                 appointment.Start = normalized
-                appointment.End = normalized + datetime.timedelta(days=1)
+                _safe_set_datetime_attr(appointment, "End", normalized + datetime.timedelta(days=1))
             else:
-                utc_start = local_start_tz.astimezone(datetime.timezone.utc)
                 appointment.Start = local_start
-                appointment.StartUTC = utc_start
                 desired_local_target = local_start
 
         if duration_value is not None and not getattr(appointment, "AllDayEvent", False):
             appointment.Duration = duration_value
-            try:
-                current_start = ensure_naive_datetime(to_python_datetime(getattr(appointment, "Start", None)))
-                if current_start:
-                    appointment.End = current_start + datetime.timedelta(minutes=duration_value)
-                start_utc = getattr(appointment, "StartUTC", None)
-                if start_utc:
-                    utc_start = start_utc if isinstance(start_utc, datetime.datetime) else to_python_datetime(start_utc)
-                    if isinstance(utc_start, datetime.datetime):
-                        appointment.EndUTC = utc_start + datetime.timedelta(minutes=duration_value)
-            except Exception:
-                pass
 
         if new_location:
             appointment.Location = new_location
@@ -355,12 +347,9 @@ def move_calendar_event(
             actual_local = ensure_naive_datetime(to_python_datetime(getattr(appointment, "Start", None)))
             if actual_local and abs((actual_local - desired_local_target).total_seconds()) >= 60:
                 try:
-                    desired_start_tz = _ensure_local(desired_local_target)
                     appointment.Start = desired_local_target
-                    appointment.StartUTC = desired_start_tz.astimezone(datetime.timezone.utc)
                     minutes = appointment.Duration or duration_value or 60
-                    appointment.End = desired_local_target + datetime.timedelta(minutes=minutes)
-                    appointment.EndUTC = appointment.StartUTC + datetime.timedelta(minutes=minutes)
+                    appointment.Duration = minutes
                     appointment.Save()
                 except Exception:
                     logger.debug("Correzione orario evento durante lo spostamento non riuscita.", exc_info=True)
@@ -382,3 +371,80 @@ def move_calendar_event(
     except Exception as exc:
         logger.exception("Errore durante move_calendar_event.")
         return f"Errore durante l'aggiornamento dell'evento: {exc}"
+
+
+@mcp_tool()
+@feature_gate(group="calendar.write")
+def delete_calendar_event(
+    event_number: Optional[int] = None,
+    entry_id: Optional[str] = None,
+    send_cancellation: bool = False,
+) -> str:
+    """Elimina un evento di calendario esistente (per numero elenco o EntryID)."""
+    if entry_id:
+        target_id = entry_id.strip()
+        if not target_id:
+            return "Errore: 'entry_id' non può essere vuoto."
+    elif event_number is not None:
+        try:
+            number = int(event_number)
+        except (TypeError, ValueError):
+            return "Errore: 'event_number' deve essere un intero."
+        if number not in calendar_cache:
+            return "Errore: evento non trovato nella cache corrente. Elenca gli eventi e riprova."
+        cached_event = calendar_cache[number]
+        target_id = cached_event.get("id")
+        if not target_id:
+            return "Errore: l'evento selezionato non espone un EntryID valido."
+    else:
+        return "Errore: specifica almeno 'event_number' (dall'ultimo elenco) oppure 'entry_id'."
+
+    send_bool = bool(send_cancellation)
+
+    logger.info(
+        "delete_calendar_event chiamato (entry_id=%s numero=%s invia_cancellazione=%s).",
+        entry_id or target_id,
+        event_number,
+        send_bool,
+    )
+
+    try:
+        outlook, namespace = _connect()
+        try:
+            appointment = namespace.GetItemFromID(target_id)
+        except Exception as exc:
+            logger.exception("Impossibile recuperare l'evento con EntryID=%s.", target_id)
+            return f"Errore: impossibile recuperare l'evento (EntryID={target_id}): {exc}"
+
+        meeting_status = getattr(appointment, "MeetingStatus", 0)
+        cancellation_sent = False
+
+        if send_bool and meeting_status in (1, 3):  # olMeeting or meeting request received
+            try:
+                cancel_item = appointment.CancelMeeting()
+                if cancel_item:
+                    cancel_item.Send()
+                    cancellation_sent = True
+            except Exception as exc:
+                logger.warning(
+                    "Invio cancellazione meeting non riuscito per EntryID=%s: %s",
+                    target_id,
+                    exc,
+                )
+
+        try:
+            appointment.Delete()
+        except Exception as exc:
+            logger.exception("Eliminazione dell'evento fallita.")
+            return f"Errore: impossibile eliminare l'evento (EntryID={target_id}): {exc}"
+
+        clear_calendar_cache()
+
+        if cancellation_sent:
+            return "Evento eliminato e cancellazione inviata ai partecipanti."
+        if send_bool and meeting_status in (1, 3):
+            return "Evento eliminato, ma invio della cancellazione ai partecipanti non riuscito."
+        return "Evento eliminato con successo."
+    except Exception as exc:
+        logger.exception("Errore durante delete_calendar_event.")
+        return f"Errore durante l'eliminazione dell'evento: {exc}"

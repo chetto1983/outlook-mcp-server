@@ -154,8 +154,9 @@ Uso dei tool principali
 - `reply_to_email_by_number(...)` / `compose_email(...)` – risposte e nuove email (plain‑text) con invio opzionale.
 - `move_email_to_folder(...)`, `mark_email_read_unread(...)`, `apply_category(...)`, `batch_manage_emails(...)` – manutenzione messaggi.
 - `list_upcoming_events(...)` / `search_calendar_events(...)` / `get_event_by_number(...)` – calendario. Per default le ricerche eventi scandiscono tutti i calendari visibili; usa `calendar_name` per limitarle.
-- `create_calendar_event(...)` – creazione eventi (all-day o a durata) con invito opzionale.
-- `move_calendar_event(...)` – riprogramma o sposta eventi esistenti (orario, durata, luogo, calendario) con aggiornamenti facoltativi ai partecipanti.
+- `create_calendar_event(...)` - creazione eventi (all-day o a durata) con invito opzionale; passa l'orario locale e la durata, Outlook calcola automaticamente l'ora di fine.
+- `move_calendar_event(...)` - riprogramma o sposta eventi esistenti (orario, durata, luogo, calendario) con aggiornamenti facoltativi ai partecipanti.
+- `delete_calendar_event(...)` - elimina eventi esistenti e, se necessario, invia la cancellazione ai partecipanti.
 - `list_tasks(...)` / `search_tasks(...)` / `get_task_by_number(...)` – gestione attività con filtri su stato, scadenza e cartelle.
 - `create_task(...)` / `update_task(...)` / `mark_task_complete(...)` / `delete_task(...)` – creazione e modifica attività con priorità, scadenze e promemoria.
 - `flag_email(...)` – contrassegno follow-up su email con scadenza e promemoria opzionali.
